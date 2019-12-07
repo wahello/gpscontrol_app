@@ -1,12 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:GPS_CONTROL/data/services/odoo_api.dart';
-import 'package:GPS_CONTROL/data/services/odoo_response.dart';
-import 'package:GPS_CONTROL/data/services/utils.dart';
-import 'package:GPS_CONTROL/pages/partner_details.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:GPS_CONTROL/pages/settings.dart';
-import 'package:GPS_CONTROL/data/pojo/partners.dart';
-import 'package:GPS_CONTROL/pages/profile.dart';
+import 'package:http/http.dart' as http;
+import 'package:GPS_CONTROL/data/services/globals.dart';
 
 class InitAlistamiento extends StatefulWidget {
   InitAlistamiento({this.data});
@@ -17,180 +14,183 @@ class InitAlistamiento extends StatefulWidget {
 }
 
 class _InitAlistamientoState extends State<InitAlistamiento> {
+  TextEditingController _urlCtrler = new TextEditingController();
   Odoo _odoo;
-  List<Partner> _partners = [];
-  bool _isLoading = false;
-
-  _getPartners() async {
-    _isLoading = true;
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    _odoo = Odoo(url: preferences.getString("odooUrl"))
-      ..searchRead("res.partner", [], []).then(
-            (OdooResponse res) {
-          if (!res.hasError()) {
-            setState(() {
-              _isLoading = false;
-              String session = preferences.getString("session");
-              session = session.split(",")[0].split(";")[0];
-              for (var i in res.getRecords()) {
-                _partners.add(
-                  new Partner(
-                    id: i["id"],
-                    email: i["email"] is! bool ? i["email"] : "N/A",
-                    name: i["name"],
-                    phone: i["phone"] is! bool ? i["phone"] : "N/A",
-                    imageUrl: preferences.getString("odooUrl") +
-                        "/web/content?model=res.partner&field=image&" +
-                        session +
-                        "&id=" +
-                        i["id"].toString(),
-                  ),
-                );
-              }
-            });
-          } else {
-            setState(() {
-              _isLoading = false;
-            });
-            Utils(context: context)
-                .showMessage("Warning", res.getErrorMessage());
-          }
-        },
-      );
-  }
+  String odooURL = "";
 
   @override
   void initState() {
     super.initState();
-    Utils().isConnected().then((isInternet) {
-      if (!isInternet) {
-        Scaffold.of(context).showSnackBar(
-            new SnackBar(content: Text("No Internet Connection!")));
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    });
-    //_getPartners();
+    //_checkFirstTime();
   }
+
+  //_checkFirstTime() async {
+    //SharedPreferences prefs = await SharedPreferences.getInstance();
+    //if (prefs.getString("odooUrl") != null) {
+    //  setState(() {
+    //    _urlCtrler.text = prefs.getString("odooUrl");
+    //    odooURL = prefs.getString("odooUrl");
+    //  });
+   // }
+  //}
 
   @override
   Widget build(BuildContext context) {
-    final emptyView = Container(
-      alignment: Alignment.center,
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Icon(
-              Icons.warning,
-              color: Colors.grey.shade300,
-              size: 100,
-            ),
-            Padding(
-              padding: EdgeInsets.all(1.0),
-              child: Text(
-                "Alistamientos aun no disponibles",
-                style: TextStyle(
-                  color: Colors.grey.shade500,
-                  fontSize: 20,
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-
     return Scaffold(
       appBar: AppBar(
-        title: Text("Iniciar alistamiento"),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.settings,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => Settings(),
+        title: Text("Inicio Alistamiento"),
+      ),
+      body: ListView(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(15.0),
+            child: TextField(
+              textAlign: TextAlign.left,
+              controller: _urlCtrler,
+              decoration: InputDecoration(
+                labelText: "Placa Vehiculo",
+                labelStyle: TextStyle(
+                  color: Colors.black,
                 ),
-              );
-            },
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.person,
-              color: Colors.white,
+                border: OutlineInputBorder(),
+                focusedBorder: OutlineInputBorder(),
+              ),
             ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => ProfilePage(),
-                ),
-              );
-            },
           ),
+          Padding(
+            padding: EdgeInsets.all(15.0),
+            child: MaterialButton(
+              child: Text(
+                "Iniciar Alistamiento",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              color: Colors.blue,
+              onPressed: () {
+                Navigator.pushNamed(context, '/alistamientos');
+                //_saveURL(_urlCtrler.text);
+              },
+            ),
+          )
         ],
       ),
-      body: _isLoading
-          ? Center(
-        child: CircularProgressIndicator(),
-      )
-          : _partners.length > 0
-          ? ListView.builder(
-        itemCount: _partners.length,
-        physics: const AlwaysScrollableScrollPhysics(),
-        itemBuilder: (context, i) => InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => PartnerDetails(
-                  data: _partners[i],
-                ),
-              ),
-            );
-          },
-          child: Column(
-            children: <Widget>[
-              Divider(
-                height: 10.0,
-              ),
-              ListTile(
-                leading: CircleAvatar(
-                  foregroundColor: Theme.of(context).primaryColor,
-                  backgroundColor: Colors.grey,
-                  backgroundImage:
-                  NetworkImage(_partners[i].imageUrl),
-                ),
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      _partners[i].name,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-                subtitle: Container(
-                  padding: const EdgeInsets.only(top: 5.0),
-                  child: Text(
-                    _partners[i].email,
-                    style:
-                    TextStyle(color: Colors.grey, fontSize: 15.0),
-                  ),
-                ),
-              )
-            ],
+    );
+  }
+
+  _saveURL(String url) async {
+    if (!url.toLowerCase().contains("http://") &&
+        !url.toLowerCase().contains("https://")) {
+      url = "http://" + url;
+    }
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (url.length > 0 && url != " ") {
+      _odoo = Odoo(url: url);
+      _odoo.getDatabases().then((http.Response res) {
+        prefs.setString("odooUrl", url);
+        _showLogoutMessage("Setting Saved! Please Login!");
+      }).catchError((error) {
+        _showMessage("Can't connect to the server! Please enter valid URL");
+      });
+    } else {
+      _showMessage("Please enter valid URL");
+    }
+  }
+
+  _showMessage(String message) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext ctxt) {
+        return AlertDialog(
+          title: Text(
+            "Warning",
+            style: TextStyle(
+              fontFamily: "Montserrat",
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
           ),
-        ),
-      )
-          : emptyView,
+          content: Text(
+            message,
+            style: TextStyle(
+              fontFamily: "Montserrat",
+              fontSize: 18,
+              color: Colors.black,
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                "Ok",
+                style: TextStyle(
+                  fontFamily: "Montserrat",
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  _showLogoutMessage(String message) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext ctxt) {
+        return AlertDialog(
+          title: Text(
+            "Warning",
+            style: TextStyle(
+              fontFamily: "Montserrat",
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          content: Text(
+            message,
+            style: TextStyle(
+              fontFamily: "Montserrat",
+              fontSize: 18,
+              color: Colors.black,
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () {
+                _clearPrefs();
+              },
+              child: Text(
+                "Logout",
+                style: TextStyle(
+                  fontFamily: "Montserrat",
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  _clearPrefs() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    _odoo = Odoo(url: odooURL);
+    _odoo.destroy();
+    preferences.remove(Globals().loginPrefName);
+    preferences.remove("session");
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      '/login',
+          (_) => false,
     );
   }
 }
