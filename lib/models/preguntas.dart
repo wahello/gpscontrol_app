@@ -1,4 +1,6 @@
 
+import 'package:flutter/cupertino.dart';
+
 class Pregunta {
   String id;
   String pregunta;

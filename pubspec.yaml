@@ -23,6 +23,10 @@ dependencies:
   scoped_model: ^1.0.1
   # dependency injection
   get_it: ^1.0.3
+  color: any
+  flat_icons_flutter: ^1.0.2
+  camera:
+  path:
 
 dev_dependencies:
   flutter_test:

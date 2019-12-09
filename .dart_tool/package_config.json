@@ -26,6 +26,12 @@
       "languageVersion": "2.0"
     },
     {
+      "name": "camera",
+      "rootUri": "file:///C:/Users/SMART%20CONTROL/AppData/Roaming/Pub/Cache/hosted/pub.dartlang.org/camera-0.5.7",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
       "name": "charcode",
       "rootUri": "file:///C:/Users/SMART%20CONTROL/AppData/Roaming/Pub/Cache/hosted/pub.dartlang.org/charcode-1.1.2",
       "packageUri": "lib/",
@@ -34,6 +40,12 @@
     {
       "name": "collection",
       "rootUri": "file:///C:/Users/SMART%20CONTROL/AppData/Roaming/Pub/Cache/hosted/pub.dartlang.org/collection-1.14.11",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
+      "name": "color",
+      "rootUri": "file:///C:/Users/SMART%20CONTROL/AppData/Roaming/Pub/Cache/hosted/pub.dartlang.org/color-2.1.1",
       "packageUri": "lib/",
       "languageVersion": "2.0"
     },
@@ -54,6 +66,12 @@
       "rootUri": "file:///C:/Users/SMART%20CONTROL/AppData/Roaming/Pub/Cache/hosted/pub.dartlang.org/cupertino_icons-0.1.2",
       "packageUri": "lib/",
       "languageVersion": "2.0"
+    },
+    {
+      "name": "flat_icons_flutter",
+      "rootUri": "file:///C:/Users/SMART%20CONTROL/AppData/Roaming/Pub/Cache/hosted/pub.dartlang.org/flat_icons_flutter-1.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
     },
     {
       "name": "flushbar",
@@ -290,7 +308,7 @@
       "languageVersion": "2.2"
     }
   ],
-  "generated": "2019-12-06T22:30:37.325683Z",
+  "generated": "2019-12-09T15:42:27.253704Z",
   "generator": "pub",
   "generatorVersion": "2.7.0"
 }
