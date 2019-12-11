@@ -44,10 +44,9 @@ class LoginScreen extends StatelessWidget {
       bottom: Radius.circular(10.0),
       top: Radius.circular(20.0),
     );
-
     return FlutterLogin(
       title: Constants.appName,
-      logo: 'assets/icon/favicon.png',
+      logo: 'assets/icon/favicon0.png',
       logoTag: Constants.logoTag,
       titleTag: Constants.titleTag,
       messages: LoginMessages(
@@ -63,22 +62,23 @@ class LoginScreen extends StatelessWidget {
         recoverPasswordDescription: 'para recuperar el pass ... ',
         recoverPasswordSuccess: 'Contraseña rescatada con éxito!!',
       ),
-       theme:  LoginTheme(
+      theme:  LoginTheme(
          primaryColor: Colors.blue,
          accentColor: Colors.blueAccent,
          errorColor: Colors.deepOrange,
          titleStyle: TextStyle(
-           fontSize: 60.0,
+           fontSize: 12.0,
            color: Colors.white,
            fontFamily: 'Quicksand',
          ),
 
 
-      //   // beforeHeroFontSize: 50,
-      //   // afterHeroFontSize: 20,
+       beforeHeroFontSize: 31,
+       afterHeroFontSize: 20,
        bodyStyle: TextStyle(
          fontStyle: FontStyle.italic,
          decoration: TextDecoration.underline,
+
        ),
       //   textFieldStyle: TextStyle(
       //     color: Colors.orange,
@@ -88,10 +88,11 @@ class LoginScreen extends StatelessWidget {
       //     fontWeight: FontWeight.w800,
       //     color: Colors.yellow,
       //   ),
+
          cardTheme: CardTheme(
            color: Colors.white,
-           elevation: 19,
-           margin: EdgeInsets.only(top: 55),
+           elevation: 30,
+           margin: EdgeInsets.only(top: 2),
            shape: ContinuousRectangleBorder(
                borderRadius: BorderRadius.circular(100.0)),
          ),

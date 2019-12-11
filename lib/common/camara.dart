@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-
+import 'dart:convert';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' show join;
@@ -10,11 +10,9 @@ import 'package:path_provider/path_provider.dart';
 // Una pantalla que permite a los usuarios tomar una fotografía utilizando una cámara determinada.
 class TakePictureScreen extends StatefulWidget {
   final CameraDescription camera;
+  final index;
 
-  const TakePictureScreen({
-    Key key,
-    @required this.camera,
-  }) : super(key: key);
+  TakePictureScreen({this.index,Key key,@required this.camera,}) : super(key: key);
 
   @override
   TakePictureScreenState createState() => TakePictureScreenState();
@@ -92,7 +90,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => DisplayPictureScreen(imagePath: path),
+                builder: (context) => DisplayPictureScreen(index: widget.index,imagePath: path),
               ),
             );
           } catch (e) {
@@ -108,27 +106,141 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 // Un Widget que muestra la imagen tomada por el usuario
 class DisplayPictureScreen extends StatelessWidget {
   final String imagePath;
+  final index;
+  DisplayPictureScreen({this.index,Key key, this.imagePath}) : super(key: key);
 
-  const DisplayPictureScreen({Key key, this.imagePath}) : super(key: key);
+  final myController = TextEditingController();
+
+  String _get_base64image(String imageFilePath){
+    File imageFile = File(imageFilePath);
+    List<int> imageBytes = imageFile.readAsBytesSync();
+    String base64Image = base64Encode(imageBytes);
+
+    return base64Image;
+  }
+  @override
+  void dispose() {
+    // Limpia el controlador cuando el Widget se descarte
+    myController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final upper_header = Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(top: 50),
+          ),
+          new Container(
+            height: 120,
+            width: 120,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.white, width: 1.0),
+              borderRadius: BorderRadius.circular(70.0),
+            ),
+            padding: EdgeInsets.all(8.0),
+            child: Image.file(File(imagePath)),
+          ),
+          Padding(padding: EdgeInsets.only(top: 5.0, bottom: 5.0)),
+          Text(
+            'Casi terminamos!',
+            style: TextStyle(
+              fontFamily: "Montserrat",
+              fontSize: 16,
+              color: Colors.white,
+            ),
+          ),
+          Padding(padding: EdgeInsets.only(top: 2.0, bottom: 2.0)),
+          Text(
+            'Por favor agrega una descripcion',
+            style: TextStyle(
+              fontFamily: "Montserrat",
+              fontSize: 14,
+              color: Colors.white,
+            ),
+          ),
+          Padding(padding: EdgeInsets.only(top: 8.0, bottom: 35.0)),
+
+        ],
+      ),
+    );
+
+    final lower = Container(
+      child: ListView(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(5.0),
+            child: Center(
+              child: TextFormField(
+                controller: myController,
+                autovalidate: true,
+                decoration: new InputDecoration(
+                  labelText: "Descripcion",
+                  fillColor: Colors.white,
+                  border: new OutlineInputBorder(
+                    borderRadius: new BorderRadius.circular(25.0),
+                    borderSide: new BorderSide(
+                    ),
+                  ),
+                  //fillColor: Colors.green
+                ),
+                validator: (val) {
+                  if(val.length <= 25) {
+                    return "Ingresa mas de 25 caracteres";
+                  }else{
+                    return null;
+                  }
+                },
+                keyboardType: TextInputType.emailAddress,
+                style: new TextStyle(
+                  fontFamily: "Poppins",
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(15.0),
+            child: MaterialButton(
+              child: Text(
+                "Guardar",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              color: Colors.blue,
+              onPressed: () {
+                print(this.index);
+                print(myController.text);
+                Navigator.popAndPushNamed(context, '/alistamientos');
+                //_saveURL(_urlCtrler.text);
+              },
+            ),
+          )
+        ],
+      ),
+    );
+
+
     return Scaffold(
-      appBar: AppBar(title: Text('Agregar complementos')),
-      // La imagen se almacena como un archivo en el dispositivo. Usa el
-      // constructor `Image.file` con la ruta dada para mostrar la imagen
-      body: Container(
-          width: 190.0,
-          height: 190.0,
-          decoration: new BoxDecoration(
-              shape: BoxShape.circle,
-              image: new DecorationImage(
-                  fit: BoxFit.fill,
-                  image: new NetworkImage(
-                      "https://i.imgur.com/BoN9kdC.png")
-              )
-          )),
-      //Image.file(File(imagePath)),
+      body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              expandedHeight: 260.0,
+              floating: false,
+              pinned: false,
+              flexibleSpace: FlexibleSpaceBar(
+                background: upper_header,
+              ),
+            ),
+          ];
+        },
+        body: lower,
+      ),
     );
   }
+
 }

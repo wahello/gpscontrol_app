@@ -80,7 +80,7 @@ class _LoginState extends State<Login> {
 
     return FlutterLogin(
       title: Constants.appName,
-      logo: 'assets/icon/favicon.png',
+      logo: 'assets/icon/favicon0.png',
       logoTag: Constants.logoTag,
       titleTag: Constants.titleTag,
       messages: LoginMessages(

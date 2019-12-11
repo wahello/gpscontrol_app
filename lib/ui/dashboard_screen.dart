@@ -9,6 +9,7 @@ import '../common/constants.dart';
 import '../widgets/animated_numeric_text.dart';
 import '../widgets/round_button.dart';
 import 'package:GPS_CONTROL/models/users.dart';
+import 'custom_route.dart';
 
 class DashboardScreen extends StatefulWidget {
   DashboardScreen({this.data});
@@ -69,13 +70,13 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   AppBar _buildAppBar(ThemeData theme) {
     final menuBtn = IconButton(
-      color: theme.accentColor,
+      color: Colors.blue,
       icon: const Icon(FontAwesomeIcons.bars),
-      onPressed: () {},
+      onPressed: () => _goToLogin(context),
     );
     final signOutBtn = IconButton(
       icon: const Icon(FontAwesomeIcons.signOutAlt),
-      color: theme.accentColor,
+      color: Colors.blue,
       onPressed: () => _goToLogin(context),
     );
     final title = Center(
@@ -224,7 +225,7 @@ class _DashboardScreenState extends State<DashboardScreen>
           interval: Interval(0, aniInterval),
         ),
         _buildButton1(
-          icon: Icon(Icons.vpn_key),
+          icon: Icon(Icons.assignment),
           label: 'Alistamiento',
           interval: Interval(step, aniInterval + step),
         ),
@@ -262,7 +263,7 @@ class _DashboardScreenState extends State<DashboardScreen>
         children: <Widget>[
           RaisedButton(
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            color: Colors.red,
+            color: Colors.blue,
             child: Text('loading', style: textStyle),
             onPressed: () => _loadingController.value == 0
                 ? _loadingController.forward()

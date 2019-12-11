@@ -1,9 +1,13 @@
 import 'dart:convert';
+import 'package:GPS_CONTROL/models/alistamiento.dart';
+import 'package:GPS_CONTROL/ui/alistamientos.dart';
 import 'package:flutter/material.dart';
 import 'package:GPS_CONTROL/data/services/odoo_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:GPS_CONTROL/data/services/globals.dart';
+import 'custom_route.dart';
+import 'package:GPS_CONTROL/models/users.dart';
 
 class InitAlistamiento extends StatefulWidget {
   InitAlistamiento({this.data});
@@ -17,13 +21,57 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
   TextEditingController _urlCtrler = new TextEditingController();
   Odoo _odoo;
   String odooURL = "";
+  User user;
+  Alistamiento nuevoAlistamiento;
 
   @override
   void initState() {
     super.initState();
+    user = widget.data;
+    print(user);
+    //_init_alistamiento(false, user.name, '');
+
     //_checkFirstTime();
   }
+  _init_alistamiento(bool init_state, String user, String vehiculo){
+    nuevoAlistamiento.folio = '';
+    nuevoAlistamiento.state = '';
+    nuevoAlistamiento.vehiculo = vehiculo;
+    nuevoAlistamiento.fecha = DateTime.now();
+    nuevoAlistamiento.documentos_conductor = init_state;
+    nuevoAlistamiento.documentos_vehiculo = init_state;
+    nuevoAlistamiento.calcomania = init_state;
+    nuevoAlistamiento.pito = init_state;
+    nuevoAlistamiento.disp_velocidad = init_state;
+    nuevoAlistamiento.estado_esc_p_conductor = init_state;
+    nuevoAlistamiento.estado_esc_p_pasajero = init_state;
+    nuevoAlistamiento.equipo_carretera = init_state;
+    nuevoAlistamiento.linterna = init_state;
+    nuevoAlistamiento.extintor = init_state;
+    nuevoAlistamiento.botiquin = init_state;
+    nuevoAlistamiento.repuesto = init_state;
+    nuevoAlistamiento.retrovisores = init_state;
+    nuevoAlistamiento.cinturones = init_state;
+    nuevoAlistamiento.motor = init_state;
+    nuevoAlistamiento.llantas = init_state;
+    nuevoAlistamiento.baterias = init_state;
+    nuevoAlistamiento.transmision = init_state;
+    nuevoAlistamiento.tapas = init_state;
+    nuevoAlistamiento.niveles = init_state;
+    nuevoAlistamiento.filtros= init_state;
+    nuevoAlistamiento.parabrisas = init_state;
+    nuevoAlistamiento.frenos= init_state;
+    nuevoAlistamiento.frenos_emergencia = init_state;
+    nuevoAlistamiento.aire = init_state;
+    nuevoAlistamiento.luces = init_state;
+    nuevoAlistamiento.silleteria = init_state;
+    nuevoAlistamiento.silla_conductor = init_state;
+    nuevoAlistamiento.aseo = init_state;
+    nuevoAlistamiento.celular = init_state;
+    nuevoAlistamiento.ruteros = init_state;
 
+
+  }
   //_checkFirstTime() async {
     //SharedPreferences prefs = await SharedPreferences.getInstance();
     //if (prefs.getString("odooUrl") != null) {
@@ -36,6 +84,8 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> _locations = ['A', 'B', 'C', 'D']; // Option 2
+    String _selectedCar; // Option 2
     return Scaffold(
       appBar: AppBar(
         title: Text("Inicio Alistamiento"),
@@ -43,17 +93,23 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
       body: ListView(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.all(15.0),
-            child: TextField(
-              textAlign: TextAlign.left,
-              controller: _urlCtrler,
-              decoration: InputDecoration(
-                labelText: "Placa Vehiculo",
-                labelStyle: TextStyle(
-                  color: Colors.black,
-                ),
-                border: OutlineInputBorder(),
-                focusedBorder: OutlineInputBorder(),
+            padding: EdgeInsets.all(5.0),
+            child: Center(
+              child: DropdownButton(
+                hint: Text('Selecciona la placa del vehiculo'), // Not necessary for Option 1
+                value: _selectedCar,
+                onChanged: (newValue) {
+                  this.setState(() {
+                    _selectedCar = newValue;
+                    print(_selectedCar);
+                  });
+                },
+                items: _locations.map((location) {
+                  return DropdownMenuItem(
+                    child: new Text(location),
+                    value: location,
+                  );
+                }).toList(),
               ),
             ),
           ),
@@ -68,7 +124,11 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
               ),
               color: Colors.blue,
               onPressed: () {
-                Navigator.pushNamed(context, '/alistamientos');
+
+                //print(nuevoAlistamiento.vehiculo);
+                Navigator.of(context).pushReplacement(FadePageRoute(
+                  builder: (context) =>new  AlistamientoScreen(data: _selectedCar,),
+                ));
                 //_saveURL(_urlCtrler.text);
               },
             ),

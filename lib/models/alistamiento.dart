@@ -1,13 +1,12 @@
 
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 
 class Alistamiento {
-  bool folio;
-  bool state;
-  bool vehiculo;
-  bool fecha;
+  String folio;
+  String state;
+  String vehiculo;
+  DateTime fecha;
+  String responsable;
   bool documentos_conductor;
   bool documentos_vehiculo;
   bool calcomania;
@@ -39,14 +38,14 @@ class Alistamiento {
   bool aseo;
   bool celular;
   bool ruteros;
-  List<File> images;
+  List<String> images;
   List<Text> descripciones;
 
   Alistamiento(
-      bool folio,
-      bool state,
-      bool vehiculo,
-      bool fecha,
+      String folio,
+      String state,
+      String vehiculo,
+      DateTime fecha,
       bool documentos_conductor,
       bool documentos_vehiculo,
       bool calcomania,
@@ -78,7 +77,7 @@ class Alistamiento {
       bool aseo,
       bool celular,
       bool ruteros,
-      List<File> images,
+      List<String> images,
       List<Text> descripciones) {
     this.folio = folio;
     this.state = state;
@@ -119,6 +118,8 @@ class Alistamiento {
     this.descripciones = descripciones;
   }
 
+
+
   Alistamiento.fromJson(Map json)
       : folio = json['folio'],
         state = json['state'],
@@ -157,6 +158,11 @@ class Alistamiento {
         ruteros = json['ruteros'],
         images = json['images'],
         descripciones = json['descripciones'];
+
+  String set_responsable(String responsable){
+    this.responsable = responsable;
+    return this.responsable;
+  }
 
 
   Map toJson() {

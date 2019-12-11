@@ -1,6 +1,3 @@
-import 'dart:convert';
-import '../models/users.dart';
-import '../common/wialon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:GPS_CONTROL/models/preguntas.dart';
@@ -8,6 +5,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flat_icons_flutter/flat_icons_flutter.dart';
 import 'package:camera/camera.dart';
 import 'package:GPS_CONTROL/common/camara.dart';
+import 'package:GPS_CONTROL/models/alistamiento.dart';
+import 'package:GPS_CONTROL/models/users.dart';
+import 'custom_route.dart';
 
 class AlistamientoScreen extends StatefulWidget {
   AlistamientoScreen({this.data});
@@ -19,6 +19,62 @@ class AlistamientoScreen extends StatefulWidget {
 
 class _AlistamientoScreenState extends State {
   var preguntas = new List<Pregunta>();
+  final values = new List<bool>();
+  SlidableController slidableController;
+  Alistamiento nuevoAlistamiento;
+   void handleSlideAnimationChanged(Animation<double> slideAnimation) {
+    setState(() {
+      var _rotationAnimation = slideAnimation;
+      print(nuevoAlistamiento);
+      print(_rotationAnimation);
+    });
+  }
+
+   void handleSlideIsOpenChanged(bool isOpen) {
+    setState(() {
+      var _fabColor = isOpen ? Colors.green : Colors.blue;
+      print('entramos al is open chang '+'$isOpen');
+      print(_fabColor);
+    });
+  }
+
+  _init_alistamiento(List init_state){
+     nuevoAlistamiento.set_responsable('Usuario App prueba');
+     nuevoAlistamiento.documentos_conductor = init_state[0];
+     nuevoAlistamiento.documentos_vehiculo = init_state[1];
+     nuevoAlistamiento.calcomania = init_state[2];
+     nuevoAlistamiento.pito = init_state[3];
+     nuevoAlistamiento.disp_velocidad = init_state[4];
+     nuevoAlistamiento.estado_esc_p_conductor = init_state[5];
+     nuevoAlistamiento.estado_esc_p_pasajero = init_state[6];
+     nuevoAlistamiento.equipo_carretera = init_state[7];
+     nuevoAlistamiento.linterna = init_state[8];
+     nuevoAlistamiento.extintor = init_state[9];
+     nuevoAlistamiento.botiquin = init_state[10];
+     nuevoAlistamiento.repuesto = init_state[11];
+     nuevoAlistamiento.retrovisores = init_state[12];
+     nuevoAlistamiento.cinturones = init_state[13];
+     nuevoAlistamiento.motor = init_state[14];
+     nuevoAlistamiento.llantas = init_state[15];
+     nuevoAlistamiento.baterias = init_state[16];
+     nuevoAlistamiento.transmision = init_state[17];
+     nuevoAlistamiento.tapas = init_state[18];
+     nuevoAlistamiento.niveles = init_state[19];
+     nuevoAlistamiento.filtros= init_state[20];
+     nuevoAlistamiento.parabrisas = init_state[21];
+     nuevoAlistamiento.frenos= init_state[22];
+     nuevoAlistamiento.frenos_emergencia = init_state[23];
+     nuevoAlistamiento.aire = init_state[24];
+     nuevoAlistamiento.luces = init_state[25];
+     nuevoAlistamiento.silleteria = init_state[26];
+     nuevoAlistamiento.silla_conductor = init_state[27];
+     nuevoAlistamiento.aseo = init_state[28];
+     nuevoAlistamiento.celular = init_state[29];
+     nuevoAlistamiento.ruteros = init_state[30];
+
+
+   }
+
 
   _getPreguntas() {
     //API.getUsers().then((response) {
@@ -62,12 +118,18 @@ class _AlistamientoScreenState extends State {
       "Avantel o Celular con Minutos",
       "Ruteros",
     ];
+    slidableController = new  SlidableController(
+      onSlideAnimationChanged: handleSlideAnimationChanged,
+      onSlideIsOpenChanged: handleSlideIsOpenChanged,
+    );
     for(var index=0;index<list_preguntas.length;index++){
-      var pregunta = new Pregunta(index, list_preguntas[index],'');
+      var pregunta = new Pregunta(index, list_preguntas[index],'','');
       preguntas.add(pregunta);
+      //slidableController.add(controlador);
+      values.add(false);
     }
+    //_init_alistamiento(values);
   }
-
   IconData getIconForName(String iconName) {
     switch(iconName) {
       case '0': {
@@ -216,15 +278,15 @@ class _AlistamientoScreenState extends State {
     super.dispose();
   }
 
-  Future<void> takeApicture () async {
+  Future<void> takeApicture (int index) async {
+    print('el indice seleccionado es: '+index.toString());
     // Obtén una lista de las cámaras disponibles en el dispositivo.
     final cameras = await availableCameras();
-
     // Obtén una cámara específica de la lista de cámaras disponibles
     final firstCamera = cameras.first;
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => TakePictureScreen(camera: firstCamera),
+      MaterialPageRoute(builder: (context) => TakePictureScreen(camera: firstCamera, index: index,),
       ),
     );
 
@@ -232,53 +294,87 @@ class _AlistamientoScreenState extends State {
 
   @override
   build(context) {
-    // Ensure the camera is initialized
     return Scaffold(
         appBar: AppBar(
           title: Text("Alistamientos"),
         ),
-        body: ListView.builder(
-          itemCount: preguntas.length,
-          itemBuilder: (context, index) {
-            final pregunta = preguntas[index].pregunta;
-            final id = preguntas[index].id;
-            final desc = preguntas[index].descripcion;
-            return Slidable(
-              actionPane: SlidableDrawerActionPane(),
-              actionExtentRatio: 0.25,
-              closeOnScroll: false,
-              child: Card(
-                child: ListTile(
-                  leading: Icon(getIconForName(id)),
-                  title: Text('$pregunta'),
-                  subtitle: Text(
-                      '$desc'
+        body: new Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            new Expanded(child: ListView.builder(
+              itemCount: preguntas.length,
+              itemBuilder: (context, index) {
+                var pregunta = preguntas[index].pregunta;
+                var id = preguntas[index].id;
+                var desc = preguntas[index].descripcion;
+                var value = values[index];
+                return Slidable(
+                    key: Key(id),
+                    controller: slidableController,
+                    actionPane: new SlidableDrawerActionPane(),
+                    actionExtentRatio: 0.25,
+                    closeOnScroll: false,
+                    child: Card(
+                        child: CheckboxListTile(
+                          title: Text('$pregunta'),
+                          value: values[index],
+                          onChanged: (bool newvalue) {
+                            setState(() {
+                              values[index] = newvalue;
+                            });
+
+                          },
+                          secondary: Icon(getIconForName(id.toString())),
+                        )
+                    ),
+                    actions: <Widget>[
+                      new IconSlideAction(
+                        caption: 'OK',
+                        color: Colors.green,
+                        icon: Icons.assignment_turned_in,
+                        closeOnTap: false,
+                        onTap: () => {
+
+                        },
+                      ),
+                    ],
+                    secondaryActions: <Widget>[
+                      new IconSlideAction(
+                        caption: 'Tomar Foto',
+                        color: Colors.red,
+                        icon: Icons.add_a_photo,
+                        onTap: () => {
+                          takeApicture(index),
+                        },
+                      ),
+                    ]
+                );
+              },
+            )),
+            new Padding(
+              padding: EdgeInsets.all(15.0),
+              child: MaterialButton(
+                child: Text(
+                  "Finalizar Alistamiento",
+                  style: TextStyle(
+                    color: Colors.white,
                   ),
-                  //trailing: Icon(Icons.more_vert),
-                  isThreeLine: false,
                 ),
+                color: Colors.blue,
+                onPressed: () {
+
+                  Navigator.of(context).pushReplacement(FadePageRoute(
+                    builder: (context) =>new  AlistamientoScreen(),
+                  ));
+                  print('Aqui va la accion finish alistamiento');
+                  //_saveURL(_urlCtrler.text);
+                },
               ),
-              actions: <Widget>[
-                IconSlideAction(
-                  caption: 'OK',
-                  color: Colors.green,
-                  icon: Icons.assignment_turned_in,
-                  closeOnTap: false,
-                  onTap: () => {},
-                ),
-              ],
-              secondaryActions: <Widget>[
-                IconSlideAction(
-                  caption: 'Tomar Foto',
-                  color: Colors.red,
-                  icon: Icons.add_a_photo,
-                  onTap: () => {
-                      takeApicture(),
-                  },
-                ),
-              ],
-            );
-          },
-        ));
+            ),
+          ],
+        ),
+
+    );
   }
 }
