@@ -3,10 +3,10 @@ import 'package:GPS_CONTROL/ui/login_screen.dart';
 import 'package:flutter/services.dart';
 import 'ui/dashboard_screen.dart';
 import 'package:flutter/material.dart';
-//import 'ui/login_screen.dart';
+import 'ui/login_screen.dart';
 import 'common/transition_route_observer.dart';
 import 'ui/alistamientos.dart';
-import 'package:GPS_CONTROL/pages/login.dart';
+//import 'package:GPS_CONTROL/pages/login.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
           overline: TextStyle(fontFamily: 'NotoSans'),
         ),
       ),
-      home: LoginScreen(),
+      home:LoginScreen(),
       navigatorObservers: [TransitionRouteObserver()],
       routes: {
         LoginScreen.routeName: (context) => LoginScreen(),

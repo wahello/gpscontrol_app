@@ -27,6 +27,8 @@ dependencies:
   flat_icons_flutter: ^1.0.2
   camera:
   path:
+  url_launcher: ^4.0.3
+
 
 dev_dependencies:
   flutter_test:

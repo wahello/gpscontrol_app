@@ -1,18 +1,12 @@
-import 'package:GPS_CONTROL/models/vehiculos.dart';
-import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
-import 'package:odoo_api/odoo_user_response.dart';
+import 'package:flutter/scheduler.dart' show timeDilation;
 import '../common/constants.dart';
 import 'custom_route.dart';
 import 'dashboard_screen.dart';
 import '../models/users.dart';
 import 'package:odoo_api/odoo_api.dart';
-import 'package:GPS_CONTROL/common/globals.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert'as convert;
-
 class LoginScreen extends StatelessWidget {
   static const routeName = '/auth';
   User usuario;
@@ -40,12 +34,8 @@ class LoginScreen extends StatelessWidget {
     });
   }
 
-  @override
+    @override
   Widget build(BuildContext context) {
-    final inputBorder = BorderRadius.vertical(
-      bottom: Radius.circular(10.0),
-      top: Radius.circular(20.0),
-    );
     return FlutterLogin(
       title: Constants.appName,
       logo: 'assets/icon/favicon0.png',
@@ -65,23 +55,23 @@ class LoginScreen extends StatelessWidget {
         recoverPasswordSuccess: 'Contraseña rescatada con éxito!!',
       ),
       theme:  LoginTheme(
-         primaryColor: Colors.blue,
-         accentColor: Colors.blueAccent,
-         errorColor: Colors.deepOrange,
-         titleStyle: TextStyle(
-           fontSize: 12.0,
-           color: Colors.white,
-           fontFamily: 'Quicksand',
-         ),
+            primaryColor: Colors.blue,
+            accentColor: Colors.blueAccent,
+            errorColor: Colors.deepOrange,
+            titleStyle: TextStyle(
+              fontSize: 12.0,
+              color: Colors.white,
+              fontFamily: 'Quicksand',
+            ),
 
 
-       beforeHeroFontSize: 31,
-       afterHeroFontSize: 20,
-       bodyStyle: TextStyle(
-         fontStyle: FontStyle.italic,
-         decoration: TextDecoration.underline,
+            beforeHeroFontSize: 31,
+            afterHeroFontSize: 20,
+            bodyStyle: TextStyle(
+              fontStyle: FontStyle.italic,
+              decoration: TextDecoration.underline,
 
-       ),
+            ),
       //   textFieldStyle: TextStyle(
       //     color: Colors.orange,
       //     shadows: [Shadow(color: Colors.yellow, blurRadius: 2)],
@@ -91,13 +81,13 @@ class LoginScreen extends StatelessWidget {
       //     color: Colors.yellow,
       //   ),
 
-         cardTheme: CardTheme(
-           color: Colors.white,
-           elevation: 30,
-           margin: EdgeInsets.only(top: 2),
-           shape: ContinuousRectangleBorder(
-               borderRadius: BorderRadius.circular(100.0)),
-         ),
+            cardTheme: CardTheme(
+              color: Colors.white,
+              elevation: 30,
+              margin: EdgeInsets.only(top: 2),
+              shape: ContinuousRectangleBorder(
+                  borderRadius: BorderRadius.circular(100.0)),
+            ),
       //   inputTheme: InputDecorationTheme(
       //     filled: true,
       //     fillColor: Colors.purple.withOpacity(.1),
@@ -141,7 +131,7 @@ class LoginScreen extends StatelessWidget {
       //     // shape: CircleBorder(side: BorderSide(color: Colors.green)),
       //     // shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(55.0)),
       //   ),
-       ),
+          ),
       emailValidator: (value) {
         //if (!value.contains('@') || !value.endsWith('.com')) {
         //  return "El correo electrónico debe contener '@' y terminar con '.com' ";
@@ -158,7 +148,7 @@ class LoginScreen extends StatelessWidget {
         print('Login info');
         print('Name: ${loginData.name}');
         print('Password: ${loginData.password}');
-        /*var client = OdooClient("http://66.228.39.68:8069");
+        var client = OdooClient("http://66.228.39.68:8069");
         client.authenticate(loginData.name, loginData.password, "smart_contro").then((auth) {
           if (auth.isSuccess) {
             print("Bienvenido ${auth.getUser().name}");
@@ -170,8 +160,7 @@ class LoginScreen extends StatelessWidget {
             print("Algo salio mal. :s ");
             isLoggedIn = false;
           }
-        });*/
-        login_wialon(loginData.name , loginData.password);
+        });
         return _loginUser(isLoggedIn);
       },
       onSignup: (loginData) {
@@ -197,20 +186,9 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  login_wialon(String user, String pass) async {
-    var url = "https://hst-api.wialon.com/wialon/ajax.html?svc=token/login&params={%22token%22:%2253c45668de3e5399eb7af78a889bd45a4D9DD25ED3B4DDDC261DB138027093247B183718%22,%22operateAs%22:%22$user%22}";
-    var response = await http.post(url);
 
-    // Await the http get response, then decode the json-formatted responce.
-    if (response.statusCode == 200) {
-      var jsonResponse = convert.jsonDecode(response.body);
-      print("Todo Ok.");
-      print(jsonResponse);
-    } else {
-      print("Request failed with status: ${response.statusCode}.");
-    }
-  }
-    _read() async {
+
+  _read() async {
       final prefs = await SharedPreferences.getInstance();
       final key = 'my_int_key';
       final value = prefs.getInt(key) ?? 0;
