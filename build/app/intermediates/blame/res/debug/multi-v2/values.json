@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\SMART CONTROL\\source\\repos\\gpscontrol_app\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+            "outputFile": "C:\\Users\\SMART CONTROL\\Documents\\Gabriel\\Repos\\gpscontrol_app\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
             "map": [
                 {
                     "source": "C:\\Users\\SMART CONTROL\\.gradle\\caches\\transforms-2\\files-2.1\\ae13efc3dbae5c9ee58d4933337fcd21\\coordinatorlayout-1.0.0\\res\\values\\values.xml",
@@ -23,7 +23,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\SMART CONTROL\\source\\repos\\gpscontrol_app\\android\\app\\src\\main\\res\\values\\styles.xml",
+                    "source": "C:\\Users\\SMART CONTROL\\Documents\\Gabriel\\Repos\\gpscontrol_app\\android\\app\\src\\main\\res\\values\\styles.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

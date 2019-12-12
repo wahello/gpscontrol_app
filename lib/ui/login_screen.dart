@@ -10,6 +10,8 @@ import '../models/users.dart';
 import 'package:odoo_api/odoo_api.dart';
 import 'package:GPS_CONTROL/common/globals.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert'as convert;
 
 class LoginScreen extends StatelessWidget {
   static const routeName = '/auth';
@@ -156,7 +158,7 @@ class LoginScreen extends StatelessWidget {
         print('Login info');
         print('Name: ${loginData.name}');
         print('Password: ${loginData.password}');
-        var client = OdooClient("http://66.228.39.68:8069");
+        /*var client = OdooClient("http://66.228.39.68:8069");
         client.authenticate(loginData.name, loginData.password, "smart_contro").then((auth) {
           if (auth.isSuccess) {
             print("Bienvenido ${auth.getUser().name}");
@@ -168,8 +170,8 @@ class LoginScreen extends StatelessWidget {
             print("Algo salio mal. :s ");
             isLoggedIn = false;
           }
-        });
-
+        });*/
+        login_wialon(loginData.name , loginData.password);
         return _loginUser(isLoggedIn);
       },
       onSignup: (loginData) {
@@ -193,6 +195,20 @@ class LoginScreen extends StatelessWidget {
       },
       showDebugButtons: false,
     );
+  }
+
+  login_wialon(String user, String pass) async {
+    var url = "https://hst-api.wialon.com/wialon/ajax.html?svc=token/login&params={%22token%22:%2253c45668de3e5399eb7af78a889bd45a4D9DD25ED3B4DDDC261DB138027093247B183718%22,%22operateAs%22:%22$user%22}";
+    var response = await http.post(url);
+
+    // Await the http get response, then decode the json-formatted responce.
+    if (response.statusCode == 200) {
+      var jsonResponse = convert.jsonDecode(response.body);
+      print("Todo Ok.");
+      print(jsonResponse);
+    } else {
+      print("Request failed with status: ${response.statusCode}.");
+    }
   }
     _read() async {
       final prefs = await SharedPreferences.getInstance();
