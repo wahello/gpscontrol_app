@@ -22,16 +22,16 @@ class LoginScreen extends StatelessWidget {
   StreamSubscription<WebViewStateChanged> _onStateChanged;
   String token;
 
-  _validation_web(String user,String pass){
-    var set_user = "document.getElementById('login').value='$user';";
-    var set_pass = "document.getElementById('passw').value='$pass';";
+  _validationWeb(String user,String pass){
+    var setUser = 'document.getElementById("login").value="$user";';
+    var setPass = 'document.getElementByName("passw").value="$pass";';
     var submit = 'document.forms["auth-form"].submit();';
     print('entramos a la validacion');
     print("Usuario: "+user+" "+"Password: "+pass);
     try{
       
-      _webview.evalJavascript(set_user);
-      _webview.evalJavascript(set_pass);
+      _webview.evalJavascript(setUser);
+      _webview.evalJavascript(setPass);
       _webview.evalJavascript(submit);
     }catch(e){
       print(e);
@@ -40,9 +40,9 @@ class LoginScreen extends StatelessWidget {
 
   }
 
-  void init_stream_controller(){
+  void initStreamController(){
       print('iniciamos controladores');
-      String url="http://tracking.gpscontrolcolombia.com/login.html";
+      String url="http://tracking.gpscontrolcolombia.com/login_simple.html";
       _webview.launch(url,hidden: true);
       _onStateChanged = _webview.onStateChanged.listen(this.onStateChanged);
   }
@@ -50,7 +50,7 @@ class LoginScreen extends StatelessWidget {
   onStateChanged(WebViewStateChanged state) async {
         print("onStateChanged: ${state.type} ${state.url}");
         // Check if link is correct
-        if (state.type == WebViewState.finishLoad && state.url.contains("svc_error=8")) {
+        if (state.type == WebViewState.finishLoad && state.url.contains("svc_error=0")) {
             ScaffoldState scaffoldState = this._scaffoldKey.currentState;
             _webview.stopLoading();
             _webview.close();
@@ -232,8 +232,8 @@ class LoginScreen extends StatelessWidget {
         print('Login info');
         print('Name: ${loginData.name}');
         print('Password: ${loginData.password}');
-        init_stream_controller();
-        bool res = _validation_web(loginData.name , loginData.password);
+        initStreamController();
+        bool res = _validationWeb(loginData.name , loginData.password);
         var client = OdooClient("http://66.228.39.68:8069");
         print(res);
         print('parece que todo esta bien si pasa');
