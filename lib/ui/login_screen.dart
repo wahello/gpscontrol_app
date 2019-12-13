@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'package:GPS_CONTROL/pages/display/SplashScreenDisplay.dart';
-import 'package:GPS_CONTROL/ui/custom_route.dart';
-import 'package:GPS_CONTROL/ui/dashboard_screen.dart';
+import 'package:GPS_CONTROL/ui/SplashScreen.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:GPS_CONTROL/utils/network/IntranetAPIUtils.dart';
@@ -108,7 +106,7 @@ class _LoginWebview extends State<LoginWebview> {
                 withZoom: false,
                 clearCache: true,
                 clearCookies: true,
-                //initialChild: SplashScreen(),
+                initialChild: SplashScreen(),
 
             ),
         );

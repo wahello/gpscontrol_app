@@ -1,86 +1,124 @@
-import 'dart:async';
-
-import 'package:GPS_CONTROL/data/services/odoo_api.dart';
-import 'package:GPS_CONTROL/ui/custom_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:GPS_CONTROL/ui/dashboard_screen.dart';
-import 'package:GPS_CONTROL/models/users.dart';
 
-class SplashScreen extends StatefulWidget {
-  static String splash = "splash";
-  SplashScreen({this.data,});
-  final data;
-  static const routeName = '/splash';
+class SplashScreenDisplay extends StatelessWidget {
 
-  @override
-  _SplashScreenState createState() => new _SplashScreenState();
-}
+    @override
+    Widget build(BuildContext context) {
+        return Scaffold(
+            body: Container(
+                constraints: BoxConstraints.expand(),
+                decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 255, 255, 255),
+                ),
+                child: Stack(
+                    alignment: Alignment.center,
+                    children: [
 
-class _SplashScreenState extends State<SplashScreen>
-    with SingleTickerProviderStateMixin {
-  AnimationController _iconAnimationController;
-  CurvedAnimation _iconAnimation;
-  User usuario;
-  bool isLoggedIn;
+                        Positioned(
+                            left: 6,
+                            right: 6,
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
 
-  void handleTimeout() {
-    print('Login info');
-        //var client = Odoo(url: "http://66.228.39.68:8069",);
-        /*client.authenticate(loginData.name, loginData.password, "smart_contro").then((auth) {
-          if (auth.isSuccess) {
-            print("Bienvenido ${auth.getUser().name}");
-            print(auth.getSessionId());
-            var name_user = auth.getUser().name;
-            _save(auth.getSessionId(),name_user,loginData.name,loginData.password);
-            isLoggedIn = true;
-          } else {
-            print("Algo salio mal. :s ");
-            isLoggedIn = false;
-          }
-        });
-        return _loginUser(isLoggedIn);*/
-    usuario = widget.data;
-  }
+                                    Container(
+                                        height: MediaQuery.of(context).size.height,
+                                        child: Opacity(
+                                            opacity: 0.3,
+                                            child: Image.asset(
+                                                "assets/images/love--chat-3.png",
+                                                fit: BoxFit.cover,
+                                            ),
+                                        ),
+                                    )
 
-  startTimeout() async {
+                                ],
+                            ),
+                        ),
+                        Positioned(
+                            child: Container(
+                                width: 305,
+                                height: 140,
+                                child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    children: [
 
-    var duration = const Duration(seconds: 4);
-    return new Timer(duration, handleTimeout);
+                                        Align(
+                                            alignment: Alignment.topCenter,
+                                            child: Container(
+                                                width: 60,
+                                                height: 60,
+                                                decoration: BoxDecoration(
+                                                    gradient: LinearGradient(
+                                                        begin: Alignment(0.92, 1.1),
+                                                        end: Alignment(0.27, 0.46),
+                                                        stops: [
+                                                            0,
+                                                            1,
+                                                        ],
+                                                        colors: [
+                                                            Color.fromARGB(255, 26, 204, 180),
+                                                            Color.fromARGB(255, 41, 155, 203),
+                                                        ],
+                                                    ),
+                                                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                                                ),
+                                                child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                                    children: [
+                                                        Container(
+                                                            margin: EdgeInsets.only(right: 19),
+                                                            child: Text(
+                                                                "E",
+                                                                style: TextStyle(
+                                                                    color: Color.fromARGB(255, 248, 248, 248),
+                                                                    fontSize: 40,
+                                                                    fontFamily: "takota",
+                                                                ),
+                                                                textAlign: TextAlign.left,
+                                                            ),
+                                                        ),
+                                                    ],
+                                                ),
+                                            ),
+                                        ),
+                                        Spacer(),
+                                        Container(
+                                            height: 70,
+                                            child: Stack(
+                                                alignment: Alignment.center,
+                                                children: [
 
-  }
-  bool _visible = true;
-  @override
-  void initState() {
-    super.initState();
+                                                    // Logo
+                                                    Positioned(
+                                                        bottom: 0,
+                                                        child: Container(
+                                                            child: Text("GPS CONTROL",
+                                                                style: TextStyle(
+                                                                    color: Color.fromARGB(255, 42, 153, 204),
+                                                                    fontSize: 55,
+                                                                    letterSpacing: 1.12,
+                                                                    fontFamily: "Takota",
+                                                                ),
+                                                                textAlign: TextAlign.center,
+                                                            ),
+                                                        ),
+                                                    ),
+                                                ],
+                                            ),
+                                        ),
 
-    _iconAnimationController = new AnimationController(
-        vsync: this, duration: new Duration(milliseconds: 3000));
+                                    ],
+                                ),
+                            ),
+                        ),
 
-    _iconAnimation = new CurvedAnimation(
-        parent: _iconAnimationController, curve: Curves.easeIn);
-    _iconAnimation.addListener(() => this.setState(() {}));
-
-    _iconAnimationController.forward();
-
-    startTimeout();
-
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final TextTheme textTheme = Theme.of(context).textTheme;
-    return new Scaffold(
-      body: new Scaffold(
-        body: new Center(
-          child: new AnimatedOpacity(
-            opacity: _visible ? 1.0 : 0.0,
-            duration: new Duration(milliseconds: 2000),
-            child: new Container(
-              child: new Text('Bienvenido',style: textTheme.display3,),
+                    ],
+                ),
             ),
-          ),
-        ),
-      ),
-    );
-  }
+        );
+    }
+
 }
