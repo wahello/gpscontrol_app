@@ -11,6 +11,7 @@ import '../models/users.dart';
 import 'package:odoo_api/odoo_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
 class LoginScreen extends StatelessWidget {
   static const routeName = '/auth';
   User usuario;
@@ -50,9 +51,7 @@ class LoginScreen extends StatelessWidget {
   onStateChanged(WebViewStateChanged state) async {
         print("onStateChanged: ${state.type} ${state.url}");
         // Check if link is correct
-        if (state.type == WebViewState.finishLoad && state.url.contains("login_simple.html?access_token=")) {
-            ScaffoldState scaffoldState = this._scaffoldKey.currentState;
-            _webview.stopLoading();
+        if (state.type == WebViewState.finishLoad && state.url.contains("svc_error=0")) {
             _webview.close();
             print('cerramos el web_view');
             isLoggedIn = true;
@@ -101,10 +100,10 @@ class LoginScreen extends StatelessWidget {
           flagPass = false;
         }
     }
-  Future<String> _loginUser(bool data) {
+  Future<String> _loginUser() {
     return Future.delayed(loginTime).then((_) {
       print("Entramos a _loginUser method");
-      if (data == true){
+      if (isLoggedIn == true && flagPass==true){
         return null;
       }else {
         return 'Prohibido';
@@ -238,15 +237,7 @@ class LoginScreen extends StatelessWidget {
         initStreamController();
         _validationWeb(loginData.name , loginData.password);
         var client = OdooClient("http://66.228.39.68:8069");
-        if(flagPass==true && isLoggedIn==true){
-          print('guardando datos de usuario');
-          _save('demo', loginData.name,loginData.name , loginData.password);
-          return _loginUser(true);
-          //guardo informacion de logueo en servidor principal.        
-        }else {
-          print('No paso la prueba');
-          return _loginUser(false);
-        }
+        return _loginUser();
                 /*
         client.authenticate(loginData.name, loginData.password, "smart_contro").then((auth) {
           if (auth.isSuccess) {
@@ -266,10 +257,10 @@ class LoginScreen extends StatelessWidget {
         print('Signup info');
         print('Name: ${loginData.name}');
         print('Password: ${loginData.password}');
-        return _loginUser(isLoggedIn);
+        return _loginUser();
       },
       onSubmitAnimationCompleted: () {
-        if (isLoggedIn == true) {
+        if (isLoggedIn == true && flagPass==true) {
           Navigator.of(context).pushReplacement(FadePageRoute(
             builder: (context) => DashboardScreen(data: usuario,),
           ));
