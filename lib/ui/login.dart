@@ -15,6 +15,7 @@ class LoginScreen extends StatelessWidget {
   static const routeName = '/auth';
   User usuario;
   bool isLoggedIn;
+  bool flagPass;
 
   Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 2250);
   final _webview = new FlutterWebviewPlugin();
@@ -24,7 +25,7 @@ class LoginScreen extends StatelessWidget {
 
   _validationWeb(String user,String pass){
     var setUser = 'document.getElementById("login").value="$user";';
-    var setPass = 'document.getElementByName("passw").value="$pass";';
+    var setPass = 'document.getElementById("passw").value="$pass";';
     var submit = 'document.forms["auth-form"].submit();';
     print('entramos a la validacion');
     print("Usuario: "+user+" "+"Password: "+pass);
@@ -45,6 +46,7 @@ class LoginScreen extends StatelessWidget {
       String url="http://tracking.gpscontrolcolombia.com/login_simple.html";
       _webview.launch(url,hidden: true);
       _onStateChanged = _webview.onStateChanged.listen(this.onStateChanged);
+      flagPass = false;
   }
 
   onStateChanged(WebViewStateChanged state) async {
@@ -56,6 +58,7 @@ class LoginScreen extends StatelessWidget {
             _webview.close();
             print('cerramos el web_view');
             isLoggedIn = true;
+            flagPass = true;
             // Check if view is mounted and displayed
             /*
             if (mounted) {
@@ -96,6 +99,8 @@ class LoginScreen extends StatelessWidget {
                     }
                 });
             });*/
+        } else{
+          flagPass = false;
         }
     }
   Future<String> _loginUser(bool data) {
@@ -236,8 +241,14 @@ class LoginScreen extends StatelessWidget {
         bool res = _validationWeb(loginData.name , loginData.password);
         var client = OdooClient("http://66.228.39.68:8069");
         print(res);
-        print('parece que todo esta bien si pasa');
-        /*
+        if(flagPass==true){
+          usuario.name = loginData.name;
+          usuario.passwd = loginData.password;
+          //guardo informacion de logueo en servidor principal.        
+        }else {
+          print('No paso la prueba');
+        }
+                /*
         client.authenticate(loginData.name, loginData.password, "smart_contro").then((auth) {
           if (auth.isSuccess) {
             print("Bienvenido ${auth.getUser().name}");
