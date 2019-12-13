@@ -23,32 +23,39 @@ class LoginScreen extends StatelessWidget {
   String token;
 
   _validation_web(String user,String pass){
-    String url="http://tracking.gpscontrolcolombia.com/login.html";
     var set_user = "document.getElementById('login').value='$user';";
     var set_pass = "document.getElementById('passw').value='$pass';";
     var submit = 'document.forms["auth-form"].submit();';
-
+    print('entramos a la validacion');
     print("Usuario: "+user+" "+"Password: "+pass);
     try{
-      _webview.launch(url,hidden: true);
+      
       _webview.evalJavascript(set_user);
       _webview.evalJavascript(set_pass);
       _webview.evalJavascript(submit);
     }catch(e){
       print(e);
     }
-
-    //_onStateChanged = _webview.onStateChanged.listen(this.onStateChanged);
+    return true;
 
   }
+
+  void init_stream_controller(){
+      print('iniciamos controladores');
+      String url="http://tracking.gpscontrolcolombia.com/login.html";
+      _webview.launch(url,hidden: true);
+      _onStateChanged = _webview.onStateChanged.listen(this.onStateChanged);
+  }
+
   onStateChanged(WebViewStateChanged state) async {
         print("onStateChanged: ${state.type} ${state.url}");
         // Check if link is correct
-        if (state.type == WebViewState.finishLoad && state.url.contains("/login.html?access_token=")) {
+        if (state.type == WebViewState.finishLoad && state.url.contains("svc_error=8")) {
             ScaffoldState scaffoldState = this._scaffoldKey.currentState;
             _webview.stopLoading();
             _webview.close();
             print('cerramos el web_view');
+            isLoggedIn = true;
             // Check if view is mounted and displayed
             /*
             if (mounted) {
@@ -225,8 +232,12 @@ class LoginScreen extends StatelessWidget {
         print('Login info');
         print('Name: ${loginData.name}');
         print('Password: ${loginData.password}');
+        init_stream_controller();
         bool res = _validation_web(loginData.name , loginData.password);
         var client = OdooClient("http://66.228.39.68:8069");
+        print(res);
+        print('parece que todo esta bien si pasa');
+        /*
         client.authenticate(loginData.name, loginData.password, "smart_contro").then((auth) {
           if (auth.isSuccess) {
             print("Bienvenido ${auth.getUser().name}");
@@ -238,7 +249,7 @@ class LoginScreen extends StatelessWidget {
             print("Algo salio mal. :s ");
             isLoggedIn = false;
           }
-        });
+        });*/
         return _loginUser(isLoggedIn);
       },
       onSignup: (loginData) {
