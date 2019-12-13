@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:GPS_CONTROL/models/users.dart';
-import 'package:GPS_CONTROL/pages/home.dart';
 import 'package:GPS_CONTROL/ui/SplashScreen.dart';
 import 'package:GPS_CONTROL/ui/custom_route.dart';
 import 'package:GPS_CONTROL/ui/dashboard_screen.dart';
@@ -11,7 +10,7 @@ import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:odoo_api/odoo_api.dart';
 import 'package:flutter_login/flutter_login.dart';
 import '../common/constants.dart';
-
+import 'login.dart';
 class LoginWebview extends StatefulWidget {
     final String authUrl;
     static const routeName = '/auth';
@@ -48,7 +47,7 @@ class _LoginWebview extends State<LoginWebview> {
     void initState() {
         super.initState();
 
-        _webview.close();
+        _webview.hide();
         _onStateChanged = _webview.onStateChanged.listen(this.onStateChanged);
     }
     Future<String> _loginUser(bool data) {
@@ -73,9 +72,8 @@ class _LoginWebview extends State<LoginWebview> {
     /// When webview state is changed
     onStateChanged(WebViewStateChanged state) async {
         var code = "document.getElementById('login').value";
-        var username = _webview.evalJavascript(code);
         print("onStateChanged: ${state.type} ${state.url}");
-        print(username);
+        print(code);
         // Check if link is correct
         if (state.type == WebViewState.finishLoad && state.url.contains("/login.html?access_token=")) {
             ScaffoldState scaffoldState = this._scaffoldKey.currentState;
@@ -135,7 +133,6 @@ class _LoginWebview extends State<LoginWebview> {
             body: WebviewScaffold(
                 url: widget.authUrl,
                 withJavascript: true,
-                hidden: true,
                 withZoom: false,
                 clearCache: true,
                 clearCookies: true,
