@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:GPS_CONTROL/pages/display/SplashScreenDisplay.dart';
 import 'package:GPS_CONTROL/ui/custom_route.dart';
 import 'package:GPS_CONTROL/ui/dashboard_screen.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
@@ -53,7 +54,7 @@ class _LoginWebview extends State<LoginWebview> {
             ScaffoldState scaffoldState = this._scaffoldKey.currentState;
             _webview.stopLoading();
             _webview.close();
-
+            
             // Check if view is mounted and displayed
             if (mounted) {
                 try {
@@ -63,20 +64,17 @@ class _LoginWebview extends State<LoginWebview> {
                         backgroundColor: Color.fromARGB(255, 39, 174, 96),
                         content:Text("Connexion en cours..."),
                     ));
-                    Navigator.of(context).pushReplacement(FadePageRoute(
-                            builder: (context) => DashboardScreen(),
-                        ));
-                    //return Navigator.of(context).pushReplacementNamed('/home');
-
                     await this._api.getAndSaveAutologinLink(state.url).then((res) {
-                        debugPrint("Autologin " + res.toString());
+                        print("Autologin " + res.toString());
                     });
+                    return Navigator.of(context).pushReplacementNamed('/splash');
+
                 } catch (err) {
                     // Display error
                     scaffoldState.showSnackBar(SnackBar(
                         key: Key("login_message"),
                         backgroundColor: Color.fromARGB(255, 192, 57, 43),
-                        content:Text("Une erreur est survenue !"),
+                        content:Text("Error al guardar, por favor intente de nuevo !"),
                     ));
                 }
             }
@@ -88,6 +86,8 @@ class _LoginWebview extends State<LoginWebview> {
                     }
                 });
             });*/
+        }else{
+          return Navigator.of(context).pushReplacementNamed('/auth');
         }
     }
 

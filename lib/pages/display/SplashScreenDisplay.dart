@@ -8,9 +8,9 @@ import 'package:GPS_CONTROL/models/users.dart';
 
 class SplashScreen extends StatefulWidget {
   static String splash = "splash";
-  SplashScreen({this.data});
+  SplashScreen({this.data,});
   final data;
-  static const routeName = '/dashboard';
+  static const routeName = '/splash';
 
   @override
   _SplashScreenState createState() => new _SplashScreenState();
@@ -40,9 +40,6 @@ class _SplashScreenState extends State<SplashScreen>
         });
         return _loginUser(isLoggedIn);*/
     usuario = widget.data;
-    Navigator.of(context).pushReplacement(FadePageRoute(
-            builder: (context) => DashboardScreen(),
-          ));
   }
 
   startTimeout() async {
