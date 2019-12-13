@@ -34,13 +34,17 @@ class _SplashScreenState extends State<SplashScreen> {
         //prefs.setString("email", "cyril.colinet@epitech.eu");
 
         // Check if autologin url exists in shared preferences and redirect to homepage
-        if (prefs.getString("autolog_url") != null)
-            return Navigator.of(context).pushReplacementNamed('/home');
+        if (prefs.getString("autolog_url") != null){
+          print("se encontro autolog");
+          print(prefs);
+            return Navigator.of(context).pushReplacementNamed('/dashboard');
+        }
 
         // Ask intranet to give authentication URL
         var authURI = await this._api.getAuthURL().then((auth) {
             if (auth == null || auth['office_auth_uri'] == null) {
                 // TODO: Display no connection banner
+                print("Fallo el login");
                 return null;
             }
 

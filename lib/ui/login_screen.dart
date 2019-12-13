@@ -46,9 +46,11 @@ class _LoginWebview extends State<LoginWebview> {
     /// When webview state is changed
     onStateChanged(WebViewStateChanged state) async {
         print("onStateChanged: ${state.type} ${state.url}");
+        var value_cockies = _webview.getCookies();
+        print(Map);
 
         // Check if link is correct
-        if (state.type == WebViewState.finishLoad && state.url.contains("redirect_uri=http://tracking.gpscontrolcolombia.com/login.html&response_type=token")) {
+        if (state.type == WebViewState.finishLoad && state.url.contains("/login.html?access_token=")) {
             ScaffoldState scaffoldState = this._scaffoldKey.currentState;
             _webview.stopLoading();
             _webview.close();
