@@ -30,14 +30,12 @@ class LoginScreen extends StatelessWidget {
     print('entramos a la validacion');
     print("Usuario: "+user+" "+"Password: "+pass);
     try{
-      
       _webview.evalJavascript(setUser);
       _webview.evalJavascript(setPass);
       _webview.evalJavascript(submit);
     }catch(e){
       print(e);
     }
-    return true;
 
   }
 
@@ -52,7 +50,7 @@ class LoginScreen extends StatelessWidget {
   onStateChanged(WebViewStateChanged state) async {
         print("onStateChanged: ${state.type} ${state.url}");
         // Check if link is correct
-        if (state.type == WebViewState.finishLoad && state.url.contains("svc_error=0")) {
+        if (state.type == WebViewState.finishLoad && state.url.contains("login_simple.html?access_token=")) {
             ScaffoldState scaffoldState = this._scaffoldKey.currentState;
             _webview.stopLoading();
             _webview.close();
@@ -106,7 +104,7 @@ class LoginScreen extends StatelessWidget {
   Future<String> _loginUser(bool data) {
     return Future.delayed(loginTime).then((_) {
       print("Entramos a _loginUser method");
-      if (isLoggedIn == true){
+      if (data == true){
         return null;
       }else {
         return 'Prohibido';
@@ -238,15 +236,16 @@ class LoginScreen extends StatelessWidget {
         print('Name: ${loginData.name}');
         print('Password: ${loginData.password}');
         initStreamController();
-        bool res = _validationWeb(loginData.name , loginData.password);
+        _validationWeb(loginData.name , loginData.password);
         var client = OdooClient("http://66.228.39.68:8069");
-        print(res);
-        if(flagPass==true){
-          usuario.name = loginData.name;
-          usuario.passwd = loginData.password;
+        if(flagPass==true && isLoggedIn==true){
+          print('guardando datos de usuario');
+          _save('demo', loginData.name,loginData.name , loginData.password);
+          return _loginUser(true);
           //guardo informacion de logueo en servidor principal.        
         }else {
           print('No paso la prueba');
+          return _loginUser(false);
         }
                 /*
         client.authenticate(loginData.name, loginData.password, "smart_contro").then((auth) {
@@ -261,7 +260,7 @@ class LoginScreen extends StatelessWidget {
             isLoggedIn = false;
           }
         });*/
-        return _loginUser(isLoggedIn);
+        
       },
       onSignup: (loginData) {
         print('Signup info');
@@ -285,9 +284,6 @@ class LoginScreen extends StatelessWidget {
       showDebugButtons: false,
     );
   }
-
-
-
     _save(String sid,String user, String email,String pass) async {
         usuario = new User(sid, user, email, pass);
     }
