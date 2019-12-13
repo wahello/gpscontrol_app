@@ -65,10 +65,11 @@ class _LoginWebview extends State<LoginWebview> {
                         backgroundColor: Color.fromARGB(255, 39, 174, 96),
                         content:Text("Connexion en cours..."),
                     ));
-                    await this._api.getAndSaveAutologinLink(state.url).then((res) {
+                    //aqui guardamos las cookies into server.. cuando las encontremos :()
+                    /*await this._api.getAndSaveAutologinLink(state.url).then((res) {
                         print("Autologin " + res.toString());
-                    });
-                    return Navigator.of(context).pushReplacementNamed('/splash');
+                    });*/
+                    return Navigator.of(context).pushReplacementNamed('/dashboard');
 
                 } catch (err) {
                     // Display error
