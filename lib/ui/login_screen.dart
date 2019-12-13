@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'dart:io';
-
+import 'package:GPS_CONTROL/ui/custom_route.dart';
+import 'package:GPS_CONTROL/ui/dashboard_screen.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:GPS_CONTROL/utils/network/IntranetAPIUtils.dart';
-
-import 'package:GPS_CONTROL/pages/display/SplashScreenDisplay.dart';
 
 class LoginWebview extends StatefulWidget {
     final String authUrl;
@@ -65,6 +63,9 @@ class _LoginWebview extends State<LoginWebview> {
                         backgroundColor: Color.fromARGB(255, 39, 174, 96),
                         content:Text("Connexion en cours..."),
                     ));
+                    Navigator.of(context).pushReplacement(FadePageRoute(
+                            builder: (context) => DashboardScreen(),
+                        ));
                     //return Navigator.of(context).pushReplacementNamed('/home');
 
                     await this._api.getAndSaveAutologinLink(state.url).then((res) {
@@ -104,7 +105,7 @@ class _LoginWebview extends State<LoginWebview> {
                 withZoom: false,
                 clearCache: true,
                 clearCookies: true,
-                initialChild: SplashScreen(),
+                //initialChild: SplashScreen(),
 
             ),
         );
