@@ -262,7 +262,7 @@ class LoginScreen extends StatelessWidget {
       onSubmitAnimationCompleted: () {
         if (isLoggedIn == true && flagPass==true) {
           Navigator.of(context).pushReplacement(FadePageRoute(
-            builder: (context) => DashboardScreen(data: usuario,),
+            builder: (context) => DashboardScreen(),
           ));
         }
       },

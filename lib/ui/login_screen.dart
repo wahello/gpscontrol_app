@@ -95,7 +95,7 @@ class _LoginWebview extends State<LoginWebview> {
                         print("Autologin " + res.toString());
                     });*/
                     return Navigator.of(context).pushReplacement(FadePageRoute(
-                          builder: (context) => DashboardScreen(data: usuario,),
+                          builder: (context) => DashboardScreen(),
                         ));
 
                 } catch (err) {

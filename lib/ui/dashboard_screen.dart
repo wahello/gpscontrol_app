@@ -10,17 +10,15 @@ import '../widgets/round_button.dart';
 import 'package:GPS_CONTROL/models/users.dart';
 
 class DashboardScreen extends StatefulWidget {
-  DashboardScreen({this.data});
-  final data;
+  //DashboardScreen({this.data});
   static const routeName = '/dashboard';
-
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
 }
 
 class _DashboardScreenState extends State<DashboardScreen>
     with SingleTickerProviderStateMixin, TransitionRouteAware {
-  User base_user;
+  //User base_user;
   Future<bool> _goToLogin(BuildContext context) {
     return Navigator.of(context)
         .pushReplacementNamed('/')
@@ -37,7 +35,7 @@ class _DashboardScreenState extends State<DashboardScreen>
   @override
   void initState() {
     super.initState();
-    base_user = widget.data;
+    // aqui se setea la info de usuario guardada para mostrar en dashboar base_user = widget.data;
     _loadingController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1250),
@@ -147,29 +145,7 @@ class _DashboardScreenState extends State<DashboardScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  '\$',
-                  style: theme.textTheme.display2.copyWith(
-                    fontWeight: FontWeight.w300,
-                    color: accentColor.shade400,
-                  ),
-                ),
-                SizedBox(width: 5),
-                AnimatedNumericText(
-                  initialValue: 14,
-                  targetValue: 3467.87,
-                  curve: Interval(0, .5, curve: Curves.easeOut),
-                  controller: _loadingController,
-                  style: theme.textTheme.display2.copyWith(
-                    foreground: Paint()..shader = linearGradient,
-                  ),
-                ),
-              ],
-            ),
-            Text('Hola '+base_user.name, style: theme.textTheme.caption),
+            Text('Hola ', style: theme.textTheme.caption),
           ],
         ),
       ),
