@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:GPS_CONTROL/models/alistamiento.dart';
 import 'package:GPS_CONTROL/ui/alistamientos.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +17,6 @@ class InitAlistamiento extends StatefulWidget {
 }
 
 class _InitAlistamientoState extends State<InitAlistamiento> {
-  TextEditingController _urlCtrler = new TextEditingController();
   Odoo _odoo;
   String odooURL = "";
   User user;

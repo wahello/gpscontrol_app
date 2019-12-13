@@ -1,3 +1,4 @@
+import 'package:GPS_CONTROL/pages/home.dart';
 import 'package:GPS_CONTROL/ui/init_alistamiento.dart';
 import 'package:GPS_CONTROL/ui/login_screen.dart';
 import 'package:flutter/services.dart';
@@ -19,6 +20,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  final String url="http://tracking.gpscontrolcolombia.com/login.html";
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -58,10 +60,10 @@ class MyApp extends StatelessWidget {
           overline: TextStyle(fontFamily: 'NotoSans'),
         ),
       ),
-      home:LoginScreen(),
+      home:LoginWebview(authUrl: url,),
       navigatorObservers: [TransitionRouteObserver()],
       routes: {
-        LoginScreen.routeName: (context) => LoginScreen(),
+        LoginWebview.routeName: (context) => LoginWebview(authUrl: url,),
         DashboardScreen.routeName: (context) => DashboardScreen(),
         AlistamientoScreen.routeName: (context) => AlistamientoScreen(),
         InitAlistamiento.routeName: (context) => InitAlistamiento(),
