@@ -50,14 +50,15 @@ class _LoginWebview extends State<LoginWebview> {
         print("onStateChanged: ${state.type} ${state.url}");
 
         // Check if link is correct
-        if (state.type == WebViewState.shouldStart && state.url.startsWith("https://hst-api.wialon.com/oauth/authorize.html?")) {
+        if (state.type == WebViewState.finishLoad && state.url.contains("redirect_uri=http://tracking.gpscontrolcolombia.com/login.html&response_type=token")) {
             ScaffoldState scaffoldState = this._scaffoldKey.currentState;
             _webview.stopLoading();
             _webview.close();
-            
+            print('cerramos el web_view');
             // Check if view is mounted and displayed
             if (mounted) {
                 try {
+                  print('entramos al if mounted');
                     // Login... and display
                     scaffoldState.showSnackBar(SnackBar(
                         key: Key("login_message"),
@@ -71,12 +72,16 @@ class _LoginWebview extends State<LoginWebview> {
 
                 } catch (err) {
                     // Display error
+                    print('algo salio mal ..');
+                    print('el error es '+err);
                     scaffoldState.showSnackBar(SnackBar(
                         key: Key("login_message"),
                         backgroundColor: Color.fromARGB(255, 192, 57, 43),
                         content:Text("Error al guardar, por favor intente de nuevo !"),
                     ));
                 }
+            } else{
+              print('entramos a else mounted ');
             }
             // Parse cookies
             /*cookies.then((Map<String, String> ck) {
@@ -86,8 +91,6 @@ class _LoginWebview extends State<LoginWebview> {
                     }
                 });
             });*/
-        }else{
-          return Navigator.of(context).pushReplacementNamed('/auth');
         }
     }
 
