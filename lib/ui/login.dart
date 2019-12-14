@@ -55,7 +55,7 @@ class LoginScreen extends StatelessWidget {
       flagPass = false;
   }
 
-  onStateChanged(WebViewStateChanged st  ate) async {
+  onStateChanged(WebViewStateChanged state) async {
         print("onStateChanged: ${state.type} ${state.url}");
         // Check if link is correct
         if (state.type == WebViewState.finishLoad && state.url.contains("simple.html?access_token")) {
