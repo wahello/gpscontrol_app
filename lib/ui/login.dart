@@ -39,7 +39,11 @@ class LoginScreen extends StatelessWidget {
     }
 
   }
-
+  _saveData(String user, String pass) async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('user', user);
+      await prefs.setString('ssap', pass);
+  }
   void initStreamController(){
       print('iniciamos controladores');
       String url="http://tracking.gpscontrolcolombia.com/login_simple.html";
@@ -100,10 +104,13 @@ class LoginScreen extends StatelessWidget {
           flagPass = false;
         }
     }
-  Future<String> _loginUser() {
+  Future<String> _loginUser(LoginData logindata) {
     return Future.delayed(loginTime).then((_) {
       print("Entramos a _loginUser method");
       if (isLoggedIn == true && flagPass==true){
+        var user = logindata.name;
+        var pass = logindata.password;
+        _saveData(user, pass);
         return null;
       }else {
         return 'Prohibido';
@@ -124,7 +131,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return FlutterLogin(
       title: Constants.appName,
-      logo: 'assets/icon/favicon0.png',
+      logo: 'assets/icon/favicon2.png',
       logoTag: Constants.logoTag,
       titleTag: Constants.titleTag,
       messages: LoginMessages(
@@ -170,7 +177,7 @@ class LoginScreen extends StatelessWidget {
             cardTheme: CardTheme(
               color: Colors.white,
               elevation: 30,
-              margin: EdgeInsets.only(top: 2),
+              margin: EdgeInsets.only(top: 30),
               shape: ContinuousRectangleBorder(
                   borderRadius: BorderRadius.circular(100.0)),
             ),
@@ -237,7 +244,7 @@ class LoginScreen extends StatelessWidget {
         initStreamController();
         _validationWeb(loginData.name , loginData.password);
         var client = OdooClient("http://66.228.39.68:8069");
-        return _loginUser();
+        return _loginUser(loginData);
                 /*
         client.authenticate(loginData.name, loginData.password, "smart_contro").then((auth) {
           if (auth.isSuccess) {
@@ -257,7 +264,7 @@ class LoginScreen extends StatelessWidget {
         print('Signup info');
         print('Name: ${loginData.name}');
         print('Password: ${loginData.password}');
-        return _loginUser();
+        return _loginUser(loginData);
       },
       onSubmitAnimationCompleted: () {
         if (isLoggedIn == true && flagPass==true) {

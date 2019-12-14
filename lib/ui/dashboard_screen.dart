@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_login/theme.dart';
 import 'package:flutter_login/widgets.dart';
+import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../common/transition_route_observer.dart';
 import '../widgets/fade_in.dart';
 import '../common/constants.dart';
@@ -10,7 +12,8 @@ import '../widgets/round_button.dart';
 import 'package:GPS_CONTROL/models/users.dart';
 
 class DashboardScreen extends StatefulWidget {
-  //DashboardScreen({this.data});
+  final User userdata;
+  DashboardScreen({this.userdata});
   static const routeName = '/dashboard';
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
@@ -18,7 +21,8 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen>
     with SingleTickerProviderStateMixin, TransitionRouteAware {
-  //User base_user;
+  User base_user;
+  SharedPreferences preferences;
   Future<bool> _goToLogin(BuildContext context) {
     return Navigator.of(context)
         .pushReplacementNamed('/')
@@ -32,10 +36,15 @@ class _DashboardScreenState extends State<DashboardScreen>
   Animation<double> _headerScaleAnimation;
   AnimationController _loadingController;
 
+  getPrefs() async {
+    preferences =  await SharedPreferences.getInstance();
+  }
+
   @override
   void initState() {
     super.initState();
     // aqui se setea la info de usuario guardada para mostrar en dashboar base_user = widget.data;
+    getPrefs();
     _loadingController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1250),
@@ -134,6 +143,7 @@ class _DashboardScreenState extends State<DashboardScreen>
       primaryColor.shade800,
       primaryColor.shade200,
     ]).createShader(Rect.fromLTWH(0.0, 0.0, 418.0, 78.0));
+    var user = preferences.getString('user');
 
     return ScaleTransition(
       scale: _headerScaleAnimation,
@@ -145,7 +155,7 @@ class _DashboardScreenState extends State<DashboardScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('Hola ', style: theme.textTheme.caption),
+            Text('Hola $user', style: theme.textTheme.caption),
           ],
         ),
       ),

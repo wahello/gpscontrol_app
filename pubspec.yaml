@@ -41,7 +41,7 @@ flutter:
   uses-material-design: true
 
   assets:
-  - assets/icon/favicon0.png
+  - assets/icon/favicon2.png
   - assets/logo1.png
   - assets/images/ecorp-lightgreen.png
 
