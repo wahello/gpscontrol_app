@@ -47,15 +47,18 @@ class LoginScreen extends StatelessWidget {
   void initStreamController(){
       print('iniciamos controladores');
       String url="http://tracking.gpscontrolcolombia.com/login_simple.html";
+      _webview.cleanCookies();
+      _webview.clearCache();
+      print('se limpio cache y cookies');
       _webview.launch(url,hidden: true);
       _onStateChanged = _webview.onStateChanged.listen(this.onStateChanged);
       flagPass = false;
   }
 
-  onStateChanged(WebViewStateChanged state) async {
+  onStateChanged(WebViewStateChanged st  ate) async {
         print("onStateChanged: ${state.type} ${state.url}");
         // Check if link is correct
-        if (state.type == WebViewState.finishLoad && state.url.contains("svc_error=0")) {
+        if (state.type == WebViewState.finishLoad && state.url.contains("simple.html?access_token")) {
             _webview.close();
             print('cerramos el web_view');
             isLoggedIn = true;
