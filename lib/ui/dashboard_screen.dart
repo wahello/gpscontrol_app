@@ -38,13 +38,16 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   getPrefs() async {
     preferences =  await SharedPreferences.getInstance();
+    base_user.name = preferences.getString('user');
+    base_user.passwd = preferences.getString('ssap');
+    print(preferences.getString('user'));
   }
 
   @override
   void initState() {
+    getPrefs();
     super.initState();
     // aqui se setea la info de usuario guardada para mostrar en dashboar base_user = widget.data;
-    getPrefs();
     _loadingController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1250),
@@ -133,8 +136,12 @@ class _DashboardScreenState extends State<DashboardScreen>
       iconTheme: theme.accentIconTheme,
     );
   }
-
+  initUser(){
+    base_user.name = '';
+    base_user.passwd = '';
+  }
   Widget _buildHeader(ThemeData theme) {
+    initUser();
     final primaryColor =
         Colors.primaries.where((c) => c == theme.primaryColor).first;
     final accentColor =
@@ -143,7 +150,8 @@ class _DashboardScreenState extends State<DashboardScreen>
       primaryColor.shade800,
       primaryColor.shade200,
     ]).createShader(Rect.fromLTWH(0.0, 0.0, 418.0, 78.0));
-    var user = preferences.getString('user');
+    print('se imprimio primero -- build header');
+
 
     return ScaleTransition(
       scale: _headerScaleAnimation,
@@ -155,7 +163,7 @@ class _DashboardScreenState extends State<DashboardScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('Hola $user', style: theme.textTheme.caption),
+            Text('Hola $base_user.name', style: theme.textTheme.caption),
           ],
         ),
       ),
