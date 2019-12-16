@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_login/theme.dart';
 import 'package:flutter_login/widgets.dart';
-import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../common/transition_route_observer.dart';
 import '../widgets/fade_in.dart';
 import '../common/constants.dart';
-import '../widgets/animated_numeric_text.dart';
 import '../widgets/round_button.dart';
 import 'package:GPS_CONTROL/models/users.dart';
 
@@ -142,14 +140,6 @@ class _DashboardScreenState extends State<DashboardScreen>
   }
   Widget _buildHeader(ThemeData theme) {
     initUser();
-    final primaryColor =
-        Colors.primaries.where((c) => c == theme.primaryColor).first;
-    final accentColor =
-        Colors.primaries.where((c) => c == theme.accentColor).first;
-    final linearGradient = LinearGradient(colors: [
-      primaryColor.shade800,
-      primaryColor.shade200,
-    ]).createShader(Rect.fromLTWH(0.0, 0.0, 418.0, 78.0));
     print('se imprimio primero -- build header');
 
 
