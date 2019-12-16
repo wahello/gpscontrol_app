@@ -7,6 +7,7 @@ import '../common/constants.dart';
 import '../widgets/round_button.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
+import 'package:GPS_CONTROL/models/post.dart';
 
 class DashboardScreen extends StatefulWidget {
   //final User userdata;
@@ -18,6 +19,7 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen>
     with SingleTickerProviderStateMixin, TransitionRouteAware {
+  Post post;
   String username = "fuec";
   String token = "53c45668de3e5399eb7af78a889bd45a4D9DD25ED3B4DDDC261DB138027093247B183718";
   var uri = "https://hst-api.wialon.com/wialon/ajax.html?svc=token/login&params={%22token%22:%22";
@@ -71,6 +73,15 @@ class _DashboardScreenState extends State<DashboardScreen>
       print(bodyfull['user']);
       print(body['id']);
       print(prefs.getString('token'));
+      post = new Post(
+        eid: bodyfull['eid'],
+        giSid:bodyfull['gis_sid'] ,
+        au:bodyfull['au'] ,
+        tm: bodyfull['tm'],
+        username: body['nm'],
+        userId: body['id'],
+        token: token, );
+        print(post);
     } else {
       print('pailas');
       throw "Can't get posts.";
@@ -165,7 +176,7 @@ class _DashboardScreenState extends State<DashboardScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('Bienvenido', style: theme.textTheme.caption),
+            Text('Bienvenido ', style: theme.textTheme.caption),
           ],
         ),
       ),

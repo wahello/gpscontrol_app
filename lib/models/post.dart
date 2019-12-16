@@ -1,24 +1,22 @@
 class Post {
-  final String host;
   final String eid;
   final String giSid;
   final String au;
-  final String tm;
+  final int tm;
   final String username;
   final String userId;
   final String token;
-  Post({this.host, this.eid, this.giSid, this.au, this.tm, this.username, this.userId, this.token });
+  Post({this.eid, this.giSid, this.au, this.tm, this.username, this.userId, this.token });
 
-  factory Post.fromJson(Map<String, dynamic> json) {
+  factory Post.fromJson(Map<String, dynamic> json,Map<String, dynamic> ujson,String token) {
     return Post(
-      host: json['host'],
       eid: json['eid'],
       giSid: json['gis_sid'],
       au: json['au'],
       tm: json['tm'],
-      username: json['user'],
-      userId: json['userId'],
-      token: json['userId'],
+      username: ujson['nm'],
+      userId: ujson['id'],
+      token: token,
     );
   }
 }
