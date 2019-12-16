@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter_login/theme.dart';
-import 'package:flutter_login/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../common/transition_route_observer.dart';
 import '../widgets/fade_in.dart';
 import '../common/constants.dart';
 import '../widgets/round_button.dart';
-import 'package:GPS_CONTROL/models/users.dart';
+import 'package:http/http.dart';
+import 'dart:convert';
 
 class DashboardScreen extends StatefulWidget {
-  final User userdata;
-  DashboardScreen({this.userdata});
+  //final User userdata;
+  //DashboardScreen({this.userdata});
   static const routeName = '/dashboard';
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
@@ -19,7 +18,11 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen>
     with SingleTickerProviderStateMixin, TransitionRouteAware {
-  User base_user;
+  String username = "fuec";
+  String token = "53c45668de3e5399eb7af78a889bd45a4D9DD25ED3B4DDDC261DB138027093247B183718";
+  var uri = "https://hst-api.wialon.com/wialon/ajax.html?svc=token/login&params={%22token%22:%22";
+  var arg = "%22,%22operateAs%22:%22";
+  var endless = "%22}";  //User base_user;
   SharedPreferences preferences;
   Future<bool> _goToLogin(BuildContext context) {
     return Navigator.of(context)
@@ -36,14 +39,15 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   getPrefs() async {
     preferences =  await SharedPreferences.getInstance();
-    base_user.name = preferences.getString('user');
-    base_user.passwd = preferences.getString('ssap');
+    //base_user.name = preferences.getString('user');
+    //base_user.passwd = preferences.getString('ssap');
     print(preferences.getString('user'));
   }
 
   @override
   void initState() {
     getPrefs();
+    getDatawialon();
     super.initState();
     // aqui se setea la info de usuario guardada para mostrar en dashboar base_user = widget.data;
     _loadingController = AnimationController(
@@ -56,6 +60,21 @@ class _DashboardScreenState extends State<DashboardScreen>
       parent: _loadingController,
       curve: headerAniInterval,
     ));
+  }
+  
+  Future<String> getDatawialon() async {
+    Response res = await get(uri+token+arg+username+endless);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (res.statusCode == 200) {
+      var bodyfull = jsonDecode(res.body);
+      var body = bodyfull['user'];
+      print(bodyfull['user']);
+      print(body['id']);
+      print(prefs.getString('token'));
+    } else {
+      print('pailas');
+      throw "Can't get posts.";
+    }
   }
 
   @override
@@ -99,13 +118,6 @@ class _DashboardScreenState extends State<DashboardScreen>
               ),
             ),
           ),
-          HeroText(
-            Constants.appName,
-            tag: Constants.titleTag,
-            viewState: ViewState.shrunk,
-            style: LoginThemeHelper.loginTextStyle,
-          ),
-          SizedBox(width: 20),
         ],
       ),
     );
@@ -135,8 +147,8 @@ class _DashboardScreenState extends State<DashboardScreen>
     );
   }
   initUser(){
-    base_user.name = '';
-    base_user.passwd = '';
+    //base_user.name = '';
+    //base_user.passwd = '';
   }
   Widget _buildHeader(ThemeData theme) {
     initUser();
@@ -153,7 +165,7 @@ class _DashboardScreenState extends State<DashboardScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('Hola $base_user.name', style: theme.textTheme.caption),
+            Text('Bienvenido', style: theme.textTheme.caption),
           ],
         ),
       ),

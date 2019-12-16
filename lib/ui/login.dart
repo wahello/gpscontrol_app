@@ -22,7 +22,9 @@ class LoginScreen extends StatelessWidget {
   final _webview = new FlutterWebviewPlugin();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   StreamSubscription<WebViewStateChanged> _onStateChanged;
-  String token;
+  String toKen;
+  String url;
+  SharedPreferences prefs ;
 
   _validationWeb(String user,String pass){
     var setUser = 'document.getElementById("login").value="$user";';
@@ -40,9 +42,10 @@ class LoginScreen extends StatelessWidget {
 
   }
   _saveData(String user, String pass) async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs = await SharedPreferences.getInstance();
       await prefs.setString('user', user);
       await prefs.setString('ssap', pass);
+      await prefs.setString('token', toKen);
   }
   void initStreamController(){
       print('iniciamos controladores');
@@ -55,14 +58,24 @@ class LoginScreen extends StatelessWidget {
       flagPass = false;
   }
 
+  saveCredentials(String token)
+  {
+    prefs.setString('token', token);
+  }
+
   onStateChanged(WebViewStateChanged state) async {
         print("onStateChanged: ${state.type} ${state.url}");
         // Check if link is correct
         if (state.type == WebViewState.finishLoad && state.url.contains("simple.html?access_token")) {
+            url = state.url;
+            print('La url con la que se accedio fue: '+url);
+            var token = url.replaceAll('http://tracking.gpscontrolcolombia.com/login_simple.html?access_token=', '');
+            print('el token es: '+token);
             _webview.close();
-            print('cerramos el web_view');
+            saveCredentials(token);
             isLoggedIn = true;
             flagPass = true;
+            toKen = token;
             // Check if view is mounted and displayed
             /*
             if (mounted) {
@@ -168,15 +181,6 @@ class LoginScreen extends StatelessWidget {
               decoration: TextDecoration.underline,
 
             ),
-      //   textFieldStyle: TextStyle(
-      //     color: Colors.orange,
-      //     shadows: [Shadow(color: Colors.yellow, blurRadius: 2)],
-      //   ),
-      //   buttonStyle: TextStyle(
-      //     fontWeight: FontWeight.w800,
-      //     color: Colors.yellow,
-      //   ),
-
             cardTheme: CardTheme(
               color: Colors.white,
               elevation: 30,
@@ -184,49 +188,6 @@ class LoginScreen extends StatelessWidget {
               shape: ContinuousRectangleBorder(
                   borderRadius: BorderRadius.circular(100.0)),
             ),
-      //   inputTheme: InputDecorationTheme(
-      //     filled: true,
-      //     fillColor: Colors.purple.withOpacity(.1),
-      //     contentPadding: EdgeInsets.zero,
-      //     errorStyle: TextStyle(
-      //       backgroundColor: Colors.orange,
-      //       color: Colors.white,
-      //     ),
-      //     labelStyle: TextStyle(fontSize: 12),
-      //     enabledBorder: UnderlineInputBorder(
-      //       borderSide: BorderSide(color: Colors.blue.shade700, width: 4),
-      //       borderRadius: inputBorder,
-      //     ),
-      //     focusedBorder: UnderlineInputBorder(
-      //       borderSide: BorderSide(color: Colors.blue.shade400, width: 5),
-      //       borderRadius: inputBorder,
-      //     ),
-      //     errorBorder: UnderlineInputBorder(
-      //       borderSide: BorderSide(color: Colors.red.shade700, width: 7),
-      //       borderRadius: inputBorder,
-      //     ),
-      //     focusedErrorBorder: UnderlineInputBorder(
-      //       borderSide: BorderSide(color: Colors.red.shade400, width: 8),
-      //       borderRadius: inputBorder,
-      //     ),
-      //     disabledBorder: UnderlineInputBorder(
-      //       borderSide: BorderSide(color: Colors.grey, width: 5),
-      //       borderRadius: inputBorder,
-      //     ),
-      //   ),
-      //   buttonTheme: LoginButtonTheme(
-      //     splashColor: Colors.purple,
-      //     backgroundColor: Colors.pinkAccent,
-      //     highlightColor: Colors.lightGreen,
-      //     elevation: 9.0,
-      //     highlightElevation: 6.0,
-      //     shape: BeveledRectangleBorder(
-      //       borderRadius: BorderRadius.circular(10),
-      //     ),
-      //     // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-      //     // shape: CircleBorder(side: BorderSide(color: Colors.green)),
-      //     // shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(55.0)),
-      //   ),
           ),
       emailValidator: (value) {
         //if (!value.contains('@') || !value.endsWith('.com')) {
