@@ -129,42 +129,6 @@ class _DashboardScreenState extends State<DashboardScreen>
     return file.writeAsString('$counter');
   }
 
-  _getVehiclesWialon() async {
-      String url = "https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={%22spec%22:{%22itemsType%22:%22avl_unit%22,%22propName%22:%22trailers%22,%22propValueMask%22:%22%22,%22sortType%22:%22trailers%22,%22propType%22:%22propitemname%22},%22force%22:1,%22flags%22:4097,%22from%22:0,%22to%22:0}&sid=";
-      String sid = post.eid;
-      Response res = await get(url+sid);
- 
-    if (res.statusCode == 200) {
-      var bodyfull = await jsonDecode(res.body);
-      print('se encontraron '+bodyfull['totalItemsCount']+' items');
-      } else {
-      print('pailas');
-      throw "Can't get posts.";
-    }
-  }
-
-  _getDatawialon() async {
-    Response res = await get(uri+token+arg+username+endless);
-    if (res.statusCode == 200) {
-      var bodyfull = jsonDecode(res.body);
-      var body = bodyfull['user'];
-      print(bodyfull['user']);
-      print(body['id']);
-      print(preferences.getString('token'));
-      post = new Post(
-        eid: bodyfull['eid'],
-        giSid:bodyfull['gis_sid'] ,
-        au:bodyfull['au'] ,
-        tm: bodyfull['tm'],
-        username: body['nm'],
-        userId: body['id'],
-        token: token, );
-    } else {
-      print('pailas');
-      throw "Can't get posts.";
-    }
-  }
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -251,7 +215,7 @@ class _DashboardScreenState extends State<DashboardScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('Bienvenido ', style: theme.textTheme.caption),
+            Text('Bienvenido ', style: new TextStyle(fontWeight: FontWeight.bold)),
             Padding(
               padding: EdgeInsets.all(2),
               child: Column(
@@ -262,7 +226,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                       if(snapshot.connectionState == ConnectionState.done){
                             return Container(
                                 child: Center(
-                                  child:Text('Hola '+baseUser.name+'\n SID: '+post.eid),
+                                  child:Text('Usuario: '+baseUser.name+'\n SID: '+post.eid),
                                 ),
                             );
                       }
@@ -325,7 +289,7 @@ class _DashboardScreenState extends State<DashboardScreen>
         curve: ElasticOutCurve(0.42),
       ),
       onPressed: () {
-        _getVehiclesWialon();
+        //_getVehiclesWialon();
         Navigator.pushNamed(context, '/init_alist');
       },
     );
