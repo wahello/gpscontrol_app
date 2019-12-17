@@ -1,8 +1,9 @@
 import 'dart:async';
-
+import 'dart:html';
 import 'package:GPS_CONTROL/models/users.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../common/transition_route_observer.dart';
 import '../widgets/fade_in.dart';
@@ -11,6 +12,7 @@ import '../widgets/round_button.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 import 'package:GPS_CONTROL/models/post.dart';
+
 
 class DashboardScreen extends StatefulWidget {
   //final User userdata;
@@ -45,7 +47,7 @@ class _DashboardScreenState extends State<DashboardScreen>
         .then((_) => false);
   }
 
-  Future <User> getPrefs() async {
+  getPrefs() async {
     preferences =  await SharedPreferences.getInstance();
     //base_user.name = preferences.getString('user');
     //base_user.passwd = preferences.getString('ssap');
@@ -55,21 +57,18 @@ class _DashboardScreenState extends State<DashboardScreen>
     baseUser = new User(token, username, username, ssap);
     print('Se obtuvo satisfactoriamente los siguientes valores ...');
     print('usuario: '+username+' pass: '+ssap+' token: '+token);
-    _getDatawialon();
-    return baseUser;
+
   }
 
   @override
   void initState() {
-    print('entramos al metodo init state Dash');
-    getPrefs().then((User user){
-      
-    });
     super.initState();
+    getPrefs();
+    print('entramos al metodo init state Dash');
     // aqui se setea la info de usuario guardada para mostrar en dashboar base_user = widget.data;
     _loadingController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1250),
+      duration: const Duration(milliseconds: 2250),
     );
 
     _headerScaleAnimation =
@@ -78,23 +77,32 @@ class _DashboardScreenState extends State<DashboardScreen>
       curve: headerAniInterval,
     ));
   }
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+    
+    return directory.path;
+  }
 
-
-  Future<dynamic> _getVehiclesWialon() async {
+  Future<File> get _localFile async {
+      final path = await _localPath;
+      return File("$path/counter.txt");
+  }
+  
+  _getVehiclesWialon() async {
       String url = "https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={%22spec%22:{%22itemsType%22:%22avl_unit%22,%22propName%22:%22trailers%22,%22propValueMask%22:%22%22,%22sortType%22:%22trailers%22,%22propType%22:%22propitemname%22},%22force%22:1,%22flags%22:4097,%22from%22:0,%22to%22:0}&sid=";
-      Response res = await get(url+post.eid);
-
+      String sid = post.eid;
+      Response res = await get(url+sid);
+ 
     if (res.statusCode == 200) {
       var bodyfull = await jsonDecode(res.body);
-      print(bodyfull);
-      return bodyfull ;
-    } else {
+      print('se encontraron '+bodyfull['totalItemsCount']+' items');
+      } else {
       print('pailas');
       throw "Can't get posts.";
     }
   }
-  
-  Future<String> _getDatawialon() async {
+
+  _getDatawialon() async {
     Response res = await get(uri+token+arg+username+endless);
     if (res.statusCode == 200) {
       var bodyfull = jsonDecode(res.body);
@@ -133,6 +141,7 @@ class _DashboardScreenState extends State<DashboardScreen>
   void didPushAfterTransition() => _loadingController.forward();
 
   AppBar _buildAppBar(ThemeData theme) {
+    getPrefs();
     final menuBtn = IconButton(
       color: Colors.blue,
       icon: const Icon(FontAwesomeIcons.bars),
@@ -190,9 +199,9 @@ class _DashboardScreenState extends State<DashboardScreen>
     //base_user.passwd = '';
   }
   Widget _buildHeader(ThemeData theme) {
+    _getDatawialon();
+    _getVehiclesWialon();
     print('se imprimio primero -- build header');
-
-
     return ScaleTransition(
       scale: _headerScaleAnimation,
       child: FadeIn(
@@ -208,6 +217,9 @@ class _DashboardScreenState extends State<DashboardScreen>
               padding: EdgeInsets.all(2),
               child: Column(
                 children: <Widget>[
+                  FutureBuilder(
+                    builder: _getDatawialon(),
+                  ),
                   //Text('user: '+ post.username==null ? "" : post.username),
                   //Text('sid: '+post.eid==null ? "" : post.eid),
                   //Text('id_wialon: '+post.userId.toString()==null ? "" : post.userId),

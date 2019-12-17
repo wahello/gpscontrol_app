@@ -72,7 +72,6 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
     nuevoAlistamiento.celular = init_state;
     nuevoAlistamiento.ruteros = init_state;
 
-
   }
   //_checkFirstTime() async {
     //SharedPreferences prefs = await SharedPreferences.getInstance();
