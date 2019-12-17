@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:GPS_CONTROL/models/users.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,6 +23,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen>
     with SingleTickerProviderStateMixin, TransitionRouteAware {
   Post post;
+  User baseUser;
   String ssap;
   String username = "";
   String token = "";
@@ -41,21 +45,26 @@ class _DashboardScreenState extends State<DashboardScreen>
         .then((_) => false);
   }
 
-  getPrefs() async {
+  Future <User> getPrefs() async {
     preferences =  await SharedPreferences.getInstance();
     //base_user.name = preferences.getString('user');
     //base_user.passwd = preferences.getString('ssap');
     username = preferences.getString('user');
     ssap = preferences.getString('ssap');
     token = preferences.getString('token');
+    baseUser = new User(token, username, username, ssap);
     print('Se obtuvo satisfactoriamente los siguientes valores ...');
     print('usuario: '+username+' pass: '+ssap+' token: '+token);
     _getDatawialon();
+    return baseUser;
   }
 
   @override
   void initState() {
-    getPrefs();
+    print('entramos al metodo init state Dash');
+    getPrefs().then((User user){
+      
+    });
     super.initState();
     // aqui se setea la info de usuario guardada para mostrar en dashboar base_user = widget.data;
     _loadingController = AnimationController(
@@ -68,6 +77,21 @@ class _DashboardScreenState extends State<DashboardScreen>
       parent: _loadingController,
       curve: headerAniInterval,
     ));
+  }
+
+
+  Future<dynamic> _getVehiclesWialon() async {
+      String url = "https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={%22spec%22:{%22itemsType%22:%22avl_unit%22,%22propName%22:%22trailers%22,%22propValueMask%22:%22%22,%22sortType%22:%22trailers%22,%22propType%22:%22propitemname%22},%22force%22:1,%22flags%22:4097,%22from%22:0,%22to%22:0}&sid=";
+      Response res = await get(url+post.eid);
+
+    if (res.statusCode == 200) {
+      var bodyfull = await jsonDecode(res.body);
+      print(bodyfull);
+      return bodyfull ;
+    } else {
+      print('pailas');
+      throw "Can't get posts.";
+    }
   }
   
   Future<String> _getDatawialon() async {
@@ -86,7 +110,6 @@ class _DashboardScreenState extends State<DashboardScreen>
         username: body['nm'],
         userId: body['id'],
         token: token, );
-        print(post.giSid);
     } else {
       print('pailas');
       throw "Can't get posts.";
@@ -185,9 +208,9 @@ class _DashboardScreenState extends State<DashboardScreen>
               padding: EdgeInsets.all(2),
               child: Column(
                 children: <Widget>[
-                  Text('user: '+ post.username),
-                  Text('sid: '+post.eid),
-                  Text('id_wialon: '+post.userId.toString()),
+                  //Text('user: '+ post.username==null ? "" : post.username),
+                  //Text('sid: '+post.eid==null ? "" : post.eid),
+                  //Text('id_wialon: '+post.userId.toString()==null ? "" : post.userId),
                 ],
               )
             ),
@@ -225,6 +248,23 @@ class _DashboardScreenState extends State<DashboardScreen>
     );
   }
 
+  Widget _buildButton2({Widget icon, String label, Interval interval}) {
+    return RoundButton(
+      icon: icon,
+      label: label,
+      loadingController: _loadingController,
+      interval: Interval(
+        interval.begin,
+        interval.end,
+        curve: ElasticOutCurve(0.42),
+      ),
+      onPressed: () {
+        _getVehiclesWialon();
+        Navigator.pushNamed(context, '/init_alist');
+      },
+    );
+  }
+
   Widget _buildDashboardGrid() {
     const step = 0.04;
     const aniInterval = 0.75;
@@ -248,7 +288,7 @@ class _DashboardScreenState extends State<DashboardScreen>
           label: 'Alistamiento',
           interval: Interval(step, aniInterval + step),
         ),
-        _buildButton(
+        _buildButton2(
           icon: Icon(FontAwesomeIcons.history),
           label: 'Historial',
           interval: Interval(step * 2, aniInterval + step * 2),

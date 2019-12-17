@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:GPS_CONTROL/utils/network/IntranetAPIUtils.dart';
-import 'package:GPS_CONTROL/ui/login_screen.dart';
+import 'package:GPS_CONTROL/ui/login.dart';
 import 'package:GPS_CONTROL/pages/display/SplashScreenDisplay.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -54,7 +54,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
         // Not logged, need to redirect to SSO page
         Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (BuildContext context) => LoginWebview(authUrl: authURI)
+            builder: (BuildContext context) => LoginScreen()
         ));
     }
 

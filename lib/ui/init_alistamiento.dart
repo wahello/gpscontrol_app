@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:GPS_CONTROL/data/services/globals.dart';
 import 'custom_route.dart';
 import 'package:GPS_CONTROL/models/users.dart';
+import 'package:GPS_CONTROL/models/post.dart';
 
 class InitAlistamiento extends StatefulWidget {
   InitAlistamiento({this.data});
@@ -19,18 +20,21 @@ class InitAlistamiento extends StatefulWidget {
 class _InitAlistamientoState extends State<InitAlistamiento> {
   Odoo _odoo;
   String odooURL = "";
+  Post post;
   User user;
   Alistamiento nuevoAlistamiento;
 
   @override
   void initState() {
+    post = widget.data;
     super.initState();
-    user = widget.data;
+    //user = widget.data;
     print(user);
     //_init_alistamiento(false, user.name, '');
 
     //_checkFirstTime();
   }
+
   _init_alistamiento(bool init_state, String user, String vehiculo){
     nuevoAlistamiento.folio = '';
     nuevoAlistamiento.state = '';

@@ -58,6 +58,10 @@ class LoginScreen extends StatelessWidget {
       flagPass = false;
   }
 
+  saveCredentials(String token) async
+  {
+    prefs.setString('token', token);
+  }
 
   onStateChanged(WebViewStateChanged state) async {
         print("onStateChanged: ${state.type} ${state.url}");
@@ -71,6 +75,7 @@ class LoginScreen extends StatelessWidget {
             isLoggedIn = true;
             flagPass = true;
             toKen = token;
+            saveCredentials(token);
             // Check if view is mounted and displayed
             /*
             if (mounted) {
