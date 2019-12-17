@@ -81,6 +81,9 @@ class _DashboardScreenState extends State<DashboardScreen>
     baseUser = new User('1', username, ssap, token);
     print('Se obtuvo satisfactoriamente los siguientes valores ...');
     print('usuario: '+username+' pass: '+ssap+' token: '+token);
+    return baseUser;
+  }
+  Future<Post> _getDataSession() async{
     Response res = await get(uri+token+arg+username+endless);
     if (res.statusCode == 200) {
       var bodyfull = jsonDecode(res.body);
@@ -100,7 +103,7 @@ class _DashboardScreenState extends State<DashboardScreen>
       print('pailas');
       throw "Can't get posts.";
     }
-    return baseUser;
+    return post;
   }
 //Future int readcounter
   Future<int> readCounter() async {
@@ -226,7 +229,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                       if(snapshot.connectionState == ConnectionState.done){
                             return Container(
                                 child: Center(
-                                  child:Text('Usuario: '+baseUser.name+'\n SID: '+post.eid),
+                                  child:Text('Usuario: '+baseUser.name+'\n SID: '),
                                 ),
                             );
                       }
