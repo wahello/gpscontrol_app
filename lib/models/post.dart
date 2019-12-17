@@ -4,7 +4,7 @@ class Post {
   final String au;
   final int tm;
   final String username;
-  final String userId;
+  final int userId;
   final String token;
   Post({this.eid, this.giSid, this.au, this.tm, this.username, this.userId, this.token });
 

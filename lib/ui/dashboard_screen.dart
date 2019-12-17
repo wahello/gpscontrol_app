@@ -20,13 +20,15 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen>
     with SingleTickerProviderStateMixin, TransitionRouteAware {
   Post post;
-  String username = "fuec";
-  String token = "53c45668de3e5399eb7af78a889bd45a4D9DD25ED3B4DDDC261DB138027093247B183718";
+  String ssap;
+  String username = "";
+  String token = "";
   var uri = "https://hst-api.wialon.com/wialon/ajax.html?svc=token/login&params={%22token%22:%22";
   var arg = "%22,%22operateAs%22:%22";
   var endless = "%22}";  //User base_user;
   SharedPreferences preferences;
   Future<bool> _goToLogin(BuildContext context) {
+    preferences.clear();
     return Navigator.of(context)
         .pushReplacementNamed('/')
         // we dont want to pop the screen, just replace it completely
@@ -43,12 +45,15 @@ class _DashboardScreenState extends State<DashboardScreen>
     preferences =  await SharedPreferences.getInstance();
     //base_user.name = preferences.getString('user');
     //base_user.passwd = preferences.getString('ssap');
-    print(preferences.getString('user'));
+    username = preferences.getString('user');
+    ssap = preferences.getString('ssap');
+    token = preferences.getString('token');
+    print('Se obtuvo satisfactoriamente los siguientes valores ...');
+    print('usuario: '+username+' pass: '+ssap+' token: '+token);
   }
 
   @override
   void initState() {
-    getPrefs();
     getDatawialon();
     super.initState();
     // aqui se setea la info de usuario guardada para mostrar en dashboar base_user = widget.data;
@@ -66,13 +71,12 @@ class _DashboardScreenState extends State<DashboardScreen>
   
   Future<String> getDatawialon() async {
     Response res = await get(uri+token+arg+username+endless);
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     if (res.statusCode == 200) {
       var bodyfull = jsonDecode(res.body);
       var body = bodyfull['user'];
       print(bodyfull['user']);
       print(body['id']);
-      print(prefs.getString('token'));
+      print(preferences.getString('token'));
       post = new Post(
         eid: bodyfull['eid'],
         giSid:bodyfull['gis_sid'] ,
@@ -81,7 +85,7 @@ class _DashboardScreenState extends State<DashboardScreen>
         username: body['nm'],
         userId: body['id'],
         token: token, );
-        print(post);
+        print(post.giSid);
     } else {
       print('pailas');
       throw "Can't get posts.";
@@ -162,7 +166,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     //base_user.passwd = '';
   }
   Widget _buildHeader(ThemeData theme) {
-    initUser();
+    getPrefs();
     print('se imprimio primero -- build header');
 
 
@@ -177,6 +181,16 @@ class _DashboardScreenState extends State<DashboardScreen>
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text('Bienvenido ', style: theme.textTheme.caption),
+            Padding(
+              padding: EdgeInsets.all(2),
+              child: Column(
+                children: <Widget>[
+                  Text('user: '+ post.username),
+                  Text('sid: '+post.eid),
+                  Text('id_wialon: '+post.userId.toString()),
+                ],
+              )
+            ),
           ],
         ),
       ),
