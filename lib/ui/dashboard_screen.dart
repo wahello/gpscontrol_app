@@ -47,18 +47,6 @@ class _DashboardScreenState extends State<DashboardScreen>
         .then((_) => false);
   }
 
-  Future<User> getPrefs() async {
-    preferences =  await SharedPreferences.getInstance();
-    //base_user.name = preferences.getString('user');
-    //base_user.passwd = preferences.getString('ssap');
-    username = preferences.getString('user');
-    ssap = preferences.getString('ssap');
-    token = preferences.getString('token');
-    baseUser = new User(token, username, username, ssap);
-    print('Se obtuvo satisfactoriamente los siguientes valores ...');
-    print('usuario: '+username+' pass: '+ssap+' token: '+token);
-    return baseUser;
-  }
 
   @override
   void initState() {
@@ -81,6 +69,38 @@ class _DashboardScreenState extends State<DashboardScreen>
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
     return directory.path;
+  }
+  //future get prefs
+  Future<User> getPrefs() async {
+    preferences =  await SharedPreferences.getInstance();
+    //base_user.name = preferences.getString('user');
+    //base_user.passwd = preferences.getString('ssap');
+    username = preferences.getString('user');
+    ssap = preferences.getString('ssap');
+    token = preferences.getString('token');
+    baseUser = new User('1', username, ssap, token);
+    print('Se obtuvo satisfactoriamente los siguientes valores ...');
+    print('usuario: '+username+' pass: '+ssap+' token: '+token);
+    Response res = await get(uri+token+arg+username+endless);
+    if (res.statusCode == 200) {
+      var bodyfull = jsonDecode(res.body);
+      var body = bodyfull['user'];
+      print(bodyfull['user']);
+      print(body['id']);
+      print(preferences.getString('token'));
+      post = new Post(
+        eid: bodyfull['eid'],
+        giSid:bodyfull['gis_sid'] ,
+        au:bodyfull['au'] ,
+        tm: bodyfull['tm'],
+        username: body['nm'],
+        userId: body['id'],
+        token: token, );
+    } else {
+      print('pailas');
+      throw "Can't get posts.";
+    }
+    return baseUser;
   }
 //Future int readcounter
   Future<int> readCounter() async {
@@ -236,6 +256,24 @@ class _DashboardScreenState extends State<DashboardScreen>
               padding: EdgeInsets.all(2),
               child: Column(
                 children: <Widget>[
+                  FutureBuilder(
+                    future: getPrefs(),
+                    builder:(context, snapshot){
+                      if(snapshot.connectionState == ConnectionState.done){
+                            return Container(
+                                child: Center(
+                                  child:Text('Hola '+baseUser.name+'\n SID: '+post.eid),
+                                ),
+                            );
+                      }
+                      else if(snapshot.hasError){
+                        throw snapshot.error;
+                      }
+                      else{
+                        return Center(child: CircularProgressIndicator());
+                      }
+                    },
+                  ),
                   //Text('user: '+ post.username==null ? "" : post.username),
                   //Text('sid: '+post.eid==null ? "" : post.eid),
                   //Text('id_wialon: '+post.userId.toString()==null ? "" : post.userId),
