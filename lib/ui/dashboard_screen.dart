@@ -47,7 +47,7 @@ class _DashboardScreenState extends State<DashboardScreen>
         .then((_) => false);
   }
 
-  getPrefs() async {
+  Future<User> getPrefs() async {
     preferences =  await SharedPreferences.getInstance();
     //base_user.name = preferences.getString('user');
     //base_user.passwd = preferences.getString('ssap');
@@ -57,13 +57,13 @@ class _DashboardScreenState extends State<DashboardScreen>
     baseUser = new User(token, username, username, ssap);
     print('Se obtuvo satisfactoriamente los siguientes valores ...');
     print('usuario: '+username+' pass: '+ssap+' token: '+token);
-
+    return baseUser;
   }
 
   @override
   void initState() {
     super.initState();
-    getPrefs();
+    //getPrefs();
     print('entramos al metodo init state Dash');
     // aqui se setea la info de usuario guardada para mostrar en dashboar base_user = widget.data;
     _loadingController = AnimationController(
@@ -80,7 +80,6 @@ class _DashboardScreenState extends State<DashboardScreen>
   //Future _localPath
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
-    
     return directory.path;
   }
 //Future int readcounter
@@ -163,7 +162,7 @@ class _DashboardScreenState extends State<DashboardScreen>
   void didPushAfterTransition() => _loadingController.forward();
 
   AppBar _buildAppBar(ThemeData theme) {
-    getPrefs();
+    //getPrefs();
     final menuBtn = IconButton(
       color: Colors.blue,
       icon: const Icon(FontAwesomeIcons.bars),
@@ -219,9 +218,9 @@ class _DashboardScreenState extends State<DashboardScreen>
 
 
   Widget _buildHeader(ThemeData theme) {
-    _getDatawialon();
-    _getVehiclesWialon();
-    print('se imprimio primero -- build header');
+    //_getDatawialon();
+    //_getVehiclesWialon();
+    print('Init -- build header');
     return ScaleTransition(
       scale: _headerScaleAnimation,
       child: FadeIn(
@@ -237,10 +236,7 @@ class _DashboardScreenState extends State<DashboardScreen>
               padding: EdgeInsets.all(2),
               child: Column(
                 children: <Widget>[
-                  FutureBuilder(
-                    builder: _getDatawialon(),
-                  ),
-                  Text('user: '+ post.username==null ? "" : post.username),
+                  //Text('user: '+ post.username==null ? "" : post.username),
                   //Text('sid: '+post.eid==null ? "" : post.eid),
                   //Text('id_wialon: '+post.userId.toString()==null ? "" : post.userId),
                 ],

@@ -8,23 +8,22 @@ const mockUsers = const {
 class User {
   String id;
   String name;
-  String email;
   String passwd;
-
-  User(String id, String name, String email,String pass) {
+  String token;
+  User(String id, String name, String pass,String token) {
     this.id = id;
     this.name = name;
-    this.email = email;
+    this.token = token;
     this.passwd = pass;
   }
 
   User.fromJson(Map json)
       : id = json['id'],
         name = json['name'],
-        email = json['email'],
+        token = json['token'],
         passwd = json['password'];
 
   Map toJson() {
-    return {'id': id, 'name': name, 'email': email, 'password': passwd};
+    return {'id': id, 'name': name, 'token': token, 'password': passwd};
   }
 }
