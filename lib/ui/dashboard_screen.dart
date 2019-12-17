@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:html';
+import 'dart:io';
 import 'package:GPS_CONTROL/models/users.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -77,17 +77,39 @@ class _DashboardScreenState extends State<DashboardScreen>
       curve: headerAniInterval,
     ));
   }
+  //Future _localPath
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
     
     return directory.path;
   }
+//Future int readcounter
+  Future<int> readCounter() async {
+    try {
+      final file = await _localFile;
 
+      // Leer el archivo
+      String contents = await file.readAsString();
+
+      return int.parse(contents);
+    } catch (e) {
+      // Si encuentras un error, regresamos 0
+      return 0;
+    }
+  }
+  //Futuro Archivo local
   Future<File> get _localFile async {
       final path = await _localPath;
-      return File("$path/counter.txt");
+      var fullpath = '$path/counter.txt';
+      return File(fullpath);
   }
-  
+
+  Future<File> writeCounter(int counter) async {
+    final file = await _localFile;
+    // Escribir el archivo
+    return file.writeAsString('$counter');
+  }
+
   _getVehiclesWialon() async {
       String url = "https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={%22spec%22:{%22itemsType%22:%22avl_unit%22,%22propName%22:%22trailers%22,%22propValueMask%22:%22%22,%22sortType%22:%22trailers%22,%22propType%22:%22propitemname%22},%22force%22:1,%22flags%22:4097,%22from%22:0,%22to%22:0}&sid=";
       String sid = post.eid;
@@ -194,10 +216,8 @@ class _DashboardScreenState extends State<DashboardScreen>
       iconTheme: theme.accentIconTheme,
     );
   }
-  initUser(){
-    //base_user.name = '';
-    //base_user.passwd = '';
-  }
+
+
   Widget _buildHeader(ThemeData theme) {
     _getDatawialon();
     _getVehiclesWialon();
@@ -220,7 +240,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                   FutureBuilder(
                     builder: _getDatawialon(),
                   ),
-                  //Text('user: '+ post.username==null ? "" : post.username),
+                  Text('user: '+ post.username==null ? "" : post.username),
                   //Text('sid: '+post.eid==null ? "" : post.eid),
                   //Text('id_wialon: '+post.userId.toString()==null ? "" : post.userId),
                 ],
