@@ -27,6 +27,12 @@ class _DashboardScreenState extends State<DashboardScreen>
   var arg = "%22,%22operateAs%22:%22";
   var endless = "%22}";  //User base_user;
   SharedPreferences preferences;
+  final routeObserver = TransitionRouteObserver<PageRoute>();
+  static const headerAniInterval =
+      const Interval(.1, .3, curve: Curves.easeOut);
+  Animation<double> _headerScaleAnimation;
+  AnimationController _loadingController;
+
   Future<bool> _goToLogin(BuildContext context) {
     preferences.clear();
     return Navigator.of(context)
@@ -34,12 +40,6 @@ class _DashboardScreenState extends State<DashboardScreen>
         // we dont want to pop the screen, just replace it completely
         .then((_) => false);
   }
-
-  final routeObserver = TransitionRouteObserver<PageRoute>();
-  static const headerAniInterval =
-      const Interval(.1, .3, curve: Curves.easeOut);
-  Animation<double> _headerScaleAnimation;
-  AnimationController _loadingController;
 
   getPrefs() async {
     preferences =  await SharedPreferences.getInstance();
@@ -50,11 +50,12 @@ class _DashboardScreenState extends State<DashboardScreen>
     token = preferences.getString('token');
     print('Se obtuvo satisfactoriamente los siguientes valores ...');
     print('usuario: '+username+' pass: '+ssap+' token: '+token);
+    _getDatawialon();
   }
 
   @override
   void initState() {
-    getDatawialon();
+    getPrefs();
     super.initState();
     // aqui se setea la info de usuario guardada para mostrar en dashboar base_user = widget.data;
     _loadingController = AnimationController(
@@ -69,7 +70,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     ));
   }
   
-  Future<String> getDatawialon() async {
+  Future<String> _getDatawialon() async {
     Response res = await get(uri+token+arg+username+endless);
     if (res.statusCode == 200) {
       var bodyfull = jsonDecode(res.body);
@@ -166,7 +167,6 @@ class _DashboardScreenState extends State<DashboardScreen>
     //base_user.passwd = '';
   }
   Widget _buildHeader(ThemeData theme) {
-    getPrefs();
     print('se imprimio primero -- build header');
 
 
