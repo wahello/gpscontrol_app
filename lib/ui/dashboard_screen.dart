@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toast/toast.dart';
 import '../common/transition_route_observer.dart';
 import '../widgets/fade_in.dart';
 import '../common/constants.dart';
@@ -88,6 +89,9 @@ class _DashboardScreenState extends State<DashboardScreen>
     if (res.statusCode == 200) {
       var bodyfull = jsonDecode(res.body);
       var body = bodyfull['user'];
+      print(bodyfull['user']);
+      print(body['id']);
+      print(preferences.getString('token'));
       post = new Post(
         eid: bodyfull['eid'],
         giSid:bodyfull['gis_sid'] ,
@@ -97,7 +101,6 @@ class _DashboardScreenState extends State<DashboardScreen>
         userId: body['id'],
         token: token, );
         preferences.setString('SID', bodyfull['eid']);
-        print('se creò objeto post!!!!!!!!');
     } else {
       print('pailas');
       throw "Can't get posts.";
@@ -240,6 +243,21 @@ class _DashboardScreenState extends State<DashboardScreen>
                       }
                     },
                   ),
+                  FutureBuilder(
+                      future: _getDataSession(),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        if(snapshot.connectionState == ConnectionState.done){
+                            Toast.show("Se inicio hilo de datos", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+                            return Text('');
+                        }
+                        else if(snapshot.hasError){
+                          throw snapshot.error;
+                        }
+                        else{
+                          return Center(child: CircularProgressIndicator());
+                        }
+                      },
+                    ),
                   //Text('user: '+ post.username==null ? "" : post.username),
                   //Text('sid: '+post.eid==null ? "" : post.eid),
                   //Text('id_wialon: '+post.userId.toString()==null ? "" : post.userId),
@@ -366,40 +384,27 @@ class _DashboardScreenState extends State<DashboardScreen>
                       flex: 2,
                       child: _buildHeader(theme),
                     ),
-                    FutureBuilder(
-                      future: _getDataSession(),
-                      builder: (BuildContext context, AsyncSnapshot snapshot) {
-                        if(snapshot.connectionState == ConnectionState.done){
-                            return Expanded(
-                              flex: 8,
-                              child: ShaderMask(
-                                // blendMode: BlendMode.srcOver,
-                                shaderCallback: (Rect bounds) {
-                                  return LinearGradient(
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                    tileMode: TileMode.clamp,
-                                    colors: <Color>[
-                                      Colors.white,
-                                      Colors.white,
-                                      Colors.white,
-                                      Colors.white,
-                                      // Colors.red,
-                                      // Colors.yellow,
-                                    ],
-                                  ).createShader(bounds);
-                                },
-                                child: _buildDashboardGrid(),
-                              ),
-                            );
-                        }
-                        else if(snapshot.hasError){
-                          throw snapshot.error;
-                        }
-                        else{
-                          return Center(child: CircularProgressIndicator());
-                        }
-                      },
+                    Expanded(
+                      flex: 8,
+                      child: ShaderMask(
+                        // blendMode: BlendMode.srcOver,
+                        shaderCallback: (Rect bounds) {
+                          return LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            tileMode: TileMode.clamp,
+                            colors: <Color>[
+                              Colors.white,
+                              Colors.white,
+                              Colors.white,
+                              Colors.white,
+                              // Colors.red,
+                              // Colors.yellow,
+                            ],
+                          ).createShader(bounds);
+                        },
+                        child: _buildDashboardGrid(),
+                      ),
                     ),
                   ],
                 ),
