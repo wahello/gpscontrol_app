@@ -11,7 +11,7 @@ import '../common/transition_route_observer.dart';
 import '../widgets/fade_in.dart';
 import '../common/constants.dart';
 import '../widgets/round_button.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:GPS_CONTROL/models/post.dart';
 import 'custom_route.dart';
@@ -93,13 +93,12 @@ class _DashboardScreenState extends State<DashboardScreen>
     }else{
       baseUser = new User('1', username, ssap, token);
     }
-    
     print('Se obtuvo satisfactoriamente los siguientes valores ...');
     print('usuario: '+username+' pass: '+ssap+' token: '+token);
     return baseUser;
   }
     Future<Post> _getDataSession() async{
-      Response res = await get(uri+token+arg+username+endless);
+      http.Response res = await http.get(uri+token+arg+username+endless);
       print(res.statusCode);
       if (res.statusCode == 200) {
         var bodyfull = jsonDecode(res.body);
@@ -107,7 +106,8 @@ class _DashboardScreenState extends State<DashboardScreen>
         //print(bodyfull['user']==null?'pailas data sesion user no existe':bodyfull['user']);
         //print(body['id']==null?'pailas id sesion user no existe':bodyfull['id']);
         //print(preferences.getString('token'));
-        post = Post.fromJson(bodyfull, body, token);
+        post = new Post.fromJson(bodyfull, body, token);
+        print('se inicio el objeto post');
         print(post.eid);
           Toast.show("Sincronizado satisfactoriamente!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
           return post;
@@ -115,32 +115,6 @@ class _DashboardScreenState extends State<DashboardScreen>
         Toast.show("algo salio mal!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
         throw "Can't get posts.";
       }
-  }
-//Future int readcounter
-  Future<int> readCounter() async {
-    try {
-      final file = await _localFile;
-
-      // Leer el archivo
-      String contents = await file.readAsString();
-
-      return int.parse(contents);
-    } catch (e) {
-      // Si encuentras un error, regresamos 0
-      return 0;
-    }
-  }
-  //Futuro Archivo local
-  Future<File> get _localFile async {
-      final path = await _localPath;
-      var fullpath = '$path/counter.txt';
-      return File(fullpath);
-  }
-
-  Future<File> writeCounter(int counter) async {
-    final file = await _localFile;
-    // Escribir el archivo
-    return file.writeAsString('$counter');
   }
 
   @override
@@ -237,7 +211,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                   FutureBuilder(
                     future: _getDataSession(),
                     builder:(context, snapshot){
-                      if(snapshot.connectionState == ConnectionState.done){
+                      if(snapshot.connectionState == ConnectionState.done && snapshot.hasData){
                             flag_data = true;
                             return Container(
                                 child: Center(

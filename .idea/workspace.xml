@@ -9,10 +9,7 @@
     <bookmark url="file://$PROJECT_DIR$/lib/ui/alistamientos.dart" line="249" mnemonic="7" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0a96b3fe-23a4-49cf-9f4a-4ed7b628d515" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/dashboard_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ui/dashboard_screen.dart" afterDir="false" />
-    </list>
+    <list default="true" id="0a96b3fe-23a4-49cf-9f4a-4ed7b628d515" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
     <ignored path="$PROJECT_DIR$/.idea/" />
     <ignored path="$PROJECT_DIR$/.pub/" />
@@ -32,7 +29,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://C:/DART SDK/flutter/packages/flutter/lib/src/widgets/framework.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="121">
+            <state relative-caret-position="3844">
               <caret line="2644" column="28" selection-start-line="2644" selection-start-column="28" selection-end-line="2644" selection-end-column="28" />
             </state>
           </provider>
@@ -215,9 +212,9 @@
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
       <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -534,7 +531,7 @@
     <entry file="file://$PROJECT_DIR$/lib/ui/login_screen.dart" />
     <entry file="file://C:/DART SDK/flutter/packages/flutter/lib/src/widgets/framework.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="121">
+        <state relative-caret-position="3844">
           <caret line="2644" column="28" selection-start-line="2644" selection-start-column="28" selection-end-line="2644" selection-end-column="28" />
         </state>
       </provider>
