@@ -108,7 +108,10 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
     String _selectedCar; // Option 2
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: true,
+        leading: new IconButton(
+        icon: new Icon(Icons.arrow_back, color: Colors.white),
+        onPressed: () => Navigator.of(context).pushNamed('/dashboard')
+      ),
         title: Text("Inicio Alistamiento"),
       ),
       body: FutureBuilder(

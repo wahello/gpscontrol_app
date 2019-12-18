@@ -103,11 +103,11 @@ class _DashboardScreenState extends State<DashboardScreen>
       print(res.statusCode);
       if (res.statusCode == 200) {
         var bodyfull = jsonDecode(res.body);
-        var body = bodyfull['user'];
-        print(bodyfull['user']==null?'pailas data sesion user no existe':bodyfull['user']);
-        print(body['id']==null?'pailas id sesion user no existe':bodyfull['id']);
-        print(preferences.getString('token'));
-        post = new Post.fromJson(bodyfull, body, token);
+        var body = jsonDecode(bodyfull['user']);
+        //print(bodyfull['user']==null?'pailas data sesion user no existe':bodyfull['user']);
+        //print(body['id']==null?'pailas id sesion user no existe':bodyfull['id']);
+        //print(preferences.getString('token'));
+        post = Post.fromJson(bodyfull, body, token);
         print(post.eid);
           Toast.show("Sincronizado satisfactoriamente!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
           return post;
