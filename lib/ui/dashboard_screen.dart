@@ -88,9 +88,6 @@ class _DashboardScreenState extends State<DashboardScreen>
     if (res.statusCode == 200) {
       var bodyfull = jsonDecode(res.body);
       var body = bodyfull['user'];
-      print(bodyfull['user']);
-      print(body['id']);
-      print(preferences.getString('token'));
       post = new Post(
         eid: bodyfull['eid'],
         giSid:bodyfull['gis_sid'] ,
@@ -99,6 +96,8 @@ class _DashboardScreenState extends State<DashboardScreen>
         username: body['nm'],
         userId: body['id'],
         token: token, );
+        preferences.setString('SID', bodyfull['eid']);
+        print('se creò objeto post!!!!!!!!');
     } else {
       print('pailas');
       throw "Can't get posts.";
@@ -229,7 +228,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                       if(snapshot.connectionState == ConnectionState.done){
                             return Container(
                                 child: Center(
-                                  child:Text('Usuario: '+baseUser.name+'\n SID: '),
+                                  child:Text(baseUser.name),
                                 ),
                             );
                       }
@@ -367,27 +366,40 @@ class _DashboardScreenState extends State<DashboardScreen>
                       flex: 2,
                       child: _buildHeader(theme),
                     ),
-                    Expanded(
-                      flex: 8,
-                      child: ShaderMask(
-                        // blendMode: BlendMode.srcOver,
-                        shaderCallback: (Rect bounds) {
-                          return LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            tileMode: TileMode.clamp,
-                            colors: <Color>[
-                              Colors.white,
-                              Colors.white,
-                              Colors.white,
-                              Colors.white,
-                              // Colors.red,
-                              // Colors.yellow,
-                            ],
-                          ).createShader(bounds);
-                        },
-                        child: _buildDashboardGrid(),
-                      ),
+                    FutureBuilder(
+                      future: _getDataSession(),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        if(snapshot.connectionState == ConnectionState.done){
+                            return Expanded(
+                              flex: 8,
+                              child: ShaderMask(
+                                // blendMode: BlendMode.srcOver,
+                                shaderCallback: (Rect bounds) {
+                                  return LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    tileMode: TileMode.clamp,
+                                    colors: <Color>[
+                                      Colors.white,
+                                      Colors.white,
+                                      Colors.white,
+                                      Colors.white,
+                                      // Colors.red,
+                                      // Colors.yellow,
+                                    ],
+                                  ).createShader(bounds);
+                                },
+                                child: _buildDashboardGrid(),
+                              ),
+                            );
+                        }
+                        else if(snapshot.hasError){
+                          throw snapshot.error;
+                        }
+                        else{
+                          return Center(child: CircularProgressIndicator());
+                        }
+                      },
                     ),
                   ],
                 ),
