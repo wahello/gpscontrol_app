@@ -25,6 +25,7 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
   Post post;
   User user;
   Alistamiento nuevoAlistamiento;
+  Map value;
 
   @override
   void initState() {
@@ -94,6 +95,7 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
       List<String> vehiculos = new List();
       if (res.statusCode == 200) {
         var bodyfull = await jsonDecode(res.body);
+        value = bodyfull;
         print('se encontraron '+bodyfull['totalItemsCount']+' items');
         return vehiculos;
       } else {
@@ -148,15 +150,16 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
                       ),
                       color: Colors.blue,
                       onPressed: () {
-
-                        //print(nuevoAlistamiento.vehiculo);
+                        
+                        /*print(nuevoAlistamiento.vehiculo);
                         Navigator.of(context).pushReplacement(FadePageRoute(
                           builder: (context) =>new  AlistamientoScreen(data: _selectedCar,),
                         ));
-                        //_saveURL(_urlCtrler.text);
+                        //_saveURL(_urlCtrler.text);*/
                       },
                     ),
-                  )
+                  ),
+                  Text(value.toString()),
                 ],
               );
           }else if(snapshot.hasError){
