@@ -32,7 +32,7 @@ class _DashboardScreenState extends State<DashboardScreen>
   String ssap;
   String username = "";
   String token = "";
-  var tokenClean;
+  var tokenClean = "";
   var uri = "https://hst-api.wialon.com/wialon/ajax.html?svc=token/login&params={%22token%22:%22";
   var arg = "%22,%22operateAs%22:%22";
   var endless = "%22}";  //User base_user;
@@ -83,15 +83,14 @@ class _DashboardScreenState extends State<DashboardScreen>
     username = preferences.getString('user');
     ssap = preferences.getString('ssap');
     token = preferences.getString('token');
-    if (token.contains("&svc_error=0")){
-      var fistTag = "&user_name=";
-      var endTag = "&svc_error=0";
-      var concat = fistTag+username+endTag;
-      tokenClean = token.replaceAll(concat,'');
+    if (token.contains("&user_name=")){
+      var fistTag = "&user_name=$username&svc_error=0";
+      tokenClean = token.replaceAll(fistTag,'');
       baseUser = new User('1', username, ssap, tokenClean);
       token = tokenClean;
     }else{
       baseUser = new User('1', username, ssap, token);
+      tokenClean = token;
     }
 
     print('Se obtuvo satisfactoriamente los siguientes valores ...');
@@ -105,6 +104,7 @@ class _DashboardScreenState extends State<DashboardScreen>
       if (res.statusCode == 200) {
         print('entramos al validador 200 code');
         var bodyfull = await jsonDecode(res.body);
+        print("asi quedo token "+token+" y tockenclean "+tokenClean);
         print(bodyfull);
         var body = await jsonDecode(bodyfull['user']);
         //print(bodyfull['user']==null?'pailas data sesion user no existe':bodyfull['user']);
