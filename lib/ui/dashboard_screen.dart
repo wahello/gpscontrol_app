@@ -77,12 +77,22 @@ class _DashboardScreenState extends State<DashboardScreen>
   //future get prefs
   Future<User> getPrefs() async {
     preferences =  await SharedPreferences.getInstance();
+    var token_clean;
     //base_user.name = preferences.getString('user');
     //base_user.passwd = preferences.getString('ssap');
     username = preferences.getString('user');
     ssap = preferences.getString('ssap');
     token = preferences.getString('token');
-    baseUser = new User('1', username, ssap, token);
+    if (token.contains("&svc_error=0")){
+      var fistTag = "&user_name=";
+      var endTag = "&svc_error=0";
+      var concat = fistTag+username+endTag;
+      token_clean = token.replaceAll(concat,'');
+      baseUser = new User('1', username, ssap, token_clean);
+    }else{
+      baseUser = new User('1', username, ssap, token);
+    }
+    
     print('Se obtuvo satisfactoriamente los siguientes valores ...');
     print('usuario: '+username+' pass: '+ssap+' token: '+token);
     return baseUser;
@@ -90,21 +100,15 @@ class _DashboardScreenState extends State<DashboardScreen>
     Future<Post> _getDataSession() async{
       Response res = await get(uri+token+arg+username+endless);
       await getPrefs().then((User user){
+        print(res.statusCode);
         if (res.statusCode == 200) {
         var bodyfull = jsonDecode(res.body);
         var body = bodyfull['user'];
         print(bodyfull['user']==null?'pailas data sesion user no existe':bodyfull['user']);
         print(body['id']==null?'pailas id sesion user no existe':bodyfull['id']);
         print(preferences.getString('token'));
-        post = new Post(
-          eid: bodyfull['eid'],
-          giSid:bodyfull['gis_sid'] ,
-          au:bodyfull['au'] ,
-          tm: bodyfull['tm'],
-          username: body['nm'],
-          userId: body['id'],
-          token: token, );
-          preferences.setString('SID', bodyfull['eid']);
+        post = new Post.fromJson(bodyfull, body, token);
+        print(post.eid);
           Toast.show("Sincronizado satisfactoriamente!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
           return post;
       } else {
