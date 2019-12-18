@@ -54,8 +54,8 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   @override
   void initState() {
-    //getPrefs();
     super.initState();
+    getPrefs();
     print('entramos al metodo init state Dash');
     // aqui se setea la info de usuario guardada para mostrar en dashboar base_user = widget.data;
     _loadingController = AnimationController(
@@ -77,7 +77,7 @@ class _DashboardScreenState extends State<DashboardScreen>
   //future get prefs
   Future<User> getPrefs() async {
     preferences =  await SharedPreferences.getInstance();
-    var token_clean;
+    var tokenClean;
     //base_user.name = preferences.getString('user');
     //base_user.passwd = preferences.getString('ssap');
     username = preferences.getString('user');
@@ -87,8 +87,9 @@ class _DashboardScreenState extends State<DashboardScreen>
       var fistTag = "&user_name=";
       var endTag = "&svc_error=0";
       var concat = fistTag+username+endTag;
-      token_clean = token.replaceAll(concat,'');
-      baseUser = new User('1', username, ssap, token_clean);
+      tokenClean = token.replaceAll(concat,'');
+      baseUser = new User('1', username, ssap, tokenClean);
+      token = tokenClean;
     }else{
       baseUser = new User('1', username, ssap, token);
     }
@@ -99,9 +100,8 @@ class _DashboardScreenState extends State<DashboardScreen>
   }
     Future<Post> _getDataSession() async{
       Response res = await get(uri+token+arg+username+endless);
-      await getPrefs().then((User user){
-        print(res.statusCode);
-        if (res.statusCode == 200) {
+      print(res.statusCode);
+      if (res.statusCode == 200) {
         var bodyfull = jsonDecode(res.body);
         var body = bodyfull['user'];
         print(bodyfull['user']==null?'pailas data sesion user no existe':bodyfull['user']);
@@ -115,7 +115,6 @@ class _DashboardScreenState extends State<DashboardScreen>
         Toast.show("algo salio mal!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
         throw "Can't get posts.";
       }
-    });
   }
 //Future int readcounter
   Future<int> readCounter() async {

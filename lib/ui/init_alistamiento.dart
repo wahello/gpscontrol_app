@@ -108,6 +108,7 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
     String _selectedCar; // Option 2
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: true,
         title: Text("Inicio Alistamiento"),
       ),
       body: FutureBuilder(
