@@ -82,9 +82,11 @@ class _DashboardScreenState extends State<DashboardScreen>
     baseUser = new User('1', username, ssap, token);
     print('Se obtuvo satisfactoriamente los siguientes valores ...');
     print('usuario: '+username+' pass: '+ssap+' token: '+token);
+    _getDataSession();
     return baseUser;
   }
-  Future<Post> _getDataSession() async{
+    _getDataSession() async{
+    Toast.show("Se inicio hilo de datos", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
     Response res = await get(uri+token+arg+username+endless);
     if (res.statusCode == 200) {
       var bodyfull = jsonDecode(res.body);
@@ -101,11 +103,12 @@ class _DashboardScreenState extends State<DashboardScreen>
         userId: body['id'],
         token: token, );
         preferences.setString('SID', bodyfull['eid']);
+        Toast.show("Sincronizado satisfactoriamente!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
     } else {
       print('pailas');
+      Toast.show("algo salio mal!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
       throw "Can't get posts.";
     }
-    return post;
   }
 //Future int readcounter
   Future<int> readCounter() async {
@@ -243,21 +246,6 @@ class _DashboardScreenState extends State<DashboardScreen>
                       }
                     },
                   ),
-                  FutureBuilder(
-                      future: _getDataSession(),
-                      builder: (BuildContext context, AsyncSnapshot snapshot) {
-                        if(snapshot.connectionState == ConnectionState.done){
-                            Toast.show("Se inicio hilo de datos", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
-                            return Text('');
-                        }
-                        else if(snapshot.hasError){
-                          throw snapshot.error;
-                        }
-                        else{
-                          return Center(child: CircularProgressIndicator());
-                        }
-                      },
-                    ),
                   //Text('user: '+ post.username==null ? "" : post.username),
                   //Text('sid: '+post.eid==null ? "" : post.eid),
                   //Text('id_wialon: '+post.userId.toString()==null ? "" : post.userId),
