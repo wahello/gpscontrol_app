@@ -23,6 +23,7 @@ class LoginScreen extends StatelessWidget {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   StreamSubscription<WebViewStateChanged> _onStateChanged;
   String toKen;
+  String userTemp;
   String url;
   SharedPreferences prefs ;
 
@@ -68,6 +69,14 @@ class LoginScreen extends StatelessWidget {
         // Check if link is correct
         if (state.type == WebViewState.finishLoad && state.url.contains("simple.html?access_token")) {
             url = state.url;
+            //filtro
+            if(url.contains("&svc_error=0")){
+              var fistTag = "&user_name=";
+              var endTag = "&svc_error=0";
+              var concat = fistTag+userTemp+endTag;
+              url.replaceAll(concat,'');
+              url.replaceAll(' ','');
+            }
             print('La url con la que se accedio fue: '+url);
             var token = url.replaceAll('http://tracking.gpscontrolcolombia.com/login_simple.html?access_token=', '');
             print('el token es: '+token);
@@ -205,6 +214,7 @@ class LoginScreen extends StatelessWidget {
         print('Login info');
         print('Name: ${loginData.name}');
         print('Password: ${loginData.password}');
+        userTemp = loginData.name;
         initStreamController();
         _validationWeb(loginData.name , loginData.password);
         var client = OdooClient("http://66.228.39.68:8069");

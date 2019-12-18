@@ -88,29 +88,29 @@ class _DashboardScreenState extends State<DashboardScreen>
     return baseUser;
   }
     Future<Post> _getDataSession() async{
-    Response res = await get(uri+token+arg+username+endless);
-    await getPrefs().then((User user){
-      if (res.statusCode == 200) {
-      var bodyfull = jsonDecode(res.body);
-      var body = bodyfull['user'];
-      print(bodyfull['user']==null?'pailas data sesion user no existe':bodyfull['user']);
-      print(body['id']==null?'pailas id sesion user no existe':bodyfull['id']);
-      print(preferences.getString('token'));
-      post = new Post(
-        eid: bodyfull['eid'],
-        giSid:bodyfull['gis_sid'] ,
-        au:bodyfull['au'] ,
-        tm: bodyfull['tm'],
-        username: body['nm'],
-        userId: body['id'],
-        token: token, );
-        preferences.setString('SID', bodyfull['eid']);
-        Toast.show("Sincronizado satisfactoriamente!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
-        return post;
-    } else {
-      Toast.show("algo salio mal!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
-      throw "Can't get posts.";
-    }
+      Response res = await get(uri+token+arg+username+endless);
+      await getPrefs().then((User user){
+        if (res.statusCode == 200) {
+        var bodyfull = jsonDecode(res.body);
+        var body = bodyfull['user'];
+        print(bodyfull['user']==null?'pailas data sesion user no existe':bodyfull['user']);
+        print(body['id']==null?'pailas id sesion user no existe':bodyfull['id']);
+        print(preferences.getString('token'));
+        post = new Post(
+          eid: bodyfull['eid'],
+          giSid:bodyfull['gis_sid'] ,
+          au:bodyfull['au'] ,
+          tm: bodyfull['tm'],
+          username: body['nm'],
+          userId: body['id'],
+          token: token, );
+          preferences.setString('SID', bodyfull['eid']);
+          Toast.show("Sincronizado satisfactoriamente!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+          return post;
+      } else {
+        Toast.show("algo salio mal!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+        throw "Can't get posts.";
+      }
     });
   }
 //Future int readcounter
