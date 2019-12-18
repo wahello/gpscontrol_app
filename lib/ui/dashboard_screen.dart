@@ -54,7 +54,7 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   @override
   void initState() {
-    getPrefs();
+    //getPrefs();
     super.initState();
     print('entramos al metodo init state Dash');
     // aqui se setea la info de usuario guardada para mostrar en dashboar base_user = widget.data;
@@ -89,7 +89,8 @@ class _DashboardScreenState extends State<DashboardScreen>
   }
     Future<Post> _getDataSession() async{
     Response res = await get(uri+token+arg+username+endless);
-    if (res.statusCode == 200) {
+    await getPrefs().then((User user){
+      if (res.statusCode == 200) {
       var bodyfull = jsonDecode(res.body);
       var body = bodyfull['user'];
       print(bodyfull['user']==null?'pailas data sesion user no existe':bodyfull['user']);
@@ -110,6 +111,7 @@ class _DashboardScreenState extends State<DashboardScreen>
       Toast.show("algo salio mal!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
       throw "Can't get posts.";
     }
+    });
   }
 //Future int readcounter
   Future<int> readCounter() async {
