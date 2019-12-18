@@ -59,25 +59,20 @@ class LoginScreen extends StatelessWidget {
       flagPass = false;
   }
 
-  saveCredentials(String token) async
-  {
-    prefs.setString('token', token);
-  }
-
   onStateChanged(WebViewStateChanged state) async {
         print("onStateChanged: ${state.type} ${state.url}");
         // Check if link is correct
         if (state.type == WebViewState.finishLoad && state.url.contains("simple.html?access_token")) {
             url = state.url;
             //filtro
-            print('La url con la que se accedio fue:'+url+'//');
+            print('La url con la que se accedio fue:'+url);
             var token = url.replaceAll('http://tracking.gpscontrolcolombia.com/login_simple.html?access_token=', '');
             print('el token es: '+token);
             _webview.close();
             isLoggedIn = true;
             flagPass = true;
             toKen = token;
-            saveCredentials(token);
+            //saveCredentials(token);
             // Check if view is mounted and displayed
             /*
             if (mounted) {
@@ -131,7 +126,7 @@ class LoginScreen extends StatelessWidget {
         _saveData(user, pass);
         return null;
       }else {
-        return 'Prohibido';
+        return 'Hubo un error, verifica tu usuario o contraseña e inicia de nuevo.';
       }
     });
   }

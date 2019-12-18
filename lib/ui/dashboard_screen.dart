@@ -32,6 +32,7 @@ class _DashboardScreenState extends State<DashboardScreen>
   String ssap;
   String username = "";
   String token = "";
+  var tokenClean;
   var uri = "https://hst-api.wialon.com/wialon/ajax.html?svc=token/login&params={%22token%22:%22";
   var arg = "%22,%22operateAs%22:%22";
   var endless = "%22}";  //User base_user;
@@ -55,7 +56,7 @@ class _DashboardScreenState extends State<DashboardScreen>
   @override
   void initState() {
     super.initState();
-    getPrefs();
+    //getPrefs();
     print('entramos al metodo init state Dash');
     // aqui se setea la info de usuario guardada para mostrar en dashboar base_user = widget.data;
     _loadingController = AnimationController(
@@ -77,7 +78,6 @@ class _DashboardScreenState extends State<DashboardScreen>
   //future get prefs
   Future<User> getPrefs() async {
     preferences =  await SharedPreferences.getInstance();
-    var tokenClean;
     //base_user.name = preferences.getString('user');
     //base_user.passwd = preferences.getString('ssap');
     username = preferences.getString('user');
@@ -93,16 +93,20 @@ class _DashboardScreenState extends State<DashboardScreen>
     }else{
       baseUser = new User('1', username, ssap, token);
     }
+
     print('Se obtuvo satisfactoriamente los siguientes valores ...');
     print('usuario: '+username+' pass: '+ssap+' token: '+token);
     return baseUser;
   }
     Future<Post> _getDataSession() async{
       http.Response res = await http.get(uri+token+arg+username+endless);
+      await getPrefs();
       print(res.statusCode);
       if (res.statusCode == 200) {
-        var bodyfull = jsonDecode(res.body);
-        var body = jsonDecode(bodyfull['user']);
+        print('entramos al validador 200 code');
+        var bodyfull = await jsonDecode(res.body);
+        print(bodyfull);
+        var body = await jsonDecode(bodyfull['user']);
         //print(bodyfull['user']==null?'pailas data sesion user no existe':bodyfull['user']);
         //print(body['id']==null?'pailas id sesion user no existe':bodyfull['id']);
         //print(preferences.getString('token'));
@@ -115,6 +119,32 @@ class _DashboardScreenState extends State<DashboardScreen>
         Toast.show("algo salio mal!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
         throw "Can't get posts.";
       }
+  }
+//Future int readcounter
+  Future<int> readCounter() async {
+    try {
+      final file = await _localFile;
+
+      // Leer el archivo
+      String contents = await file.readAsString();
+
+      return int.parse(contents);
+    } catch (e) {
+      // Si encuentras un error, regresamos 0
+      return 0;
+    }
+  }
+  //Futuro Archivo local
+  Future<File> get _localFile async {
+      final path = await _localPath;
+      var fullpath = '$path/counter.txt';
+      return File(fullpath);
+  }
+
+  Future<File> writeCounter(int counter) async {
+    final file = await _localFile;
+    // Escribir el archivo
+    return file.writeAsString('$counter');
   }
 
   @override
@@ -211,7 +241,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                   FutureBuilder(
                     future: _getDataSession(),
                     builder:(context, snapshot){
-                      if(snapshot.connectionState == ConnectionState.done && snapshot.hasData){
+                      if(snapshot.connectionState == ConnectionState.done){
                             flag_data = true;
                             return Container(
                                 child: Center(
