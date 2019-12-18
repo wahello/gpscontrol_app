@@ -54,8 +54,8 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   @override
   void initState() {
+    getPrefs();
     super.initState();
-    //getPrefs();
     print('entramos al metodo init state Dash');
     // aqui se setea la info de usuario guardada para mostrar en dashboar base_user = widget.data;
     _loadingController = AnimationController(
@@ -92,8 +92,8 @@ class _DashboardScreenState extends State<DashboardScreen>
     if (res.statusCode == 200) {
       var bodyfull = jsonDecode(res.body);
       var body = bodyfull['user'];
-      print(bodyfull['user']);
-      print(body['id']);
+      print(bodyfull['user']==null?'pailas data sesion user no existe':bodyfull['user']);
+      print(body['id']==null?'pailas id sesion user no existe':bodyfull['id']);
       print(preferences.getString('token'));
       post = new Post(
         eid: bodyfull['eid'],
@@ -230,18 +230,10 @@ class _DashboardScreenState extends State<DashboardScreen>
               child: Column(
                 children: <Widget>[
                   FutureBuilder(
-                    future: getPrefs(),
+                    future: _getDataSession(),
                     builder:(context, snapshot){
                       if(snapshot.connectionState == ConnectionState.done){
-                        _getDataSession().then((result){
-                            print('se seteo el metodo get_sesion');
-                            if(result.eid == null){
-                              flag_data = false;
-                            }else{
-                              flag_data = true;
-                            }
-                            
-                          });
+                            flag_data = true;
                             return Container(
                                 child: Center(
                                   child:Text(baseUser.name),
@@ -256,6 +248,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                       }
                     },
                   ),
+                  
                   //Text('user: '+ post.username==null ? "" : post.username),
                   //Text('sid: '+post.eid==null ? "" : post.eid),
                   //Text('id_wialon: '+post.userId.toString()==null ? "" : post.userId),

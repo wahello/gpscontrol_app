@@ -37,7 +37,7 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
 
     //_checkFirstTime();
   }
-
+    
   _init_alistamiento(bool init_state, String user, String vehiculo){
     nuevoAlistamiento.folio = '';
     nuevoAlistamiento.state = '';
@@ -86,16 +86,14 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
    // }
   //}
 
-  
   Future<List<String>> _getVehiclesWialon() async {
     print('entramos al metodo obtener vehiculos');
-      String url = "https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={%22spec%22:{%22itemsType%22:%22avl_unit%22,%22propName%22:%22trailers%22,%22propValueMask%22:%22%22,%22sortType%22:%22trailers%22,%22propType%22:%22propitemname%22},%22force%22:1,%22flags%22:4097,%22from%22:0,%22to%22:0}&sid=";
+      String url = "https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={%22spec%22:{%22itemsType%22:%22avl_unit%22,%22propName%22:%22trailers%22,%22propValueMask%22:%22%22,%22sortType%22:%22trailers%22,%22propType%22:%22propitemname%22},%22force%22:1,%22flags%22:1,%22from%22:0,%22to%22:0}&sid=";
       String sid = post.eid;
       Response res = await get(url+sid);
       List<String> vehiculos = new List();
       if (res.statusCode == 200) {
         var bodyfull = await jsonDecode(res.body);
-        value = bodyfull;
         print('se encontraron '+bodyfull['totalItemsCount']+' items');
         return vehiculos;
       } else {

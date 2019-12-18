@@ -53,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen> {
         });
 
         // Not logged, need to redirect to SSO page
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (BuildContext context) => LoginScreen()
         ));
     }
