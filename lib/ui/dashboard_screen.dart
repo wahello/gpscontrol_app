@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:GPS_CONTROL/models/users.dart';
+import 'package:GPS_CONTROL/ui/init_alistamiento.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:path_provider/path_provider.dart';
@@ -13,6 +14,7 @@ import '../widgets/round_button.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 import 'package:GPS_CONTROL/models/post.dart';
+import 'custom_route.dart';
 
 
 class DashboardScreen extends StatefulWidget {
@@ -39,6 +41,7 @@ class _DashboardScreenState extends State<DashboardScreen>
       const Interval(.1, .3, curve: Curves.easeOut);
   Animation<double> _headerScaleAnimation;
   AnimationController _loadingController;
+  bool flag_data;
 
   Future<bool> _goToLogin(BuildContext context) {
     preferences.clear();
@@ -82,11 +85,9 @@ class _DashboardScreenState extends State<DashboardScreen>
     baseUser = new User('1', username, ssap, token);
     print('Se obtuvo satisfactoriamente los siguientes valores ...');
     print('usuario: '+username+' pass: '+ssap+' token: '+token);
-    _getDataSession();
     return baseUser;
   }
-    _getDataSession() async{
-    Toast.show("Se inicio hilo de datos", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+    Future<Post> _getDataSession() async{
     Response res = await get(uri+token+arg+username+endless);
     if (res.statusCode == 200) {
       var bodyfull = jsonDecode(res.body);
@@ -104,8 +105,8 @@ class _DashboardScreenState extends State<DashboardScreen>
         token: token, );
         preferences.setString('SID', bodyfull['eid']);
         Toast.show("Sincronizado satisfactoriamente!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+        return post;
     } else {
-      print('pailas');
       Toast.show("algo salio mal!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
       throw "Can't get posts.";
     }
@@ -232,6 +233,15 @@ class _DashboardScreenState extends State<DashboardScreen>
                     future: getPrefs(),
                     builder:(context, snapshot){
                       if(snapshot.connectionState == ConnectionState.done){
+                        _getDataSession().then((result){
+                            print('se seteo el metodo get_sesion');
+                            if(result.eid == null){
+                              flag_data = false;
+                            }else{
+                              flag_data = true;
+                            }
+                            
+                          });
                             return Container(
                                 child: Center(
                                   child:Text(baseUser.name),
@@ -281,7 +291,14 @@ class _DashboardScreenState extends State<DashboardScreen>
         curve: ElasticOutCurve(0.42),
       ),
       onPressed: () {
-        Navigator.pushNamed(context, '/init_alist');
+        if(flag_data == false){
+          Toast.show("Aun se estan sincronizando datos..", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+        }else{
+          Navigator.of(context).pushReplacement(FadePageRoute(
+            builder: (context) => InitAlistamiento(data: post,),
+          ));
+        }
+        //Navigator.pushNamed(context, '/init_alist');
       },
     );
   }
