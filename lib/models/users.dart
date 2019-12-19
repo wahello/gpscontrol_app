@@ -10,7 +10,7 @@ class User {
   String name;
   String passwd;
   String token;
-  User(String id, String name, String pass) {
+  User(String id, String name, String pass, String token) {
     this.id = id;
     this.name = name;
     this.token = token;

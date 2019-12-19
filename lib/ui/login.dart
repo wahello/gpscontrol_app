@@ -44,7 +44,7 @@ class LoginScreen extends StatelessWidget {
   }
   _saveData(String user, String pass) async {
       prefs = await SharedPreferences.getInstance();
-      usuario = new User('1', user, pass);
+      usuario = new User('1', user, pass, toKen);
       await prefs.setString('user', user);
       await prefs.setString('ssap', pass);
       //await prefs.setString('token', toKen);
@@ -52,11 +52,12 @@ class LoginScreen extends StatelessWidget {
   }
   void initStreamController(){
       print('iniciamos controladores');
-      String url="http://tracking.gpscontrolcolombia.com/login_simple.html";
+      String uri="http://tracking.gpscontrolcolombia.com/login_simple.html";
       _webview.cleanCookies();
       _webview.clearCache();
       print('se limpio cache y cookies');
-      _webview.launch(url,hidden: true);
+      _webview.launch(uri,hidden: true);
+      _webview.reload();
       _onStateChanged = _webview.onStateChanged.listen(this.onStateChanged);
       flagPass = false;
   }
@@ -77,45 +78,6 @@ class LoginScreen extends StatelessWidget {
             toKen = token;
             usuario.setToken(token);
             // Check if view is mounted and displayed
-            /*
-            if (mounted) {
-                try {
-                  print('entramos al if mounted');
-                    // Login... and display
-                    scaffoldState.showSnackBar(SnackBar(
-                        key: Key("login_message"),
-                        backgroundColor: Color.fromARGB(255, 39, 174, 96),
-                        content:Text("Connexion en cours..."),
-                    ));
-                    //aqui guardamos las cookies into server.. cuando las encontremos :()
-                    /*await this._api.getAndSaveAutologinLink(state.url).then((res) {
-                        print("Autologin " + res.toString());
-                    });*/
-                    return Navigator.of(context).pushReplacement(FadePageRoute(
-                          builder: (context) => DashboardScreen(data: usuario,),
-                        ));
-
-                } catch (err) {
-                    // Display error
-                    print('algo salio mal ..');
-                    print('el error es '+err);
-                    scaffoldState.showSnackBar(SnackBar(
-                        key: Key("login_message"),
-                        backgroundColor: Color.fromARGB(255, 192, 57, 43),
-                        content:Text("Error al guardar, por favor intente de nuevo !"),
-                    ));
-                }
-            } else{
-              print('entramos a else mounted ');
-            }*/
-            // Parse cookies
-            /*cookies.then((Map<String, String> ck) {
-                ck.forEach((key, value) {
-                    if (key.substring(1) == "ESTSAUTHLIGHT") {
-                        //Cookie cookie = Cookie(key.substring(1), value.substring(0, value.length - 1));
-                    }
-                });
-            });*/
         } else{
           flagPass = false;
         }
@@ -233,6 +195,8 @@ class LoginScreen extends StatelessWidget {
       },
       onSubmitAnimationCompleted: () {
         if (isLoggedIn == true && flagPass==true) {
+          _webview.dispose();
+          _webview.close();
           Navigator.of(context).pushReplacement(FadePageRoute(
             builder: (context) => DashboardScreen(userdata: usuario,),
           ));

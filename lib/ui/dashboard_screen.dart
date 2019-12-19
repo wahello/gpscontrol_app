@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:GPS_CONTROL/models/users.dart';
 import 'package:GPS_CONTROL/ui/init_alistamiento.dart';
+import 'package:GPS_CONTROL/ui/login.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:path_provider/path_provider.dart';
@@ -46,10 +47,9 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   Future<bool> _goToLogin(BuildContext context) {
     preferences.clear();
-    return Navigator.of(context)
-        .pushReplacementNamed('/')
-        // we dont want to pop the screen, just replace it completely
-        .then((_) => false);
+    return Navigator.pushAndRemoveUntil(context,
+     MaterialPageRoute(builder: (BuildContext context) => LoginScreen()),
+    ModalRoute.withName('/'));
   }
 
 
