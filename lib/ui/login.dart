@@ -44,9 +44,11 @@ class LoginScreen extends StatelessWidget {
   }
   _saveData(String user, String pass) async {
       prefs = await SharedPreferences.getInstance();
+      usuario = new User('1', user, pass);
       await prefs.setString('user', user);
       await prefs.setString('ssap', pass);
-      await prefs.setString('token', toKen);
+      //await prefs.setString('token', toKen);
+
   }
   void initStreamController(){
       print('iniciamos controladores');
@@ -68,11 +70,12 @@ class LoginScreen extends StatelessWidget {
             print('La url con la que se accedio fue:'+url);
             var token = url.replaceAll('http://tracking.gpscontrolcolombia.com/login_simple.html?access_token=', '');
             print('el token es: '+token);
+            _webview.dispose();
             _webview.close();
             isLoggedIn = true;
             flagPass = true;
             toKen = token;
-            //saveCredentials(token);
+            usuario.setToken(token);
             // Check if view is mounted and displayed
             /*
             if (mounted) {
@@ -231,7 +234,7 @@ class LoginScreen extends StatelessWidget {
       onSubmitAnimationCompleted: () {
         if (isLoggedIn == true && flagPass==true) {
           Navigator.of(context).pushReplacement(FadePageRoute(
-            builder: (context) => DashboardScreen(),
+            builder: (context) => DashboardScreen(userdata: usuario,),
           ));
         }
       },
@@ -244,7 +247,5 @@ class LoginScreen extends StatelessWidget {
       showDebugButtons: false,
     );
   }
-    _save(String sid,String user, String email,String pass) async {
-        usuario = new User(sid, user, email, pass);
-    }
+    
 }

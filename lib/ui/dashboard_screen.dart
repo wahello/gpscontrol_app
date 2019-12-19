@@ -18,8 +18,8 @@ import 'custom_route.dart';
 
 
 class DashboardScreen extends StatefulWidget {
-  //final User userdata;
-  //DashboardScreen({this.userdata});
+  final User userdata;
+  DashboardScreen({this.userdata});
   static const routeName = '/dashboard';
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
@@ -77,19 +77,18 @@ class _DashboardScreenState extends State<DashboardScreen>
   }
   //future get prefs
   Future<User> getPrefs() async {
+    baseUser = widget.userdata;
     preferences =  await SharedPreferences.getInstance();
     //base_user.name = preferences.getString('user');
     //base_user.passwd = preferences.getString('ssap');
-    username = preferences.getString('user');
-    ssap = preferences.getString('ssap');
-    token = preferences.getString('token');
+    username = baseUser.name;//preferences.getString('user');
+    ssap = baseUser.passwd;//preferences.getString('ssap');
+    token = baseUser.token;//preferences.getString('token');
     if (token.contains("&user_name=")){
       var fistTag = "&user_name=$username&svc_error=0";
       tokenClean = token.replaceAll(fistTag,'');
-      baseUser = new User('1', username, ssap, tokenClean);
       token = tokenClean;
     }else{
-      baseUser = new User('1', username, ssap, token);
       tokenClean = token;
     }
 
@@ -100,7 +99,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     Future<Post> _getDataSession() async{
       http.Response res = await http.get(uri+token+arg+username+endless);
       await getPrefs();
-      print(res.statusCode);
+      print(uri+token+arg+username+endless);
       if (res.statusCode == 200) {
         print('entramos al validador 200 code');
         var bodyfull = await jsonDecode(res.body);

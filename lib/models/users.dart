@@ -10,11 +10,14 @@ class User {
   String name;
   String passwd;
   String token;
-  User(String id, String name, String pass,String token) {
+  User(String id, String name, String pass) {
     this.id = id;
     this.name = name;
     this.token = token;
     this.passwd = pass;
+  }
+  setToken(String token){
+    this.token = token;
   }
 
   User.fromJson(Map json)
