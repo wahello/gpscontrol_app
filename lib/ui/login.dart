@@ -8,7 +8,6 @@ import '../common/constants.dart';
 import 'package:GPS_CONTROL/ui/custom_route.dart';
 import 'package:GPS_CONTROL/ui/dashboard_screen.dart';
 import '../models/users.dart';
-import 'package:odoo_api/odoo_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -170,22 +169,7 @@ class LoginScreen extends StatelessWidget {
         userTemp = loginData.name;
         initStreamController();
         _validationWeb(loginData.name , loginData.password);
-        var client = OdooClient("http://66.228.39.68:8069");
         return _loginUser(loginData);
-                /*
-        client.authenticate(loginData.name, loginData.password, "smart_contro").then((auth) {
-          if (auth.isSuccess) {
-            print("Bienvenido ${auth.getUser().name}");
-            print(auth.getSessionId());
-            var name_user = auth.getUser().name;
-            _save(auth.getSessionId(),name_user,loginData.name,loginData.password);
-            isLoggedIn = true;
-          } else {
-            print("Algo salio mal. :s ");
-            isLoggedIn = false;
-          }
-        });*/
-        
       },
       onSignup: (loginData) {
         print('Signup info');
