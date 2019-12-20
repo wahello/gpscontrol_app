@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:GPS_CONTROL/models/alistamiento.dart';
@@ -43,7 +44,9 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
   }
   Future<void> _initPrefs() async {
     preferences = await SharedPreferences.getInstance();
-    Duration(milliseconds: 2000);
+    Timer(Duration(milliseconds: 2000), (){
+      print('holis');
+      });
   }
 
   _init_alistamiento(bool init_state, String user, String vehiculo){
@@ -180,7 +183,7 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
                             ),
                             color: Colors.blue,
                             onPressed: () {
-                              /*print(nuevoAlistamiento.vehiculo);
+                              //print(nuevoAlistamiento.vehiculo);
                               Navigator.of(context).pushReplacement(FadePageRoute(
                                 builder: (context) =>new  AlistamientoScreen(data: _selectedCar,),
                               ));
@@ -213,7 +216,7 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
                       }
                     },
                   ),
-                  Text(preferences.getString('user')),
+                  //Text(preferences.getString('user')),
                 ],
               );
           }else if(snapshot.hasError){

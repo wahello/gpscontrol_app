@@ -184,19 +184,19 @@ class _AlistamientoScreenState extends State {
                     actionExtentRatio: 0.25,
                     closeOnScroll: false,
                     child: Card(
-                        child: CheckboxListTile(
-                          title: Text('$pregunta'),
-                          value: values[index],
-                          selected: false,
-                          onChanged: (bool newvalue) {
-                            setState(() {
-                              values[index] = newvalue;
-                            });
-
-                          },
-                          secondary: Icon(utils.getIconForName(id.toString())),
-                        )
-                    ),
+                        child: ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: Colors.grey,
+                              child: Icon(utils.getIconForName(id.toString())),
+                              foregroundColor: Colors.white,
+                            ),
+                            title: Text('$pregunta'),
+                            subtitle: Text('$desc'),
+                            onTap: () => {
+                              print('se hizo tap en '+index.toString()),
+                            } ,
+                          ),
+              ),
                     actions: <Widget>[
                       /*new IconSlideAction(
                         caption: 'OK',
@@ -214,7 +214,7 @@ class _AlistamientoScreenState extends State {
                           caption: 'OK',
                           color: Colors.green,
                           icon: Icons.assignment_turned_in,
-                          closeOnTap: false,
+                          closeOnTap: true,
                           onTap: () => {
 
                           },
@@ -244,7 +244,7 @@ class _AlistamientoScreenState extends State {
                     color: Colors.white,
                   ),
                 ),
-                color: Colors.blue,
+                color: Colors.grey,
                 onPressed: () {
 
                   Navigator.of(context).pushReplacement(FadePageRoute(
