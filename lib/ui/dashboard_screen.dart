@@ -32,6 +32,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     with SingleTickerProviderStateMixin, TransitionRouteAware {
   Post post;
   User baseUser;
+  OdooClient cliente;
   String ssap;
   String username = "";
   String token = "";
@@ -77,22 +78,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     final directory = await getApplicationDocumentsDirectory();
     return directory.path;
   }
-  Future<String> conexionPrincipal(){
-    var client = OdooClient("http://66.228.39.68:8069");
-        client.authenticate('appbot', 'iopunjab',"smart_contro").then((auth) {
-          if (auth.isSuccess) {
-            print("Bienvenido ${auth.getUser().name}");
-            print(auth.getSessionId());
-            var name_user = auth.getUser().name;
-            //_save(auth.getSessionId(),name_user,loginData.name,loginData.password);
-            //isLoggedIn = true;
-          } else {
-            print("Algo salio mal. :s ");
-            //isLoggedIn = false;
-          }
-        });
-    //return 'ok';
-  }
+  
   //future get prefs
   Future<User> getPrefs() async {
     baseUser = widget.userdata;
@@ -113,29 +99,6 @@ class _DashboardScreenState extends State<DashboardScreen>
     print('Se obtuvo satisfactoriamente los siguientes valores ...');
     print('usuario: '+username+' pass: '+ssap+' token: '+token);
     return baseUser;
-  }
-    Future<Post> _getDataSession() async{
-      http.Response res = await http.get(uri+token+arg+username+endless);
-      await getPrefs();
-      print(uri+token+arg+username+endless);
-      if (res.statusCode == 200) {
-        print('entramos al validador 200 code');
-        var bodyfull = await jsonDecode(res.body);
-        print("asi quedo token "+token+" y tockenclean "+tokenClean);
-        print(bodyfull);
-        var body = await jsonDecode(bodyfull['user']);
-        //print(bodyfull['user']==null?'pailas data sesion user no existe':bodyfull['user']);
-        //print(body['id']==null?'pailas id sesion user no existe':bodyfull['id']);
-        //print(preferences.getString('token'));
-        post = new Post.fromJson(bodyfull, body, token);
-        print('se inicio el objeto post');
-        print(post.eid);
-          Toast.show("Sincronizado satisfactoriamente!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
-          return post;
-      } else {
-        Toast.show("algo salio mal!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
-        throw "Can't get posts.";
-      }
   }
 //Future int readcounter
   Future<int> readCounter() async {
@@ -235,6 +198,21 @@ class _DashboardScreenState extends State<DashboardScreen>
     );
   }
 
+  Future<void>_initOdooSession() async {
+    cliente = OdooClient("http://66.228.39.68:8069");
+        await cliente.authenticate("demo@gps.com", "iopunjab1234!","smart_contro").then((auth) {
+          if (auth.isSuccess) {
+            print("Bienvenido ${auth.getUser().name}");
+            print(auth.getSessionId());
+            var name_user = auth.getUser().name;
+            print(name_user);
+          } else {
+            print("Algo salio mal. :s ");
+            //isLoggedIn = false;
+          }
+        });
+
+  }
 
   Widget _buildHeader(ThemeData theme) {
     //_getDatawialon();
@@ -256,7 +234,7 @@ class _DashboardScreenState extends State<DashboardScreen>
               child: Column(
                 children: <Widget>[
                   FutureBuilder(
-                    future: _getDataSession(),
+                    future: getPrefs(),
                     builder:(context, snapshot){
                       if(snapshot.connectionState == ConnectionState.done){
                             flag_data = true;
@@ -296,7 +274,9 @@ class _DashboardScreenState extends State<DashboardScreen>
         interval.end,
         curve: ElasticOutCurve(0.42),
       ),
-      onPressed: () {},
+      onPressed: () {
+        
+      },
     );
   }
   Widget _buildButton1({Widget icon, String label, Interval interval}) {
@@ -334,7 +314,8 @@ class _DashboardScreenState extends State<DashboardScreen>
       ),
       onPressed: () {
         //_getVehiclesWialon();
-        Navigator.pushNamed(context, '/init_alist');
+        _initOdooSession();
+        //Navigator.pushNamed(context, '/init_alist');
       },
     );
   }
