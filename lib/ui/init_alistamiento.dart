@@ -43,6 +43,7 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
   }
   Future<void> _initPrefs() async {
     preferences = await SharedPreferences.getInstance();
+    Duration(milliseconds: 2000);
   }
 
   _init_alistamiento(bool init_state, String user, String vehiculo){
@@ -114,47 +115,103 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
                   FutureBuilder(
                     future: _initPrefs(),
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      return Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: Center(
-                          child: DropdownButton(
-                            hint: Text('Se esta sincronizando los vehiculos, espere un momento...'), // Not necessary for Option 1
-                            value: _selectedCar,
-                            onChanged: (newValue) {
-                              this.setState(() {
-                                _selectedCar = newValue;
-                                print(_selectedCar);
-                              });
-                            },
-                            items: _locations.map((location) {
-                              return DropdownMenuItem(
-                                child: new Text(location),
-                                value: location,
-                              );
-                            }).toList(),
+                      if(snapshot.connectionState == ConnectionState.done){
+                        return Padding(
+                          padding: EdgeInsets.all(5.0),
+                          child: Center(
+                            child: DropdownButton(
+                              hint: Text('Seleccione el vehiculo'), // Not necessary for Option 1
+                              value: _selectedCar,
+                              onChanged: (newValue) {
+                                this.setState(() {
+                                  _selectedCar = newValue;
+                                  print(_selectedCar);
+                                });
+                              },
+                              items: _locations.map((location) {
+                                return DropdownMenuItem(
+                                  child: new Text(location),
+                                  value: location,
+                                );
+                              }).toList(),
+                            ),
                           ),
-                        ),
-                      );
+                        );
+                      }else if(snapshot.hasError){
+                           throw snapshot.error;
+                      }else{
+                        return Padding(
+                          padding: EdgeInsets.all(5.0),
+                          child: Center(
+                            child: DropdownButton(
+                              hint: Text('espere un momento...'), // Not necessary for Option 1
+                              value: _selectedCar,
+                              onChanged: (newValue) {
+                                this.setState(() {
+                                  _selectedCar = newValue;
+                                  print(_selectedCar);
+                                });
+                              },
+                              items: _locations.map((location) {
+                                return DropdownMenuItem(
+                                  child: new Text(location),
+                                  value: location,
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        );
+
+                      }
                     },
                   ),
-                  Padding(
-                    padding: EdgeInsets.all(15.0),
-                    child: MaterialButton(
-                      child: Text(
-                        "Iniciar Alistamiento",
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                      color: Colors.blue,
-                      onPressed: () {
-                        /*print(nuevoAlistamiento.vehiculo);
-                        Navigator.of(context).pushReplacement(FadePageRoute(
-                          builder: (context) =>new  AlistamientoScreen(data: _selectedCar,),
-                        ));
-                        //_saveURL(_urlCtrler.text);*/
-                      },
-                    ),
+                  FutureBuilder(
+                    future: _initPrefs(),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if(snapshot.connectionState == ConnectionState.done){
+                        return Padding(
+                          padding: EdgeInsets.all(15.0),
+                          child: MaterialButton(
+                            child: Text(
+                              "Iniciar Alistamiento",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            color: Colors.blue,
+                            onPressed: () {
+                              /*print(nuevoAlistamiento.vehiculo);
+                              Navigator.of(context).pushReplacement(FadePageRoute(
+                                builder: (context) =>new  AlistamientoScreen(data: _selectedCar,),
+                              ));
+                              //_saveURL(_urlCtrler.text);*/
+                            },
+                          ),
+                        );
+                        }else if(snapshot.hasError){
+                           throw snapshot.error;
+                        }else{
+                        return Padding(
+                          padding: EdgeInsets.all(15.0),
+                          child: MaterialButton(
+                            child: Text(
+                              "Sincronizando .. ",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            color: Colors.blueGrey,
+                            onPressed: () {
+                              /*print(nuevoAlistamiento.vehiculo);
+                              Navigator.of(context).pushReplacement(FadePageRoute(
+                                builder: (context) =>new  AlistamientoScreen(data: _selectedCar,),
+                              ));
+                              //_saveURL(_urlCtrler.text);*/
+                            },
+                          ),
+                        );
+                      }
+                    },
                   ),
                   Text(preferences.getString('user')),
                 ],
