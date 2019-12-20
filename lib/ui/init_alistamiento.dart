@@ -95,7 +95,7 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> _locations = ['A', 'B', 'C', 'D']; // Option 2
+    List<String> _locations = []; // Option 2
     String _selectedCar; // Option 2
     return Scaffold(
       appBar: AppBar(
@@ -111,26 +111,31 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
           if(snapshot.connectionState == ConnectionState.done){
               return ListView(
                 children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child: Center(
-                      child: DropdownButton(
-                        hint: Text('Selecciona la placa del vehiculo'), // Not necessary for Option 1
-                        value: _selectedCar,
-                        onChanged: (newValue) {
-                          this.setState(() {
-                            _selectedCar = newValue;
-                            print(_selectedCar);
-                          });
-                        },
-                        items: _locations.map((location) {
-                          return DropdownMenuItem(
-                            child: new Text(location),
-                            value: location,
-                          );
-                        }).toList(),
-                      ),
-                    ),
+                  FutureBuilder(
+                    future: _initPrefs(),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      return Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: Center(
+                          child: DropdownButton(
+                            hint: Text('Se esta sincronizando los vehiculos, espere un momento...'), // Not necessary for Option 1
+                            value: _selectedCar,
+                            onChanged: (newValue) {
+                              this.setState(() {
+                                _selectedCar = newValue;
+                                print(_selectedCar);
+                              });
+                            },
+                            items: _locations.map((location) {
+                              return DropdownMenuItem(
+                                child: new Text(location),
+                                value: location,
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      );
+                    },
                   ),
                   Padding(
                     padding: EdgeInsets.all(15.0),
