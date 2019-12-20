@@ -17,6 +17,8 @@ import 'dart:convert';
 import 'package:GPS_CONTROL/models/post.dart';
 import 'custom_route.dart';
 import 'package:odoo_api/odoo_api.dart';
+import 'package:odoo_api/odoo_api_connector.dart';
+import 'package:odoo_api/odoo_user_response.dart';
 
 
 
@@ -210,8 +212,26 @@ class _DashboardScreenState extends State<DashboardScreen>
             print("Algo salio mal. :s ");
             //isLoggedIn = false;
           }
+        
         });
+        await _getVehiclesList();
+  }
 
+  _getVehiclesList() async {
+    var domain_line = [["name", "=", "$username"]];
+    var fields_line = ["id", "id_wia", "name"];
+    await cliente.searchRead("stock.inventory.line", domain_line, fields_line).then((OdooResponse result) async {
+                  if (!result.hasError()) {
+                    final records = result.getResult();
+                    if(records['length'] > 0 ){
+                      print("Se recibio el la siguiente respuesta "+records.toString());
+                    }else{
+                      print("Pailas no se recibio nada mka");
+                    }
+                  } else {
+                    print (result.getError());
+                  }
+    });
   }
 
   Widget _buildHeader(ThemeData theme) {
