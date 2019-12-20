@@ -10,6 +10,8 @@ import 'package:GPS_CONTROL/data/services/globals.dart';
 import 'custom_route.dart';
 import 'package:GPS_CONTROL/models/users.dart';
 import 'package:GPS_CONTROL/models/post.dart';
+import 'package:odoo_api/odoo_api.dart';
+import 'package:odoo_api/odoo_api_connector.dart';
 
 class InitAlistamiento extends StatefulWidget {
   InitAlistamiento({this.data});
@@ -26,9 +28,11 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
   User user;
   Alistamiento nuevoAlistamiento;
   Map value;
+  SharedPreferences preferences;
 
   @override
   void initState() {
+    _initPrefs();
     post = widget.data;
     super.initState();
     //user = widget.data;
@@ -37,7 +41,10 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
 
     //_checkFirstTime();
   }
-    
+  Future<void> _initPrefs() async {
+    preferences = await SharedPreferences.getInstance();
+  }
+
   _init_alistamiento(bool init_state, String user, String vehiculo){
     nuevoAlistamiento.folio = '';
     nuevoAlistamiento.state = '';
@@ -86,22 +93,6 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
    // }
   //}
 
-  Future<List<String>> _getVehiclesWialon() async {
-    print('entramos al metodo obtener vehiculos');
-      String url = "https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={%22spec%22:{%22itemsType%22:%22avl_unit%22,%22propName%22:%22trailers%22,%22propValueMask%22:%22%22,%22sortType%22:%22trailers%22,%22propType%22:%22propitemname%22},%22force%22:1,%22flags%22:1,%22from%22:0,%22to%22:0}&sid=";
-      String sid = post.eid;
-      Response res = await get(url+sid);
-      List<String> vehiculos = new List();
-      if (res.statusCode == 200) {
-        var bodyfull = await jsonDecode(res.body);
-        print('se encontraron '+bodyfull['totalItemsCount']+' items');
-        return vehiculos;
-      } else {
-        print('pailas');
-        throw "Can't get posts.";
-      }
-  }
-
   @override
   Widget build(BuildContext context) {
     List<String> _locations = ['A', 'B', 'C', 'D']; // Option 2
@@ -115,7 +106,7 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
         title: Text("Inicio Alistamiento"),
       ),
       body: FutureBuilder(
-        future: _getVehiclesWialon(),
+        future: _initPrefs(),
         builder: (context, snapshot){
           if(snapshot.connectionState == ConnectionState.done){
               return ListView(
@@ -152,7 +143,6 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
                       ),
                       color: Colors.blue,
                       onPressed: () {
-                        
                         /*print(nuevoAlistamiento.vehiculo);
                         Navigator.of(context).pushReplacement(FadePageRoute(
                           builder: (context) =>new  AlistamientoScreen(data: _selectedCar,),
@@ -161,7 +151,7 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
                       },
                     ),
                   ),
-                  Text(value.toString()),
+                  Text(preferences.getString('user')),
                 ],
               );
           }else if(snapshot.hasError){

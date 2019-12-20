@@ -201,37 +201,7 @@ class _DashboardScreenState extends State<DashboardScreen>
   }
 
   Future<void>_initOdooSession() async {
-    cliente = OdooClient("http://66.228.39.68:8069");
-        await cliente.authenticate("demo@gps.com", "iopunjab1234!","smart_contro").then((auth) {
-          if (auth.isSuccess) {
-            print("Bienvenido ${auth.getUser().name}");
-            print(auth.getSessionId());
-            var name_user = auth.getUser().name;
-            print(name_user);
-          } else {
-            print("Algo salio mal. :s ");
-            //isLoggedIn = false;
-          }
-        
-        });
-        await _getVehiclesList();
-  }
-
-  _getVehiclesList() async {
-    var domain_line = [["name", "=", "$username"]];
-    var fields_line = ["id", "id_wia", "name"];
-    await cliente.searchRead("stock.inventory.line", domain_line, fields_line).then((OdooResponse result) async {
-                  if (!result.hasError()) {
-                    final records = result.getResult();
-                    if(records['length'] > 0 ){
-                      print("Se recibio el la siguiente respuesta "+records.toString());
-                    }else{
-                      print("Pailas no se recibio nada mka");
-                    }
-                  } else {
-                    print (result.getError());
-                  }
-    });
+    print("Here we go");
   }
 
   Widget _buildHeader(ThemeData theme) {
@@ -260,7 +230,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                             flag_data = true;
                             return Container(
                                 child: Center(
-                                  child:Text(baseUser.name),
+                                  child:Text(preferences.getString('user')),
                                 ),
                             );
                       }
