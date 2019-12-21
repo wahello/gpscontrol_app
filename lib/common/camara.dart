@@ -91,7 +91,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             showCupertinoDialog(
               context: context,
               builder: (BuildContext bc){
-                Navigator.of(context).pop(false);
+                //Navigator.of(context).pop(false);
                 return DisplayPictureScreen(index: widget.index,imagePath: path);
               },
             );
@@ -216,7 +216,7 @@ class DisplayPictureScreen extends StatelessWidget {
               onPressed: () {
                 print(this.index);
                 print(myController.text);
-                Navigator.of(context).pop(false);
+                //Navigator.of(context).pop(false);
                 //_saveURL(_urlCtrler.text);
               },
             ),
