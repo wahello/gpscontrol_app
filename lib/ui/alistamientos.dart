@@ -19,6 +19,7 @@ class AlistamientoScreen extends StatefulWidget {
 class _AlistamientoScreenState extends State {
   var preguntas = new List<Pregunta>();
   final values = new List<bool>();
+  var colores = new List<Color>();
   Utils utils = new Utils();
   SlidableController slidableController;
   Alistamiento nuevoAlistamiento;
@@ -133,6 +134,7 @@ class _AlistamientoScreenState extends State {
         preguntas.add(pregunta);
         //slidableController.add(controlador);
         values.add(false);
+        colores.add(Colors.grey);
       }
     //_init_alistamiento(values);
   }
@@ -177,6 +179,7 @@ class _AlistamientoScreenState extends State {
                 var pregunta = preguntas[index].pregunta;
                 var id = preguntas[index].id;
                 var desc = preguntas[index].descripcion;
+                var color = colores[index];
                 var value = values[index];
                 return Slidable(
                     key: Key(id),
@@ -186,17 +189,24 @@ class _AlistamientoScreenState extends State {
                     child: Card(
                         child: ListTile(
                             leading: CircleAvatar(
-                              backgroundColor: Colors.grey,
+                              backgroundColor: color,
                               child: Icon(utils.getIconForName(id.toString())),
                               foregroundColor: Colors.white,
                             ),
                             title: Text('$pregunta'),
                             subtitle: Text('$desc'),
                             onTap: () => {
-                              print('se hizo tap en '+index.toString()),
+                              if(value==true){
+                                value = false,
+                                color = Colors.red
+                              }else{
+                                value=true,
+                                color=Colors.green
+                              }
+                              
                             } ,
                           ),
-              ),
+                      ),
                     actions: <Widget>[
                       /*new IconSlideAction(
                         caption: 'OK',
@@ -230,7 +240,10 @@ class _AlistamientoScreenState extends State {
                           takeApicture(index),
                         },
                       ),
-                    ]
+                    ],
+                
+                        
+                
                 );
               },
             ),
