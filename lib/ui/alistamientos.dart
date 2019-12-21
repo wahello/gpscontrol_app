@@ -1,4 +1,5 @@
 import 'package:GPS_CONTROL/ui/dashboard_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:GPS_CONTROL/models/preguntas.dart';
@@ -130,7 +131,7 @@ class _AlistamientoScreenState extends State {
       onSlideIsOpenChanged: handleSlideIsOpenChanged,
     );
     for(var index=0;index<list_preguntas.length;index++){
-        var pregunta = new Pregunta(index, list_preguntas[index],'','');
+        var pregunta = new Pregunta(index, list_preguntas[index],null,'');
         preguntas.add(pregunta);
         //slidableController.add(controlador);
         values.add(false);
@@ -189,21 +190,28 @@ class _AlistamientoScreenState extends State {
                     child: Card(
                         child: ListTile(
                             leading: CircleAvatar(
+                              radius: 40.0,
                               backgroundColor: color,
                               child: Icon(utils.getIconForName(id.toString())),
                               foregroundColor: Colors.white,
                             ),
                             title: Text('$pregunta'),
-                            subtitle: Text('$desc'),
+                            subtitle: desc==null?Text(''):Text('$desc'),
                             onTap: () => {
-                              if(value==true){
-                                value = false,
-                                color = Colors.red
+                              setState((){
+                                if(value==true){
+                                values[index] = false;
+                                _takeInfoSheet(context,index);
+                                colores[index] = Colors.orange;
+                                if(preguntas[index].descripcion==null){
+                                  colores[index] = Colors.red;
+                                  values[index] = true;
+                                }
                               }else{
-                                value=true,
-                                color=Colors.green
+                                values[index]=true;
+                                colores[index]=Colors.green;
                               }
-                              
+                              })
                             } ,
                           ),
                       ),
@@ -273,4 +281,18 @@ class _AlistamientoScreenState extends State {
 
     );
   }
+  void _takeInfoSheet(context, index)async{
+    print('el indice seleccionado es: '+index.toString());
+    // Obtén una lista de las cámaras disponibles en el dispositivo.
+    final cameras = await availableCameras();
+    // Obtén una cámara específica de la lista de cámaras disponibles
+    final firstCamera = cameras.first;
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext bc){
+          return TakePictureScreen(camera: firstCamera, index: index,);
+      },
+      useRootNavigator: false,
+
+    );}
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 import 'package:camera/camera.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
@@ -87,11 +88,12 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             await _controller.takePicture(path);
             // En este ejemplo, guarda la imagen en el directorio temporal. Encuentra
             // el directorio temporal usando el plugin `path_provider`.
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => DisplayPictureScreen(index: widget.index,imagePath: path),
-              ),
+            showCupertinoDialog(
+              context: context,
+              builder: (BuildContext bc){
+                Navigator.of(context).pop(false);
+                return DisplayPictureScreen(index: widget.index,imagePath: path);
+              },
             );
           } catch (e) {
             // Si se produce un error, regístralo en la consola.
@@ -214,7 +216,7 @@ class DisplayPictureScreen extends StatelessWidget {
               onPressed: () {
                 print(this.index);
                 print(myController.text);
-                Navigator.popAndPushNamed(context, '/alistamientos');
+                Navigator.of(context).pop(false);
                 //_saveURL(_urlCtrler.text);
               },
             ),
