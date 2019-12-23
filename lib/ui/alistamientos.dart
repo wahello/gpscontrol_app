@@ -8,6 +8,7 @@ import 'package:GPS_CONTROL/common/camara.dart';
 import 'package:GPS_CONTROL/models/alistamiento.dart';
 import 'custom_route.dart';
 import 'package:GPS_CONTROL/common/utils.dart' ;
+import 'package:GPS_CONTROL/models/caption.dart';
 
 class AlistamientoScreen extends StatefulWidget {
   AlistamientoScreen({this.data});
@@ -21,6 +22,7 @@ class _AlistamientoScreenState extends State {
   var preguntas = new List<Pregunta>();
   final values = new List<bool>();
   var colores = new List<Color>();
+  var images = new List<String>();
   Utils utils = new Utils();
   SlidableController slidableController;
   Alistamiento nuevoAlistamiento;
@@ -136,6 +138,7 @@ class _AlistamientoScreenState extends State {
         //slidableController.add(controlador);
         values.add(false);
         colores.add(Colors.grey);
+        images.add('');
       }
     //_init_alistamiento(values);
   }
@@ -155,9 +158,10 @@ class _AlistamientoScreenState extends State {
     final cameras = await availableCameras();
     // Obtén una cámara específica de la lista de cámaras disponibles
     final firstCamera = cameras.first;
+    Caption caption = new Caption(index: index);
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => TakePictureScreen(camera: firstCamera, index: index,),
+      MaterialPageRoute(builder: (context) => TakePictureScreen(camera: firstCamera, caption: caption,),
       ),
     );
 
@@ -199,18 +203,7 @@ class _AlistamientoScreenState extends State {
                             subtitle: desc==null?Text(''):Text('$desc'),
                             onTap: () => {
                               setState((){
-                                if(value==true){
-                                values[index] = false;
-                                _takeInfoSheet(context,index);
-                                colores[index] = Colors.orange;
-                                if(preguntas[index].descripcion==null){
-                                  colores[index] = Colors.red;
-                                  values[index] = true;
-                                }
-                              }else{
-                                values[index]=true;
-                                colores[index]=Colors.green;
-                              }
+                                
                               })
                             } ,
                           ),
@@ -234,7 +227,17 @@ class _AlistamientoScreenState extends State {
                           icon: Icons.assignment_turned_in,
                           closeOnTap: true,
                           onTap: () => {
-
+                            setState((){
+                              if(value==true){
+                                Scaffold.of(context)
+                                  ..removeCurrentSnackBar()
+                                  ..showSnackBar(SnackBar(content: Text("Esta opcion ya esta Ok!")));
+                              }else{
+                                values[index]=true;
+                                colores[index]=Colors.green;
+                                preguntas[index].descripcion='';
+                              }
+                            })
                           },
                         ),
                       ),
@@ -245,13 +248,10 @@ class _AlistamientoScreenState extends State {
                         color: Colors.red,
                         icon: Icons.add_a_photo,
                         onTap: () => {
-                          takeApicture(index),
+                          _takeInfoSheet(context, index),
                         },
                       ),
                     ],
-                
-                        
-                
                 );
               },
             ),
@@ -287,12 +287,26 @@ class _AlistamientoScreenState extends State {
     final cameras = await availableCameras();
     // Obtén una cámara específica de la lista de cámaras disponibles
     final firstCamera = cameras.first;
-    showCupertinoModalPopup(
-      context: context,
-      builder: (BuildContext bc){
-          return TakePictureScreen(camera: firstCamera, index: index,);
-      },
-      useRootNavigator: false,
+    Caption caption = new Caption(index: index);
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) =>TakePictureScreen(camera: firstCamera, caption: caption,)));
 
-    );}
-}
+      // After the Selection Screen returns a result, hide any previous snackbars
+    // and show the new result.
+    var desc = result.desc;
+    var imagePath = result.imagePath;
+    if(imagePath!=null){
+      values[index] = false;
+      preguntas[index].descripcion = desc;
+      colores[index] = Colors.orange;
+    }
+    
+    Scaffold.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text("Se añadio correctamente la evidencia!")));
+
+    }
+
+  }
+

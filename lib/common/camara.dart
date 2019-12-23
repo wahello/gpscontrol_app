@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
+import 'package:GPS_CONTROL/models/caption.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +12,9 @@ import 'package:path_provider/path_provider.dart';
 // Una pantalla que permite a los usuarios tomar una fotografía utilizando una cámara determinada.
 class TakePictureScreen extends StatefulWidget {
   final CameraDescription camera;
-  final index;
+  final Caption caption;
 
-  TakePictureScreen({this.index,Key key,@required this.camera,}) : super(key: key);
+  TakePictureScreen({this.caption,Key key,@required this.camera,}) : super(key: key);
 
   @override
   TakePictureScreenState createState() => TakePictureScreenState();
@@ -21,6 +22,7 @@ class TakePictureScreen extends StatefulWidget {
 
 class TakePictureScreenState extends State<TakePictureScreen> {
   CameraController _controller;
+  Caption caption;
   Future<void> _initializeControllerFuture;
 
   @override
@@ -88,13 +90,22 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             await _controller.takePicture(path);
             // En este ejemplo, guarda la imagen en el directorio temporal. Encuentra
             // el directorio temporal usando el plugin `path_provider`.
-            showCupertinoDialog(
-              context: context,
-              builder: (BuildContext bc){
-                //Navigator.of(context).pop(false);
-                return DisplayPictureScreen(index: widget.index,imagePath: path);
-              },
-            );
+            // ES DisplayPictureScreen(index: widget.index,imagePath: path);
+            caption = widget.caption;
+            caption.setImage(path);
+            var result = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) =>DisplayPictureScreen(caption: caption)));
+            if (result.toString()!=''){
+              caption.setDesc(result);
+              Navigator.pop(context, caption);
+            }else{
+              Navigator.pop(context, 'algo salio mal..');
+            }
+
+            // After the Selection Screen returns a result, hide any previous snackbars
+          // and show the new result.
+
           } catch (e) {
             // Si se produce un error, regístralo en la consola.
             print(e);
@@ -107,9 +118,9 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
 // Un Widget que muestra la imagen tomada por el usuario
 class DisplayPictureScreen extends StatelessWidget {
-  final String imagePath;
-  final index;
-  DisplayPictureScreen({this.index,Key key, this.imagePath}) : super(key: key);
+  Caption caption;
+  String desc;
+  DisplayPictureScreen({this.caption,Key key,}) : super(key: key);
 
   final myController = TextEditingController();
 
@@ -144,7 +155,7 @@ class DisplayPictureScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(70.0),
             ),
             padding: EdgeInsets.all(8.0),
-            child: Image.file(File(imagePath)),
+            child: Image.file(File(caption.imagePath)),
           ),
           Padding(padding: EdgeInsets.only(top: 5.0, bottom: 5.0)),
           Text(
@@ -190,8 +201,8 @@ class DisplayPictureScreen extends StatelessWidget {
                   //fillColor: Colors.green
                 ),
                 validator: (val) {
-                  if(val.length <= 25) {
-                    return "Ingresa mas de 25 caracteres";
+                  if(val.length <= 1) {
+                    return "La descripcion no puede estar vacia.";
                   }else{
                     return null;
                   }
@@ -214,9 +225,8 @@ class DisplayPictureScreen extends StatelessWidget {
               ),
               color: Colors.blue,
               onPressed: () {
-                print(this.index);
-                print(myController.text);
-                //Navigator.of(context).pop(false);
+                desc= myController.text;
+                Navigator.pop(context, desc);
                 //_saveURL(_urlCtrler.text);
               },
             ),

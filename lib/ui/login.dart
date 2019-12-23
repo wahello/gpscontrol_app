@@ -114,7 +114,7 @@ class LoginScreen extends StatelessWidget {
         passwordHint: 'Contraseña',
         confirmPasswordHint: 'Confirmar',
         loginButton: 'Iniciar Sesion',
-        signupButton: 'Registrarme',
+        signupButton: 'Offline',
         forgotPasswordButton: 'Olvidaste la contraseña?',
         recoverPasswordButton: 'Ayuda',
         goBackButton: 'Volver',
