@@ -78,9 +78,26 @@ class _DashboardScreenState extends State<DashboardScreen>
   //Future _localPath
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
-    return directory.path;
+    return directory.path; 
   }
   
+  //get data wialon of server
+  Future<String> conexionPrincipal() async {
+    var client = OdooClient("http://66.228.39.68:8069");
+    var auth = await client.authenticate('appbot', 'iopunjab',"smart_contro");
+    if (auth.isSuccess) {
+      print("Bienvenido ${auth.getUser().name}");
+      print('the sesion id is: '+auth.getSessionId());
+      var name_user = auth.getUser().name;
+      //_save(auth.getSessionId(),name_user,loginData.name,loginData.password);
+      //isLoggedIn = true;
+    } else {
+      print("Algo salio mal. :s ");
+      //isLoggedIn = false;
+    }
+    return 'ok';
+  }
+
   //future get prefs
   Future<User> getPrefs() async {
     baseUser = widget.userdata;
@@ -100,6 +117,10 @@ class _DashboardScreenState extends State<DashboardScreen>
 
     print('Se obtuvo satisfactoriamente los siguientes valores ...');
     print('usuario: '+username+' pass: '+ssap+' token: '+token);
+    var res = await conexionPrincipal();
+    if (res.toString() == 'ok'){
+      print('se entro al if!!!');
+    }
     return baseUser;
   }
 //Future int readcounter

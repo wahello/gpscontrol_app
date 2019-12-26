@@ -283,7 +283,7 @@ class _AlistamientoScreenState extends State {
                     color: Colors.white,
                   ),
                 ),
-                color: buttonColor,
+                color: buttonColor==Colors.grey?Colors.grey:Colors.blue,
                 onPressed: () {
                   if(buttonColor == Colors.blue){
                     Navigator.of(context).pushReplacement(FadePageRoute(
