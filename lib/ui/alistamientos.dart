@@ -203,7 +203,18 @@ class _AlistamientoScreenState extends State {
                             subtitle: desc==null?Text(''):Text('$desc'),
                             onTap: () => {
                               setState((){
-                                
+                                if(value==true){
+                                values[index] = false;
+                                _takeInfoSheet(context,index);
+                                colores[index] = Colors.orange;
+                                if(preguntas[index].descripcion==null){
+                                  colores[index] = Colors.red;
+                                  values[index] = true;
+                                }
+                              }else{
+                                values[index]=true;
+                                colores[index]=Colors.green;
+                              }
                               })
                             } ,
                           ),
