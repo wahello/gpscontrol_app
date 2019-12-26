@@ -23,6 +23,7 @@ class _AlistamientoScreenState extends State {
   final values = new List<bool>();
   var colores = new List<Color>();
   var images = new List<String>();
+  var buttonColor = Colors.grey;
   Utils utils = new Utils();
   SlidableController slidableController;
   Alistamiento nuevoAlistamiento;
@@ -167,6 +168,16 @@ class _AlistamientoScreenState extends State {
 
   }
 
+  validationButtonColor(){
+    if(colores.contains(Colors.grey) || colores.contains(Colors.red)){
+      print('aun pailas brother, faltan preguntas por responder.');
+    }else{
+      setState(() {
+        buttonColor = Colors.blue;
+      });
+    }
+  }
+
   @override
   build(context) {
     return Scaffold(
@@ -202,14 +213,16 @@ class _AlistamientoScreenState extends State {
                             title: Text('$pregunta'),
                             subtitle: desc==null?Text(''):Text('$desc'),
                             onTap: () => {
+                              validationButtonColor(),
                               setState((){
                                 if(value==true){
                                 values[index] = false;
                                 _takeInfoSheet(context,index);
-                                colores[index] = Colors.orange;
-                                if(preguntas[index].descripcion==null){
+                                if(preguntas[index].descripcion == null){
                                   colores[index] = Colors.red;
-                                  values[index] = true;
+                                  values[index] = false;
+                                }else{
+                                  colores[index] = Colors.orange;
                                 }
                               }else{
                                 values[index]=true;
@@ -239,15 +252,9 @@ class _AlistamientoScreenState extends State {
                           closeOnTap: true,
                           onTap: () => {
                             setState((){
-                              if(value==true){
-                                Scaffold.of(context)
-                                  ..removeCurrentSnackBar()
-                                  ..showSnackBar(SnackBar(content: Text("Esta opcion ya esta Ok!")));
-                              }else{
                                 values[index]=true;
                                 colores[index]=Colors.green;
                                 preguntas[index].descripcion='';
-                              }
                             })
                           },
                         ),
@@ -276,14 +283,16 @@ class _AlistamientoScreenState extends State {
                     color: Colors.white,
                   ),
                 ),
-                color: Colors.grey,
+                color: buttonColor,
                 onPressed: () {
-
-                  Navigator.of(context).pushReplacement(FadePageRoute(
+                  if(buttonColor == Colors.blue){
+                    Navigator.of(context).pushReplacement(FadePageRoute(
                     builder: (context) =>new  DashboardScreen(),
-                  ));
-                  print('Aqui va la accion finish alistamiento');
-                  //_saveURL(_urlCtrler.text);
+                    ));
+                  }else{
+                    print('aun no puedes guardar el alistamiento xD');
+                  }
+                  
                 },
               ),
             ),
