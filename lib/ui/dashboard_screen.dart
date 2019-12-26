@@ -229,14 +229,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     //_getDatawialon();
     //_getVehiclesWialon();
     print('Init -- build header');
-    return ScaleTransition(
-      scale: _headerScaleAnimation,
-      child: FadeIn(
-        controller: _loadingController,
-        curve: headerAniInterval,
-        fadeDirection: FadeDirection.bottomToTop,
-        offset: .5,
-        child: Column(
+    return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text('Bienvenido ', style: new TextStyle(fontWeight: FontWeight.bold)),
@@ -271,24 +264,32 @@ class _DashboardScreenState extends State<DashboardScreen>
               )
             ),
           ],
-        ),
-      ),
-    );
+        );    
   }
-  Widget _buildButton({Widget icon, String label, Interval interval}) {
-    return RoundButton(
-      icon: icon,
-      label: label,
-      loadingController: _loadingController,
-      interval: Interval(
-        interval.begin,
-        interval.end,
-        curve: ElasticOutCurve(0.42),
-      ),
-      onPressed: () {
-        
-      },
-    );
+  Widget _buildButton() {
+    return Card(
+            child: new InkWell(
+              onTap: () {
+                print("tapped mdfk");
+              },
+              child: Container(
+                width: 100.0,
+                height: 100.0,
+                child:  Column(
+                children: <Widget>[
+                  Image.asset('assets/conectar.png'),
+                  Text("Iniciar Alistamiento", 
+                  style: TextStyle(
+                            fontFamily: "Montserrat",
+                            fontSize: 26,
+                            color: Colors.black87,
+                        ),
+                  ),
+                ],
+              ),
+              ),
+            ),
+          );
   }
   Widget _buildButton1({Widget icon, String label, Interval interval}) {
     return RoundButton(
@@ -336,44 +337,17 @@ class _DashboardScreenState extends State<DashboardScreen>
     const aniInterval = 0.75;
 
     return GridView.count(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 32.0,
-        vertical: 20,
+      padding: EdgeInsets.all(
+        5
       ),
-      childAspectRatio: .9,
-      // crossAxisSpacing: 5,
-      crossAxisCount: 3,
+      scrollDirection: Axis.horizontal,
+      //childAspectRatio: .9,
+      crossAxisSpacing: 1,
+      crossAxisCount: 1,
       children: [
-        _buildButton(
-          icon: Icon(FontAwesomeIcons.user),
-          label: 'Perfil',
-          interval: Interval(0, aniInterval),
-        ),
-        _buildButton1(
-          icon: Icon(Icons.assignment),
-          label: 'Alistamiento',
-          interval: Interval(step, aniInterval + step),
-        ),
-        _buildButton2(
-          icon: Icon(FontAwesomeIcons.history),
-          label: 'Historial',
-          interval: Interval(step * 2, aniInterval + step * 2),
-        ),
-        _buildButton(
-          icon: Icon(FontAwesomeIcons.ellipsisH),
-          label: 'Other',
-          interval: Interval(0, aniInterval),
-        ),
-        _buildButton(
-          icon: Icon(FontAwesomeIcons.search, size: 20),
-          label: 'Buscar',
-          interval: Interval(step, aniInterval + step),
-        ),
-        _buildButton(
-          icon: Icon(FontAwesomeIcons.slidersH, size: 20),
-          label: 'Configuracion',
-          interval: Interval(step * 2, aniInterval + step * 2),
-        ),
+        _buildButton(),
+        _buildButton(),
+        _buildButton()
       ],
     );
   }
@@ -395,11 +369,6 @@ class _DashboardScreenState extends State<DashboardScreen>
               children: <Widget>[
                 Column(
                   children: <Widget>[
-                    SizedBox(height: 40),
-                    Expanded(
-                      flex: 2,
-                      child: _buildHeader(theme),
-                    ),
                     Expanded(
                       flex: 8,
                       child: ShaderMask(
