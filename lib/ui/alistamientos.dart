@@ -316,10 +316,12 @@ class _AlistamientoScreenState extends State {
     // and show the new result.
     var desc = result.desc;
     var imagePath = result.imagePath;
-    if(imagePath!=null){
+    if(imagePath!=null)
+    {
       values[index] = false;
       preguntas[index].descripcion = desc;
       colores[index] = Colors.orange;
+      images[index] = imagePath;
     }
     
     Scaffold.of(context)

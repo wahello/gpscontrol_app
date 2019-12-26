@@ -123,7 +123,7 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
                           padding: EdgeInsets.all(5.0),
                           child: Center(
                             child: DropdownButton(
-                              hint: Text('Seleccione el vehiculo'), // Not necessary for Option 1
+                              hint: Text('Seleccione el vehiculo'), // Not necessary 
                               value: _selectedCar,
                               onChanged: (newValue) {
                                 this.setState(() {
@@ -338,6 +338,8 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
     _odoo.destroy();
     preferences.remove(Globals().loginPrefName);
     preferences.remove("session");
+    preferences.remove('user');
+    preferences.remove('pass');
     Navigator.pushNamedAndRemoveUntil(
       context,
       '/login',
