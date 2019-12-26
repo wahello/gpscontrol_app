@@ -270,7 +270,9 @@ class _DashboardScreenState extends State<DashboardScreen>
     return Card(
             child: new InkWell(
               onTap: () {
-                print("tapped mdfk");
+                Navigator.of(context).pushReplacement(FadePageRoute(
+                    builder: (context) => InitAlistamiento(data: post,),
+                  ));
               },
               child: Container(
                 width: 100.0,
@@ -279,6 +281,56 @@ class _DashboardScreenState extends State<DashboardScreen>
                 children: <Widget>[
                   Image.asset('assets/conectar.png'),
                   Text("Iniciar Alistamiento", 
+                  style: TextStyle(
+                            fontFamily: "Montserrat",
+                            fontSize: 26,
+                            color: Colors.black87,
+                        ),
+                  ),
+                ],
+              ),
+              ),
+            ),
+          );
+  }
+  Widget _build1Button() {
+    return Card(
+            child: new InkWell(
+              onTap: () {
+                print("tapped mdfk");
+              },
+              child: Container(
+                width: 100.0,
+                height: 100.0,
+                child:  Column(
+                children: <Widget>[
+                  Image.asset('assets/indicadores.png'),
+                  Text("Historial", 
+                  style: TextStyle(
+                            fontFamily: "Montserrat",
+                            fontSize: 26,
+                            color: Colors.black87,
+                        ),
+                  ),
+                ],
+              ),
+              ),
+            ),
+          );
+  }
+  Widget _build2Button() {
+    return Card(
+            child: new InkWell(
+              onTap: () {
+                print("tapped mdfk");
+              },
+              child: Container(
+                width: 100.0,
+                height: 100.0,
+                child:  Column(
+                children: <Widget>[
+                  Image.asset('assets/reportes.png'),
+                  Text("Reportes", 
                   style: TextStyle(
                             fontFamily: "Montserrat",
                             fontSize: 26,
@@ -337,17 +389,17 @@ class _DashboardScreenState extends State<DashboardScreen>
     const aniInterval = 0.75;
 
     return GridView.count(
-      padding: EdgeInsets.all(
-        5
+      padding: const EdgeInsets.symmetric(
+        horizontal: 32.0,
+        vertical: 20,
       ),
-      scrollDirection: Axis.horizontal,
-      //childAspectRatio: .9,
-      crossAxisSpacing: 1,
+      childAspectRatio: .9,
+      // crossAxisSpacing: 5,
       crossAxisCount: 1,
       children: [
         _buildButton(),
-        _buildButton(),
-        _buildButton()
+        _build1Button(),
+        _build2Button()
       ],
     );
   }
