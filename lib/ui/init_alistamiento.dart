@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:GPS_CONTROL/models/alistamiento.dart';
+import 'package:GPS_CONTROL/models/pseudouser.dart';
 import 'package:GPS_CONTROL/ui/alistamientos.dart';
 import 'package:flutter/material.dart';
 import 'package:GPS_CONTROL/data/services/odoo_api.dart';
@@ -26,27 +27,37 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
   Odoo _odoo;
   String odooURL = "";
   Post post;
-  User user;
+  PseudoUser user;
   Alistamiento nuevoAlistamiento;
   Map value;
   SharedPreferences preferences;
 
   @override
   void initState() {
-    _initPrefs();
-    post = widget.data;
     super.initState();
     //user = widget.data;
-    print(user);
     //_init_alistamiento(false, user.name, '');
 
     //_checkFirstTime();
   }
   Future<void> _initPrefs() async {
-    preferences = await SharedPreferences.getInstance();
-    Timer(Duration(milliseconds: 2000), (){
-      print('holis');
+    //preferences = await SharedPreferences.getInstance();
+    var client = OdooClient("http://66.228.39.68:8069");
+    var auth = await client.authenticate('appbot', 'iopunjab1234!',"smart_contro");
+    user = widget.data;
+    if(auth.isSuccess){
+      var id = user.id;
+      client.searchRead('gpscontrol.wialon_unit_group', [['crt','=','$id']], ['id','id_wialon','nombre']).then((res){
+        if(res.hasError()){
+          print('algo salio mal marica');
+        }else{
+          print(res.getResult());
+        }
       });
+
+    }else{
+
+    }
   }
 
   _init_alistamiento(bool init_state, String user, String vehiculo){
@@ -109,11 +120,7 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
       ),
         title: Text("Inicio Alistamiento"),
       ),
-      body: FutureBuilder(
-        future: _initPrefs(),
-        builder: (context, snapshot){
-          if(snapshot.connectionState == ConnectionState.done){
-              return ListView(
+      body: ListView(
                 children: <Widget>[
                   FutureBuilder(
                     future: _initPrefs(),
@@ -168,33 +175,7 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
                       }
                     },
                   ),
-                  FutureBuilder(
-                    future: _initPrefs(),
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      if(snapshot.connectionState == ConnectionState.done){
-                        return Padding(
-                          padding: EdgeInsets.all(15.0),
-                          child: MaterialButton(
-                            child: Text(
-                              "Iniciar Alistamiento",
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                            color: Colors.blue,
-                            onPressed: () {
-                              //print(nuevoAlistamiento.vehiculo);
-                              Navigator.of(context).pushReplacement(FadePageRoute(
-                                builder: (context) =>new  AlistamientoScreen(data: _selectedCar,),
-                              ));
-                              //_saveURL(_urlCtrler.text);*/
-                            },
-                          ),
-                        );
-                        }else if(snapshot.hasError){
-                           throw snapshot.error;
-                        }else{
-                        return Padding(
+                  Padding(
                           padding: EdgeInsets.all(15.0),
                           child: MaterialButton(
                             child: Text(
@@ -212,21 +193,10 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
                               //_saveURL(_urlCtrler.text);*/
                             },
                           ),
-                        );
-                      }
-                    },
-                  ),
-                  //Text(preferences.getString('user')),
+                        )
                 ],
-              );
-          }else if(snapshot.hasError){
-            throw snapshot.error;
-          }else{
-            return Center(child: CircularProgressIndicator());
-          }
-        },
-      ),
-    );
+              ),);
+
   }
   /*
   _saveURL(String url) async {

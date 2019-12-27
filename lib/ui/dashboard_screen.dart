@@ -102,7 +102,8 @@ class _DashboardScreenState extends State<DashboardScreen>
       }else{
         result = res.getResult();
         for(var rec in result['records']){
-          print(rec);
+          pseudoUser = new PseudoUser.fromJson(rec);
+          print('se guardo '+pseudoUser.name);
         }
         
       }

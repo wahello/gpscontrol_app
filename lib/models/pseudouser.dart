@@ -1,8 +1,8 @@
 class PseudoUser {
-  String id;
+  int id;
   String id_wia;
   String name;
-  PseudoUser(String id, String id_wia, String name) {
+  PseudoUser(int id, String id_wia, String name) {
     this.id = id;
     this.id_wia = id_wia;
     this.name = name;
