@@ -281,7 +281,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                       child: new InkWell(
                                         onTap: () {
                                           Navigator.of(context).pushReplacement(FadePageRoute(
-                                              builder: (context) => InitAlistamiento(data: post,),
+                                              builder: (context) => InitAlistamiento(data: pseudoUser,),
                                             ));
                                         },
                                         child: Container(
