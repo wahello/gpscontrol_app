@@ -71,14 +71,20 @@ class LoginScreen extends StatelessWidget {
             print('La url con la que se accedio fue:'+url);
             var token = url.replaceAll('http://tracking.gpscontrolcolombia.com/login_simple.html?access_token=', '');
             print('el token es: '+token);
+            _webview.cleanCookies();
+            _webview.clearCache();
             _webview.dispose();
             _webview.close();
             isLoggedIn = true;
             flagPass = true;
             toKen = token;
-            usuario.setToken(token);
+            //usuario.setToken(token);
             // Check if view is mounted and displayed
         } else{
+          _webview.cleanCookies();
+          _webview.clearCache();
+          _webview.dispose();
+          _webview.close();
           flagPass = false;
         }
     }

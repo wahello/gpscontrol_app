@@ -84,13 +84,18 @@ class _DashboardScreenState extends State<DashboardScreen>
   //get data wialon of server
   Future<String> conexionPrincipal() async {
     var client = OdooClient("http://66.228.39.68:8069");
-    var auth = await client.authenticate('appbot', 'iopunjab',"smart_contro");
+    var auth = await client.authenticate('appbot', 'iopunjab1234!',"smart_contro");
     if (auth.isSuccess) {
       print("Bienvenido ${auth.getUser().name}");
       print('the sesion id is: '+auth.getSessionId());
       var name_user = auth.getUser().name;
       print('hola .. se conecto a odoo con el usuario '+name_user);
-
+      var datauser = await client.searchRead('gpscontrol.wialon_pseudouser', [['name','=','$username']], ["id","id_wia","name"]);
+      if(datauser.hasError()){
+        print('algo salio mal marica');
+      }else{
+        print('Hola'+datauser.getResult());
+      }
       //_save(auth.getSessionId(),name_user,loginData.name,loginData.password);
       //isLoggedIn = true;
       return 'ok';
