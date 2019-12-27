@@ -16,7 +16,7 @@ class LoginScreen extends StatelessWidget {
   User usuario;
   bool isLoggedIn;
   bool flagPass;
-
+  String uri="http://tracking.gpscontrolcolombia.com/login_simple.html";
   Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 2250);
   final _webview = new FlutterWebviewPlugin();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -50,17 +50,10 @@ class LoginScreen extends StatelessWidget {
 
   }
   void initStreamController(){
-      print('iniciamos controladores');
-      _webview.close();
-      _webview.cleanCookies();
-      _webview.clearCache();
-      var uri="http://tracking.gpscontrolcolombia.com/login_simple.html";
-      print('se limpio cache y cookies');
-      _webview.launch(uri,hidden: true);
-      //_webview.reload();
-      _onStateChanged = _webview.onStateChanged.listen(this.onStateChanged);
+       _webview.launch(uri,hidden: true);
       flagPass = false;
-  }
+      _onStateChanged = _webview.onStateChanged.listen(this.onStateChanged);
+      
 
   onStateChanged(WebViewStateChanged state) async {
         print("onStateChanged: ${state.type} ${state.url}");
