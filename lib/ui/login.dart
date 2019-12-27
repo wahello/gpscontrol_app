@@ -53,9 +53,9 @@ class LoginScreen extends StatelessWidget {
        _webview.launch(uri,hidden: true);
       flagPass = false;
       _onStateChanged = _webview.onStateChanged.listen(this.onStateChanged);
-      
+  }
 
-  onStateChanged(WebViewStateChanged state) async {
+  onStateChanged(WebViewStateChanged state){
         print("onStateChanged: ${state.type} ${state.url}");
         // Check if link is correct
         if (state.type == WebViewState.finishLoad && state.url.contains("simple.html?access_token")) {
@@ -64,20 +64,12 @@ class LoginScreen extends StatelessWidget {
             print('La url con la que se accedio fue:'+url);
             var token = url.replaceAll('http://tracking.gpscontrolcolombia.com/login_simple.html?access_token=', '');
             print('el token es: '+token);
-            _webview.cleanCookies();
-            _webview.clearCache();
-            _webview.dispose();
-            _webview.close();
             isLoggedIn = true;
             flagPass = true;
             toKen = token;
             //usuario.setToken(token);
             // Check if view is mounted and displayed
         } else{
-          _webview.cleanCookies();
-          _webview.clearCache();
-          _webview.dispose();
-          _webview.close();
           flagPass = false;
         }
     }

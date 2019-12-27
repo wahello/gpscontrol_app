@@ -19,6 +19,7 @@ import 'custom_route.dart';
 import 'package:odoo_api/odoo_api.dart';
 import 'package:odoo_api/odoo_api_connector.dart';
 import 'package:odoo_api/odoo_user_response.dart';
+import 'package:GPS_CONTROL/models/pseudouser.dart';
 
 
 
@@ -33,6 +34,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen>
     with SingleTickerProviderStateMixin, TransitionRouteAware {
   Post post;
+  PseudoUser pseudoUser;
   User baseUser;
   OdooClient cliente;
   String ssap;
@@ -83,6 +85,9 @@ class _DashboardScreenState extends State<DashboardScreen>
   
   //get data wialon of server
   Future<String> conexionPrincipal() async {
+    baseUser = widget.userdata;
+    username = baseUser.name;
+    var result;
     var client = OdooClient("http://66.228.39.68:8069");
     var auth = await client.authenticate('appbot', 'iopunjab1234!',"smart_contro");
     if (auth.isSuccess) {
@@ -90,12 +95,20 @@ class _DashboardScreenState extends State<DashboardScreen>
       print('the sesion id is: '+auth.getSessionId());
       var name_user = auth.getUser().name;
       print('hola .. se conecto a odoo con el usuario '+name_user);
-      var datauser = await client.searchRead('gpscontrol.wialon_pseudouser', [['name','=','$username']], ["id","id_wia","name"]);
-      if(datauser.hasError()){
+      print('se buscara a '+username);
+      client.searchRead('gpscontrol.wialon_pseudouser', [['name','=','$username']], ['id','id_wia','name']).then((res){
+        if(res.hasError()){
         print('algo salio mal marica');
       }else{
-        print('Hola'+datauser.getResult());
+        result = res.getResult();
+        for(var rec in result['records']){
+          print(rec);
+        }
+        
       }
+
+      });
+      
       //_save(auth.getSessionId(),name_user,loginData.name,loginData.password);
       //isLoggedIn = true;
       return 'ok';
@@ -109,27 +122,9 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   //future get prefs
   Future<User> getPrefs() async {
-    baseUser = widget.userdata;
     preferences =  await SharedPreferences.getInstance();
     //base_user.name = preferences.getString('user');
     //base_user.passwd = preferences.getString('ssap');
-    username = baseUser.name;//preferences.getString('user');
-    ssap = baseUser.passwd;//preferences.getString('ssap');
-    token = baseUser.token;//preferences.getString('token');
-    if (token.contains("&user_name=")){
-      var fistTag = "&user_name=$username&svc_error=0";
-      tokenClean = token.replaceAll(fistTag,'');
-      token = tokenClean;
-    }else{
-      tokenClean = token;
-    }
-
-    print('Se obtuvo satisfactoriamente los siguientes valores ...');
-    print('usuario: '+username+' pass: '+ssap+' token: '+token);
-    var res = await conexionPrincipal();
-    if (res.toString() == 'ok'){
-      print('se entro al if!!!');
-    }
     return baseUser;
   }
 //Future int readcounter
