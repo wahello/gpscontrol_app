@@ -51,7 +51,7 @@ class _DashboardScreenState extends State<DashboardScreen>
   bool flag_data;
 
   Future<bool> _goToLogin(BuildContext context) {
-    preferences.clear();
+    //preferences.clear();
     return Navigator.pushAndRemoveUntil(context,
      MaterialPageRoute(builder: (BuildContext context) => LoginScreen()),
     ModalRoute.withName('/'));
@@ -89,13 +89,17 @@ class _DashboardScreenState extends State<DashboardScreen>
       print("Bienvenido ${auth.getUser().name}");
       print('the sesion id is: '+auth.getSessionId());
       var name_user = auth.getUser().name;
+      print('hola .. se conecto a odoo con el usuario '+name_user);
+
       //_save(auth.getSessionId(),name_user,loginData.name,loginData.password);
       //isLoggedIn = true;
+      return 'ok';
     } else {
       print("Algo salio mal. :s ");
       //isLoggedIn = false;
+      return 'bad';
     }
-    return 'ok';
+    
   }
 
   //future get prefs
@@ -267,6 +271,58 @@ class _DashboardScreenState extends State<DashboardScreen>
         );    
   }
   Widget _buildButton() {
+    return FutureBuilder(
+      future: conexionPrincipal(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if(snapshot.connectionState == ConnectionState.done){
+                            flag_data = true;
+                            return Card(
+                                      child: new InkWell(
+                                        onTap: () {
+                                          Navigator.of(context).pushReplacement(FadePageRoute(
+                                              builder: (context) => InitAlistamiento(data: post,),
+                                            ));
+                                        },
+                                        child: Container(
+                                          width: 100.0,
+                                          height: 100.0,
+                                          child:  Column(
+                                          children: <Widget>[
+                                            Padding(
+                                              padding: EdgeInsets.all(40),
+                                              child: Column(
+                                                children: <Widget>[
+                                                  Image.asset('assets/conectar.png',width: 100, height: 100,),
+                                                  Padding(
+                                                    padding: EdgeInsets.only(top: 20,)
+                                                  ),
+                                                  Text("Iniciar Alistamiento", 
+                                                    style: TextStyle(
+                                                              fontFamily: "Montserrat",
+                                                              fontSize: 20,
+                                                              color: Colors.black87,
+                                                          ),
+                                                    ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        ),
+                                      ),
+                                    );
+                      }
+                      else if(snapshot.hasError){
+                        throw snapshot.error;
+                      }
+                      else{
+                        return Center(child: CircularProgressIndicator());
+                      }
+        
+      },
+    );
+  }
+  Widget _build1Button() {
     return Card(
             child: new InkWell(
               onTap: () {
@@ -279,38 +335,23 @@ class _DashboardScreenState extends State<DashboardScreen>
                 height: 100.0,
                 child:  Column(
                 children: <Widget>[
-                  Image.asset('assets/conectar.png'),
-                  Text("Iniciar Alistamiento", 
-                  style: TextStyle(
-                            fontFamily: "Montserrat",
-                            fontSize: 26,
-                            color: Colors.black87,
+                  Padding(
+                    padding: EdgeInsets.all(40),
+                    child: Column(
+                      children: <Widget>[
+                        Image.asset('assets/indicadores.png',width: 100, height: 100,),
+                        Padding(
+                          padding: EdgeInsets.only(top: 20,)
                         ),
-                  ),
-                ],
-              ),
-              ),
-            ),
-          );
-  }
-  Widget _build1Button() {
-    return Card(
-            child: new InkWell(
-              onTap: () {
-                print("tapped mdfk");
-              },
-              child: Container(
-                width: 100.0,
-                height: 100.0,
-                child:  Column(
-                children: <Widget>[
-                  Image.asset('assets/indicadores.png'),
-                  Text("Historial", 
-                  style: TextStyle(
-                            fontFamily: "Montserrat",
-                            fontSize: 26,
-                            color: Colors.black87,
-                        ),
+                        Text("Historial", 
+                          style: TextStyle(
+                                    fontFamily: "Montserrat",
+                                    fontSize: 20,
+                                    color: Colors.black87,
+                                ),
+                          ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -322,20 +363,32 @@ class _DashboardScreenState extends State<DashboardScreen>
     return Card(
             child: new InkWell(
               onTap: () {
-                print("tapped mdfk");
+                Navigator.of(context).pushReplacement(FadePageRoute(
+                    builder: (context) => InitAlistamiento(data: post,),
+                  ));
               },
               child: Container(
                 width: 100.0,
                 height: 100.0,
                 child:  Column(
                 children: <Widget>[
-                  Image.asset('assets/reportes.png'),
-                  Text("Reportes", 
-                  style: TextStyle(
-                            fontFamily: "Montserrat",
-                            fontSize: 26,
-                            color: Colors.black87,
+                  Padding(
+                    padding: EdgeInsets.all(40),
+                    child: Column(
+                      children: <Widget>[
+                        Image.asset('assets/reportes.png',width: 100, height: 100,),
+                        Padding(
+                          padding: EdgeInsets.only(top: 20,)
                         ),
+                        Text("Reportes", 
+                          style: TextStyle(
+                                    fontFamily: "Montserrat",
+                                    fontSize: 20,
+                                    color: Colors.black87,
+                                ),
+                          ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -394,8 +447,9 @@ class _DashboardScreenState extends State<DashboardScreen>
         vertical: 20,
       ),
       childAspectRatio: .9,
+      scrollDirection: Axis.horizontal,
       // crossAxisSpacing: 5,
-      crossAxisCount: 1,
+      crossAxisCount: 2,
       children: [
         _buildButton(),
         _build1Button(),

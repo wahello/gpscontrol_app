@@ -51,6 +51,7 @@ class LoginScreen extends StatelessWidget {
   }
   void initStreamController(){
       print('iniciamos controladores');
+      _webview.close();
       _webview.cleanCookies();
       _webview.clearCache();
       var uri="http://tracking.gpscontrolcolombia.com/login_simple.html";
