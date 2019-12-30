@@ -110,6 +110,11 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
     }
   }
 
+  Future<String> buildInfoUnit() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return 'ok';
+  }
+
   _init_alistamiento(bool init_state, String user, String vehiculo){
     nuevoAlistamiento.folio = '';
     nuevoAlistamiento.state = '';
@@ -170,43 +175,38 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
       ),
         title: Text("Inicio Alistamiento"),
       ),
-      body: Container(
-          child: GridView.count(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 32.0,
-              vertical: 20,
-            ),
-            childAspectRatio: .9,
-            scrollDirection: Axis.vertical,
-            // crossAxisSpacing: 5,
-            crossAxisCount: 2,
-            children: [
-              FutureBuilder(
+      body: ListView(
+                children: <Widget>[
+                  FutureBuilder(
                     future: getVehicles(),
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       if(snapshot.connectionState == ConnectionState.done){
                         return Padding(
                           padding: EdgeInsets.all(5.0),
-                          child: Center(
-                            child: DropdownButton(
-                              hint: Text(msg), // Not necessary 
-                              value: _selectedCar,
-                              onChanged: (newValue) {
-                                setState(() {
-                                  _selectedCar = newValue.toString();
-                                  msg = _selectedCar;
-                                  btnColor = Colors.blue;
-                                  getUnitInfo(newValue);
-                                  print(auxJson);
-                                });
-                              },
-                              items: listaVehiculos.map((unit) {
-                                return DropdownMenuItem(
-                                  child: new Text(unit.name),
-                                  value: unit.id,
-                                );
+                          child: Column(
+                            children: <Widget>[
+                              DropdownButton(
+                                hint: Text(msg), // Not necessary 
+                                value: _selectedCar,
+                                isExpanded: true,
+                                isDense: true,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    _selectedCar = newValue.toString();
+                                    msg = _selectedCar;
+                                    btnColor = Colors.blue;
+                                    getUnitInfo(newValue);
+                                    print(auxJson);
+                                  });
+                                },
+                                items: listaVehiculos.map((unit) {
+                                  return DropdownMenuItem(
+                                    child: new Text(unit.name),
+                                    value: unit.id,
+                                  );
                               }).toList(),
-                            ),
+                              )
+                            ],
                           ),
                         );
                       }else if(snapshot.hasError){
@@ -233,8 +233,24 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
                             ),
                           ),
                         );
+
                       }
                     },
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(15.0),
+                    child: FutureBuilder(
+                      future: buildInfoUnit(),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        if(snapshot.connectionState == ConnectionState.done){
+                          if(btnColor == Colors.grey){
+                            return Text('...');
+                          }else{
+                            return Text('Se seleccionò!!!');
+                          }
+                        }
+                      },
+                    ),
                   ),
                   Padding(
                           padding: EdgeInsets.all(15.0),
@@ -258,25 +274,10 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
                         ),
                   Padding(
                     padding: EdgeInsets.all(20),
-                    child: Card(
-                      child: Container(
-                        width: 100.0,
-                        height: 100.0,
-                        child: GridView.count(
-                          crossAxisCount: 2 ,
-                          children: <Widget>[
-                            Text('Hola mundo'),
-                            Text('Chao mka')
-                          ],
-                        ),
-                      
-                      ),
-                    ),
-                  )
-            ],
-          ),        
-        ),
-      );
+                    child: Text(auxJson),
+                  ),
+                ],
+              ),);
 
   }
   /*
