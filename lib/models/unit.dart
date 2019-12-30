@@ -1,7 +1,7 @@
 class PseudoUnit {
-  String id;
+  int id;
   String name;
-  PseudoUnit(String id, String name) {
+  PseudoUnit(int id, String name) {
     this.id = id;
     this.name = name;
   }

@@ -33,6 +33,10 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
   Map value;
   SharedPreferences preferences;
   var listaVehiculos = new List<PseudoUnit>(); 
+  String msg = 'Seleccione Vehiculo';
+  Color btnColor = Colors.blueGrey;
+  var itemCount;
+  String auxJson = '';
 
   @override
   void initState() {
@@ -63,7 +67,7 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
     }
   }
 
-  getVehicles() async {
+  Future<List<PseudoUnit>> getVehicles() async {
   user = widget.data;
   var username = user.name;
   var url = 'http://hst-api.wialon.com/wialon/ajax.html?svc=token/login&params={%22token%22:%2253dac8bfe1c32941e9a7b7121196dfe262A6A9DF693E8274C23FD67398B9AFDED9E5FE4F%22,%22operateAs%22:%22$username%22}';
@@ -72,7 +76,7 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
   var response = await http.get(url);
   if (response.statusCode == 200) {
     var jsonResponse = convert.jsonDecode(response.body);
-    var itemCount = jsonResponse['eid'];
+    itemCount = jsonResponse['eid'];
     var response2 = await http.get(url2+itemCount);
     if(response2.statusCode == 200){
       var jsonResponse2 = convert.jsonDecode(response2.body);
@@ -81,13 +85,29 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
         print('se encontro el vehiculo '+recUnit.name);
         listaVehiculos.add(recUnit);
       }
-      print('se encontraron '+jsonResponse2['totalItemsCount']+' Vehiculos');
+      var res =jsonResponse2['totalItemsCount'];
+      print('se encontraron '+res.toString()+' Vehiculos');
+      return listaVehiculos;
     }else{
       print('no se pudo imprimira la lista');
     }
   } else {
     print('Todo fallo con estado de error: ${response.statusCode}.');
   }
+  }
+
+  Future<String> getUnitInfo(id) async{
+    var url = 'http://hst-api.wialon.com/wialon/ajax.html?svc=core/search_item&params={%22id%22:';
+    var ad = ',"flags":8388608}&sid=';
+    var idWia = id;
+    var response = await http.get(url+'$idWia'+ad+itemCount);
+    if(response.statusCode == 200){
+      var jsonResponse = convert.jsonDecode(response.body);
+      print(jsonResponse);
+      return 'ok';
+    }else{
+      print('no se pudo imprimira la lista');
+    }
   }
 
   _init_alistamiento(bool init_state, String user, String vehiculo){
@@ -141,7 +161,7 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
   @override
   Widget build(BuildContext context) {
     List<String> _locations = []; // Option 2
-    String _selectedCar; // Option 2
+    String _selectedCar;
     return Scaffold(
       appBar: AppBar(
         leading: new IconButton(
@@ -150,28 +170,40 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
       ),
         title: Text("Inicio Alistamiento"),
       ),
-      body: ListView(
-                children: <Widget>[
-                  FutureBuilder(
-                    future: _initPrefs(),
+      body: Container(
+          child: GridView.count(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 32.0,
+              vertical: 20,
+            ),
+            childAspectRatio: .9,
+            scrollDirection: Axis.vertical,
+            // crossAxisSpacing: 5,
+            crossAxisCount: 2,
+            children: [
+              FutureBuilder(
+                    future: getVehicles(),
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       if(snapshot.connectionState == ConnectionState.done){
                         return Padding(
                           padding: EdgeInsets.all(5.0),
                           child: Center(
                             child: DropdownButton(
-                              hint: Text('Seleccione el vehiculo'), // Not necessary 
+                              hint: Text(msg), // Not necessary 
                               value: _selectedCar,
                               onChanged: (newValue) {
-                                this.setState(() {
-                                  _selectedCar = newValue;
-                                  print(_selectedCar);
+                                setState(() {
+                                  _selectedCar = newValue.toString();
+                                  msg = _selectedCar;
+                                  btnColor = Colors.blue;
+                                  getUnitInfo(newValue);
+                                  print(auxJson);
                                 });
                               },
-                              items: _locations.map((location) {
+                              items: listaVehiculos.map((unit) {
                                 return DropdownMenuItem(
-                                  child: new Text(location),
-                                  value: location,
+                                  child: new Text(unit.name),
+                                  value: unit.id,
                                 );
                               }).toList(),
                             ),
@@ -201,7 +233,6 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
                             ),
                           ),
                         );
-
                       }
                     },
                   ),
@@ -209,12 +240,12 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
                           padding: EdgeInsets.all(15.0),
                           child: MaterialButton(
                             child: Text(
-                              "Sincronizando .. ",
+                              "Iniciar ",
                               style: TextStyle(
                                 color: Colors.white,
                               ),
                             ),
-                            color: Colors.blueGrey,
+                            color: btnColor,
                             onPressed: () {
                               getVehicles();
                               /*print(nuevoAlistamiento.vehiculo);
@@ -224,9 +255,28 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
                               //_saveURL(_urlCtrler.text);*/
                             },
                           ),
-                        )
-                ],
-              ),);
+                        ),
+                  Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Card(
+                      child: Container(
+                        width: 100.0,
+                        height: 100.0,
+                        child: GridView.count(
+                          crossAxisCount: 2 ,
+                          children: <Widget>[
+                            Text('Hola mundo'),
+                            Text('Chao mka')
+                          ],
+                        ),
+                      
+                      ),
+                    ),
+                  )
+            ],
+          ),        
+        ),
+      );
 
   }
   /*
