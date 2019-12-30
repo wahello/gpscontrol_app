@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
-
+import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
 import 'package:GPS_CONTROL/models/alistamiento.dart';
 import 'package:GPS_CONTROL/models/pseudouser.dart';
 import 'package:GPS_CONTROL/ui/alistamientos.dart';
@@ -13,6 +13,7 @@ import 'custom_route.dart';
 import 'package:GPS_CONTROL/models/users.dart';
 import 'package:GPS_CONTROL/models/post.dart';
 import 'package:odoo_api/odoo_api.dart';
+import 'package:GPS_CONTROL/models/unit.dart';
 import 'package:odoo_api/odoo_api_connector.dart';
 
 class InitAlistamiento extends StatefulWidget {
@@ -31,6 +32,7 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
   Alistamiento nuevoAlistamiento;
   Map value;
   SharedPreferences preferences;
+  var listaVehiculos = new List<PseudoUnit>(); 
 
   @override
   void initState() {
@@ -47,7 +49,8 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
     user = widget.data;
     if(auth.isSuccess){
       var id = user.id;
-      client.searchRead('gpscontrol.wialon_unit_group', [['crt','=','$id']], ['id','id_wialon','nombre']).then((res){
+      print(id);
+      client.searchRead('gpscontrol.wialon_unit_group', [['crt.id','=',id]], ['id','id_wialon','nombre']).then((res){
         if(res.hasError()){
           print('algo salio mal marica');
         }else{
@@ -58,6 +61,33 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
     }else{
 
     }
+  }
+
+  getVehicles() async {
+  user = widget.data;
+  var username = user.name;
+  var url = 'http://hst-api.wialon.com/wialon/ajax.html?svc=token/login&params={%22token%22:%2253dac8bfe1c32941e9a7b7121196dfe262A6A9DF693E8274C23FD67398B9AFDED9E5FE4F%22,%22operateAs%22:%22$username%22}';
+  var url2 = 'https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={%22spec%22:{%22itemsType%22:%22avl_unit%22,%22propName%22:%22trailers%22,%22propValueMask%22:%22%22,%22sortType%22:%22trailers%22,%22propType%22:%22propitemname%22},%22force%22:1,%22flags%22:1,%22from%22:0,%22to%22:0}&sid=';
+  // Await the http get response, then decode the json-formatted response.
+  var response = await http.get(url);
+  if (response.statusCode == 200) {
+    var jsonResponse = convert.jsonDecode(response.body);
+    var itemCount = jsonResponse['eid'];
+    var response2 = await http.get(url2+itemCount);
+    if(response2.statusCode == 200){
+      var jsonResponse2 = convert.jsonDecode(response2.body);
+      for (var unit in jsonResponse2['items']){
+        var recUnit = new PseudoUnit(unit['id'], unit['nm']);
+        print('se encontro el vehiculo '+recUnit.name);
+        listaVehiculos.add(recUnit);
+      }
+      print('se encontraron '+jsonResponse2['totalItemsCount']+' Vehiculos');
+    }else{
+      print('no se pudo imprimira la lista');
+    }
+  } else {
+    print('Todo fallo con estado de error: ${response.statusCode}.');
+  }
   }
 
   _init_alistamiento(bool init_state, String user, String vehiculo){
@@ -186,6 +216,7 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
                             ),
                             color: Colors.blueGrey,
                             onPressed: () {
+                              getVehicles();
                               /*print(nuevoAlistamiento.vehiculo);
                               Navigator.of(context).pushReplacement(FadePageRoute(
                                 builder: (context) =>new  AlistamientoScreen(data: _selectedCar,),
