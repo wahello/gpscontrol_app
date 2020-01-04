@@ -37,6 +37,7 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
   Color btnColor = Colors.blueGrey;
   var itemCount;
   String auxJson = '';
+  PseudoUnit unit;
 
   @override
   void initState() {
@@ -98,15 +99,17 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
 
   Future<String> getUnitInfo(id) async{
     var url = 'http://hst-api.wialon.com/wialon/ajax.html?svc=core/search_item&params={%22id%22:';
-    var ad = ',"flags":8388608}&sid=';
+    var ad = ',"flags":4611686018427387903}&sid=';
     var idWia = id;
     var response = await http.get(url+'$idWia'+ad+itemCount);
     if(response.statusCode == 200){
       var jsonResponse = convert.jsonDecode(response.body);
-      print(jsonResponse);
+      var result = jsonResponse['item']['nm'];
+      print(result);
+      unit = new PseudoUnit(id, result);
       return 'ok';
     }else{
-      print('no se pudo imprimira la lista');
+      return 'no se pudo imprimira la lista';
     }
   }
 
@@ -192,10 +195,13 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
                                 isDense: true,
                                 onChanged: (newValue) {
                                   setState(() {
-                                    _selectedCar = newValue.toString();
-                                    msg = _selectedCar;
+                                    //_selectedCar = newValue.toString();
+                                    //msg = _selectedCar;
+                                    getUnitInfo(newValue).then((res){
+                                      print(res);
+                                    });
                                     btnColor = Colors.blue;
-                                    getUnitInfo(newValue);
+                                    
                                     print(auxJson);
                                   });
                                 },
@@ -238,21 +244,6 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
                     },
                   ),
                   Padding(
-                    padding: EdgeInsets.all(15.0),
-                    child: FutureBuilder(
-                      future: buildInfoUnit(),
-                      builder: (BuildContext context, AsyncSnapshot snapshot) {
-                        if(snapshot.connectionState == ConnectionState.done){
-                          if(btnColor == Colors.grey){
-                            return Text('...');
-                          }else{
-                            return Text('Se seleccionò!!!');
-                          }
-                        }
-                      },
-                    ),
-                  ),
-                  Padding(
                           padding: EdgeInsets.all(15.0),
                           child: MaterialButton(
                             child: Text(
@@ -263,10 +254,10 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
                             ),
                             color: btnColor,
                             onPressed: () {
-                              getVehicles();
-                              /*print(nuevoAlistamiento.vehiculo);
+                              //getVehicles();
+                              /*print(nuevoAlistamiento.vehiculo);*/
                               Navigator.of(context).pushReplacement(FadePageRoute(
-                                builder: (context) =>new  AlistamientoScreen(data: _selectedCar,),
+                                builder: (context) =>new  AlistamientoScreen(data: unit,),
                               ));
                               //_saveURL(_urlCtrler.text);*/
                             },

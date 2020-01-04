@@ -89,9 +89,6 @@ class LoginScreen extends StatelessWidget {
 
   Future<String> _recoverPassword(String name) {
     return Future.delayed(loginTime).then((_) {
-      if (!mockUsers.containsKey(name)) {
-        return 'Username not exists';
-      }
       return null;
     });
   }
