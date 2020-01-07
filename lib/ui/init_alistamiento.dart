@@ -47,24 +47,24 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
 
     //_checkFirstTime();
   }
-  Future<void> _initPrefs() async {
+  Future<int> getIdOdoo (id_wia) async {
     //preferences = await SharedPreferences.getInstance();
     var client = OdooClient("http://66.228.39.68:8069");
     var auth = await client.authenticate('appbot', 'iopunjab1234!',"smart_contro");
-    user = widget.data;
     if(auth.isSuccess){
-      var id = user.id;
-      print(id);
-      client.searchRead('gpscontrol.wialon_unit_group', [['crt.id','=',id]], ['id','id_wialon','nombre']).then((res){
+      print(id_wia);
+      client.searchRead('gpscontrol.wialon_unit', [['id_wialon','=',id_wia]], ['id','name']).then((res){
         if(res.hasError()){
           print('algo salio mal marica');
+          return 0;
         }else{
           print(res.getResult());
+          return 1;
         }
       });
 
     }else{
-
+      return 9999;
     }
   }
 
@@ -82,7 +82,7 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
     if(response2.statusCode == 200){
       var jsonResponse2 = convert.jsonDecode(response2.body);
       for (var unit in jsonResponse2['items']){
-        var recUnit = new PseudoUnit(unit['id'], unit['nm']);
+        var recUnit = new PseudoUnit(unit['id'], user.id, unit['nm']);
         print('se encontro el vehiculo '+recUnit.name);
         listaVehiculos.add(recUnit);
       }
@@ -102,11 +102,15 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
     var ad = ',"flags":4611686018427387903}&sid=';
     var idWia = id;
     var response = await http.get(url+'$idWia'+ad+itemCount);
+    var odooData = await getIdOdoo(idWia);
     if(response.statusCode == 200){
       var jsonResponse = convert.jsonDecode(response.body);
       var result = jsonResponse['item']['nm'];
       print(result);
-      unit = new PseudoUnit(id, result);
+      if(odooData.toString()== '1'){
+        print('halamos la info ok');
+      }
+      unit = new PseudoUnit(id, user.id, result);
       return result;
     }else{
       return 'algo salio mal...';
