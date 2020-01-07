@@ -88,7 +88,7 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
     if(response2.statusCode == 200){
       var jsonResponse2 = convert.jsonDecode(response2.body);
       for (var unit in jsonResponse2['items']){
-        var recUnit = new PseudoUnit(unit['id'], user.id, unit['nm'],user);
+        var recUnit = new PseudoUnit(unit['id'], user.id, unit['nm'], user);
         print('se encontro el vehiculo '+recUnit.name);
         listaVehiculos.add(recUnit);
       }

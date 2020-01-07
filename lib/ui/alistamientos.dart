@@ -190,6 +190,7 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
     var auth = await client.authenticate('appbot', 'iopunjab1234!',"smart_contro");
     var prefs = unit.idUser;
     var vehiculo = unit.id;
+    print(vehiculo);
     Map<String, dynamic> map = {
       "partner_id": prefs,
       "vehiculo": vehiculo,
@@ -299,7 +300,9 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
           return 'algo salio mal ...';
         }else{
           print(res.getResult());
-           Navigator.pushNamed(context, '/dashboard');
+          Navigator.of(context).pushReplacement(FadePageRoute(
+                    builder: (context) => DashboardScreen(userdata: unit.user.baseUser,),
+                    ));
           return 'ok';
         }
       });
@@ -421,9 +424,7 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
                 onPressed: () {
                   if(buttonColor == Colors.blue){
                     guardarAlistamiento();
-                    /* Navigator.of(context).pushReplacement(FadePageRoute(
-                    builder: (context) =>new  DashboardScreen(),
-                    ));*/
+                    /* */
                   }else{
                     print('aun no puedes guardar el alistamiento xD');
                   }
