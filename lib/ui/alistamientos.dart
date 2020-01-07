@@ -1,3 +1,5 @@
+import 'dart:wasm';
+
 import 'package:GPS_CONTROL/models/unit.dart';
 import 'package:GPS_CONTROL/ui/dashboard_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,6 +14,10 @@ import 'custom_route.dart';
 import 'package:GPS_CONTROL/common/utils.dart' ;
 import 'package:GPS_CONTROL/models/caption.dart';
 import 'package:odoo_api/odoo_api.dart';
+import 'dart:async';
+import 'dart:io';
+import 'dart:convert';
+
 
 class AlistamientoScreen extends StatefulWidget {
   AlistamientoScreen({this.data});
@@ -184,7 +190,15 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
     }
   }
 
-  guardarAlistamiento() async{
+  String getBase64image(String imageFilePath){
+    File imageFile = File(imageFilePath);
+    List<int> imageBytes = imageFile.readAsBytesSync();
+    String base64Image = base64Encode(imageBytes);
+
+    return base64Image;
+  }
+
+  Future<void> guardarAlistamiento() async{
     preferences =  await SharedPreferences.getInstance();
     var client = OdooClient("http://66.228.39.68:8069");
     var auth = await client.authenticate('appbot', 'iopunjab1234!',"smart_contro");
@@ -193,7 +207,6 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
     print(vehiculo);
     Map<String, dynamic> map = {
       "partner_id": prefs,
-      "vehiculo": vehiculo,
       "documentos_conductor": values[0],
       "documentos_vehiculo": values[1],
       "calcomania": values[2],
@@ -290,6 +303,7 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
       "img_aseo":  preguntas[29].base64Image,
       "img_celular": preguntas[30].base64Image,
       "img_ruteros": preguntas[31].base64Image,
+      "vehiculo": vehiculo,
     };
 
     if(auth.isSuccess){
@@ -308,7 +322,7 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
       });
 
     }else{
-
+        return 'bad';
     }
 
   }
@@ -462,7 +476,7 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
         preguntas[index].descripcion = desc;
         colores[index] = Colors.orange;
         images[index] = imagePath;
-        preguntas[index].base64Image = imagePath;
+        preguntas[index].base64Image = getBase64image(imagePath);
         Scaffold.of(context)
         ..removeCurrentSnackBar()
         ..showSnackBar(SnackBar(content: Text("Se añadio correctamente la evidencia!")));

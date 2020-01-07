@@ -47,13 +47,13 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
 
     //_checkFirstTime();
   }
-  Future<int> getIdOdoo (id_wia) async {
+  Future<int> getIdOdoo(idWia) async {
     //preferences = await SharedPreferences.getInstance();
     var client = OdooClient("http://66.228.39.68:8069");
     var auth = await client.authenticate('appbot', 'iopunjab1234!',"smart_contro");
     if(auth.isSuccess){
-      print(id_wia);
-      client.searchRead('gpscontrol.wialon_unit', [['id_wialon','=',id_wia]], ['id','name']).then((res){
+      print(idWia);
+      client.searchRead('gpscontrol.wialon_unit', [['id_wialon','=',idWia]], ['id','name']).then((res){
         if(res.hasError()){
           print('algo salio mal marica');
           return 0;
@@ -209,7 +209,6 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
                                       msg = res;
                                     });
                                     btnColor = Colors.blue;
-                                    
                                     print(auxJson);
                                   });
                                 },
