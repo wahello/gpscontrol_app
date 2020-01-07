@@ -137,7 +137,7 @@ class _AlistamientoScreenState extends State {
       onSlideIsOpenChanged: handleSlideIsOpenChanged,
     );
     for(var index=0;index<list_preguntas.length;index++){
-        var pregunta = new Pregunta(index, list_preguntas[index],null,'');
+        var pregunta = new Pregunta(index, list_preguntas[index],'','');
         preguntas.add(pregunta);
         //slidableController.add(controlador);
         values.add(false);
@@ -343,16 +343,18 @@ class _AlistamientoScreenState extends State {
                                 if(value==true){
                                 values[index] = false;
                                 _takeInfoSheet(context,index);
-                                if(preguntas[index].descripcion == null){
-                                  colores[index] = Colors.red;
-                                  values[index] = false;
+                                  if(preguntas[index].descripcion == ''){
+                                    colores[index] = Colors.red;
+                                    values[index] = false;
+                                  }else{
+                                    colores[index] = Colors.orange;
+                                  }
                                 }else{
-                                  colores[index] = Colors.orange;
+                                  values[index]=true;
+                                  colores[index]=Colors.green;
+                                  preguntas[index].descripcion='';
+                                  preguntas[index].base64Image='';
                                 }
-                              }else{
-                                values[index]=true;
-                                colores[index]=Colors.green;
-                              }
                               })
                             } ,
                           ),
@@ -440,20 +442,29 @@ class _AlistamientoScreenState extends State {
 
       // After the Selection Screen returns a result, hide any previous snackbars
     // and show the new result.
-    var desc = result.desc;
-    var imagePath = result.imagePath;
-    if(imagePath!=null)
-    {
-      values[index] = false;
-      preguntas[index].descripcion = desc;
-      colores[index] = Colors.orange;
-      images[index] = imagePath;
-      preguntas[index].base64Image = imagePath;
+    if (result.desc == null){
+      print('algo salio mal bro, intentelo de nuevo.');
+      colores[index] = Colors.red;
+    }else{
+      var desc = result.desc;
+      var imagePath = result.imagePath;
+      if(imagePath!=null)
+      {
+        values[index] = false;
+        preguntas[index].descripcion = desc;
+        colores[index] = Colors.orange;
+        images[index] = imagePath;
+        preguntas[index].base64Image = imagePath;
+        Scaffold.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text("Se añadio correctamente la evidencia!")));
+      }else{
+        colores[index] = Colors.red;
+      }
     }
     
-    Scaffold.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text("Se añadio correctamente la evidencia!")));
+    
+   
 
     }
 
