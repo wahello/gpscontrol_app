@@ -61,8 +61,8 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
           var data = res.getResult();
           var result;
           for(var rec in data['records']){
-            print(rec['id']);
-            result = rec['id'];
+            print('Holis' +rec['id'].toString());
+            unit.setId(rec['id']);
           }
           
           return result;
@@ -107,14 +107,13 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
     var url = 'http://hst-api.wialon.com/wialon/ajax.html?svc=core/search_item&params={%22id%22:';
     var ad = ',"flags":4611686018427387903}&sid=';
     var idWia = id;
-    var odooData = await getIdOdoo(idWia);
     var response = await http.get(url+'$idWia'+ad+itemCount);
     if(response.statusCode == 200){
       var jsonResponse = convert.jsonDecode(response.body);
       var result = jsonResponse['item']['nm'];
+      unit = new PseudoUnit(await getIdOdoo(idWia), user.id, result, user);
       print(result);
-      unit = new PseudoUnit(odooData, user.id, result, user);
-      print(unit.id);
+      print('paso por getUnitInfo ');
       return result;
     }else{
       return 'algo salio mal...';
@@ -265,6 +264,7 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
                             onPressed: () {
                               //getVehicles();
                               /*print(nuevoAlistamiento.vehiculo);*/
+                              
                               Navigator.of(context).pushReplacement(FadePageRoute(
                                 builder: (context) =>new  AlistamientoScreen(data: unit,),
                               ));

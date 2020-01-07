@@ -20,4 +20,8 @@ class PseudoUnit {
   Map toJson() {
     return {'id': id, 'idUser': idUser, 'name': name};
   }
+
+  setId(int id){
+    this.id = id;
+  }
 }
