@@ -58,13 +58,19 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
           print('algo salio mal marica');
           return 0;
         }else{
-          print(res.getResult());
-          return 1;
+          var data = res.getResult();
+          var result;
+          for(var rec in data['records']){
+            print(rec['id']);
+            result = rec['id'];
+          }
+          
+          return result;
         }
       });
 
     }else{
-      return 9999;
+      return 99999;
     }
   }
 
@@ -82,7 +88,7 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
     if(response2.statusCode == 200){
       var jsonResponse2 = convert.jsonDecode(response2.body);
       for (var unit in jsonResponse2['items']){
-        var recUnit = new PseudoUnit(unit['id'], user.id, unit['nm']);
+        var recUnit = new PseudoUnit(unit['id'], user.id, unit['nm'],user);
         print('se encontro el vehiculo '+recUnit.name);
         listaVehiculos.add(recUnit);
       }
@@ -101,16 +107,14 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
     var url = 'http://hst-api.wialon.com/wialon/ajax.html?svc=core/search_item&params={%22id%22:';
     var ad = ',"flags":4611686018427387903}&sid=';
     var idWia = id;
-    var response = await http.get(url+'$idWia'+ad+itemCount);
     var odooData = await getIdOdoo(idWia);
+    var response = await http.get(url+'$idWia'+ad+itemCount);
     if(response.statusCode == 200){
       var jsonResponse = convert.jsonDecode(response.body);
       var result = jsonResponse['item']['nm'];
       print(result);
-      if(odooData.toString()== '1'){
-        print('halamos la info ok');
-      }
-      unit = new PseudoUnit(id, user.id, result);
+      unit = new PseudoUnit(odooData, user.id, result, user);
+      print(unit.id);
       return result;
     }else{
       return 'algo salio mal...';

@@ -1,11 +1,15 @@
+import 'package:GPS_CONTROL/models/pseudouser.dart';
+
 class PseudoUnit {
   int id;
   int idUser;
   String name;
-  PseudoUnit(int id, int idUser, String name) {
+  PseudoUser user;
+  PseudoUnit(int id, int idUser, String name, PseudoUser user) {
     this.id = id;
     this.idUser = idUser;
     this.name = name;
+    this.user = user;
   }
 
   PseudoUnit.fromJson(Map json)

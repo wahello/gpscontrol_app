@@ -189,8 +189,10 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
     var client = OdooClient("http://66.228.39.68:8069");
     var auth = await client.authenticate('appbot', 'iopunjab1234!',"smart_contro");
     var prefs = unit.idUser;
+    var vehiculo = unit.id;
     Map<String, dynamic> map = {
       "partner_id": prefs,
+      "vehiculo": vehiculo,
       "documentos_conductor": values[0],
       "documentos_vehiculo": values[1],
       "calcomania": values[2],
@@ -297,6 +299,7 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
           return 'algo salio mal ...';
         }else{
           print(res.getResult());
+           Navigator.pushNamed(context, '/dashboard');
           return 'ok';
         }
       });
