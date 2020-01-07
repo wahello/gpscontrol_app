@@ -6,9 +6,11 @@ import 'package:GPS_CONTROL/models/preguntas.dart';
 import 'package:camera/camera.dart';
 import 'package:GPS_CONTROL/common/camara.dart';
 import 'package:GPS_CONTROL/models/alistamiento.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'custom_route.dart';
 import 'package:GPS_CONTROL/common/utils.dart' ;
 import 'package:GPS_CONTROL/models/caption.dart';
+import 'package:odoo_api/odoo_api.dart';
 
 class AlistamientoScreen extends StatefulWidget {
   AlistamientoScreen({this.data});
@@ -27,7 +29,8 @@ class _AlistamientoScreenState extends State {
   Utils utils = new Utils();
   SlidableController slidableController;
   Alistamiento nuevoAlistamiento;
-   void handleSlideAnimationChanged(Animation<double> slideAnimation) {
+  SharedPreferences preferences;
+  void handleSlideAnimationChanged(Animation<double> slideAnimation) {
     setState(() {
       var _rotationAnimation = slideAnimation;
       print(nuevoAlistamiento);
@@ -178,6 +181,128 @@ class _AlistamientoScreenState extends State {
     }
   }
 
+  guardarAlistamiento() async{
+    preferences =  await SharedPreferences.getInstance();
+    var client = OdooClient("http://66.228.39.68:8069");
+    var auth = await client.authenticate('appbot', 'iopunjab1234!',"smart_contro");
+    var prefs = preferences.getInt('id_user');
+    var map = {
+      'partner_id': prefs,
+      'documentos_conductor': values[0],
+      'documentos_vehiculo': values[1],
+      'calcomania': values[2],
+      'pito': values[3],
+      'disp_velocidad': values[4],
+      'estado_esc_p_conductor': values[5],
+      'estado_esc_p_pasajero': values[6],
+      'equipo_carretera': values[7],
+      'herramientas': values[8],
+      'linterna': values[9],
+      'extintor': values[10],
+      'botiquin': values[11],
+      'repuesto': values[12],
+      'retrovisores': values[13],
+      'cinturones': values[14],
+      'motor': values[15],
+      'llantas': values[16],
+      'baterias': values[17],
+      'transmision': values[18],
+      'tapas': values[19],
+      'niveles': values[20],
+      'filtros': values[21],
+      'parabrisas': values[22],
+      'frenos': values[23],
+      'frenos_emergencia': values[24],
+      'aire': values[25],
+      'luces': values[26],
+      'silleteria' : values[27],
+      'silla_conductor': values[28],
+      'aseo': values[29],
+      'celular': values[30],
+      'ruteros': values[31],
+      'desc_documentos_conductor': preguntas[0].descripcion,
+      'desc_documentos_vehiculo': preguntas[1].descripcion,
+      'desc_calcomania': preguntas[2].descripcion,
+      'desc_pito':  preguntas[3].descripcion,
+      'desc_disp_velocidad':  preguntas[4].descripcion,
+      'desc_estado_esc_p_conductor': preguntas[5].descripcion,
+      'desc_estado_esc_p_pasajero': preguntas[6].descripcion,
+      'desc_equipo_carretera': preguntas[7].descripcion,
+      'desc_herramientas': preguntas[8].descripcion,
+      'desc_linterna': preguntas[9].descripcion,
+      'desc_extintor': preguntas[10].descripcion,
+      'desc_botiquin': preguntas[11].descripcion,
+      'desc_repuesto': preguntas[12].descripcion,
+      'desc_retrovisores': preguntas[13].descripcion,
+      'desc_cinturones': preguntas[14].descripcion,
+      'desc_motor': preguntas[15].descripcion,
+      'desc_llantas': preguntas[16].descripcion,
+      'desc_baterias': preguntas[17].descripcion,
+      'desc_transmision': preguntas[18].descripcion,
+      'desc_tapas': preguntas[19].descripcion,
+      'desc_niveles': preguntas[20].descripcion,
+      'desc_filtros': preguntas[21].descripcion,
+      'desc_parabrisas': preguntas[22].descripcion,
+      'desc_frenos': preguntas[23].descripcion,
+      'desc_frenos_emergencia': preguntas[24].descripcion,
+      'desc_aire': preguntas[25].descripcion,
+      'desc_luces': preguntas[26].descripcion,
+      'desc_silleteria' : preguntas[27].descripcion,
+      'desc_silla_conductor': preguntas[28].descripcion,
+      'desc_aseo': preguntas[29].descripcion,
+      'desc_celular': preguntas[30].descripcion,
+      'desc_ruteros': preguntas[31].descripcion,
+      'img_documentos_conductor': preguntas[0].base64Image,
+      'img_documentos_vehiculo':preguntas[1].base64Image,
+      'img_calcomania': preguntas[2].base64Image,
+      'img_pito':preguntas[3].base64Image,
+      'img_disp_velocidad':preguntas[4].base64Image,
+      'img_estado_esc_p_conductor':preguntas[5].base64Image,
+      'img_estado_esc_p_pasajero': preguntas[6].base64Image,
+      'img_equipo_carretera': preguntas[7].base64Image,
+      'img_herramientas': preguntas[8].base64Image,
+      'img_linterna': preguntas[9].base64Image,
+      'img_extintor': preguntas[10].base64Image,
+      'img_botiquin': preguntas[11].base64Image,
+      'img_repuesto': preguntas[12].base64Image,
+      'img_retrovisores': preguntas[13].base64Image,
+      'img_cinturones': preguntas[14].base64Image,
+      'img_motor': preguntas[15].base64Image,
+      'img_llantas': preguntas[16].base64Image,
+      'img_baterias': preguntas[17].base64Image,
+      'img_transmision': preguntas[18].base64Image,
+      'img_tapas': preguntas[19].base64Image,
+      'img_niveles': preguntas[20].base64Image,
+      'img_filtros': preguntas[21].base64Image,
+      'img_parabrisas': preguntas[22].base64Image,
+      'img_frenos': preguntas[23].base64Image,
+      'img_frenos_emergencia': preguntas[24].base64Image,
+      'img_aire': preguntas[25].base64Image,
+      'img_luces': preguntas[26].base64Image,
+      'img_silleteria' : preguntas[27].base64Image,
+      'img_silla_conductor': preguntas[28].base64Image,
+      'img_aseo':  preguntas[29].base64Image,
+      'img_celular': preguntas[30].base64Image,
+      'img_ruteros': preguntas[31].base64Image,
+    };
+
+    if(auth.isSuccess){
+      client.create('gpscontrol.alistamientos', map).then((res){
+        if(res.hasError()){
+          print('algo salio mal marica');
+          return 'algo salio mal ...';
+        }else{
+          print(res.getResult());
+          return 'ok';
+        }
+      });
+
+    }else{
+
+    }
+
+  }
+
   @override
   build(context) {
     return Scaffold(
@@ -286,9 +411,10 @@ class _AlistamientoScreenState extends State {
                 color: buttonColor==Colors.grey?Colors.grey:Colors.blue,
                 onPressed: () {
                   if(buttonColor == Colors.blue){
-                    Navigator.of(context).pushReplacement(FadePageRoute(
+                    guardarAlistamiento();
+                    /* Navigator.of(context).pushReplacement(FadePageRoute(
                     builder: (context) =>new  DashboardScreen(),
-                    ));
+                    ));*/
                   }else{
                     print('aun no puedes guardar el alistamiento xD');
                   }
@@ -322,6 +448,7 @@ class _AlistamientoScreenState extends State {
       preguntas[index].descripcion = desc;
       colores[index] = Colors.orange;
       images[index] = imagePath;
+      preguntas[index].base64Image = imagePath;
     }
     
     Scaffold.of(context)

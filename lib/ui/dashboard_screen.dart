@@ -105,7 +105,10 @@ class _DashboardScreenState extends State<DashboardScreen>
           pseudoUser = new PseudoUser.fromJson(rec);
           print('se guardo '+pseudoUser.name);
         }
-        
+        savePrefs(pseudoUser.id).then((res){
+          print(res);
+        });
+        //preferences.setInt('id_user', pseudoUser.id);
       }
 
       });
@@ -119,6 +122,11 @@ class _DashboardScreenState extends State<DashboardScreen>
       return 'bad';
     }
     
+  }
+//future guardar preferencias.
+  Future<String> savePrefs(id)async{
+    preferences.setInt('idUser', id);
+    return 'ok';
   }
 
   //future get prefs
