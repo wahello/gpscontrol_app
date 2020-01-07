@@ -185,7 +185,7 @@ class _AlistamientoScreenState extends State {
     preferences =  await SharedPreferences.getInstance();
     var client = OdooClient("http://66.228.39.68:8069");
     var auth = await client.authenticate('appbot', 'iopunjab1234!',"smart_contro");
-    var prefs = preferences.getInt('id_user');
+    var prefs = preferences.getInt('idUser');
     var map = {
       'partner_id': prefs,
       'documentos_conductor': values[0],
@@ -290,6 +290,7 @@ class _AlistamientoScreenState extends State {
       client.create('gpscontrol.alistamientos', map).then((res){
         if(res.hasError()){
           print('algo salio mal marica');
+          print(res.getError());
           return 'algo salio mal ...';
         }else{
           print(res.getResult());
