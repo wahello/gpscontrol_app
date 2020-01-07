@@ -484,9 +484,6 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
         colores[index] = Colors.red;
       }
     }
-    
-    
-   
 
     }
 
