@@ -105,9 +105,6 @@ class _DashboardScreenState extends State<DashboardScreen>
           pseudoUser = new PseudoUser.fromJson(rec);
           print('se guardo '+pseudoUser.name);
         }
-        savePrefs(pseudoUser.id).then((res){
-          print(res);
-        });
         //preferences.setInt('id_user', pseudoUser.id);
       }
 
@@ -124,7 +121,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     
   }
 //future guardar preferencias.
-  Future<String> savePrefs(id)async{
+  Future<String> savePrefs(id) async {
     preferences.setInt('idUser', id);
     return 'ok';
   }
@@ -132,6 +129,7 @@ class _DashboardScreenState extends State<DashboardScreen>
   //future get prefs
   Future<User> getPrefs() async {
     preferences =  await SharedPreferences.getInstance();
+    preferences.setInt('idUser', pseudoUser.id);
     //base_user.name = preferences.getString('user');
     //base_user.passwd = preferences.getString('ssap');
     return baseUser;
