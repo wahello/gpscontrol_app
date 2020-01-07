@@ -181,12 +181,14 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
   }
 
   validationButtonColor(){
-    if(colores.contains(Colors.grey) || colores.contains(Colors.red)){
-      print('aun pailas brother, faltan preguntas por responder.');
-    }else{
+    if(colores.contains(Colors.grey)){
+      if(colores.contains(Colors.red)){
+        print('aun pailas brother, faltan preguntas por responder.');
+      }else{
       setState(() {
         buttonColor = Colors.blue;
       });
+    }
     }
   }
 
@@ -364,12 +366,12 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
                             onTap: () => {
                               validationButtonColor(),
                               setState((){
-                                if(value==true){
+                                if(values[index] == true){
                                 values[index] = false;
                                 _takeInfoSheet(context,index);
                                   if(preguntas[index].descripcion == ''){
                                     colores[index] = Colors.red;
-                                    values[index] = false;
+                                    values[index] = true;
                                   }else{
                                     colores[index] = Colors.orange;
                                   }
@@ -451,7 +453,7 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
 
     );
   }
-  void _takeInfoSheet(context, index)async{
+  void _takeInfoSheet(context, index) async{
     print('el indice seleccionado es: '+index.toString());
     // Obtén una lista de las cámaras disponibles en el dispositivo.
     final cameras = await availableCameras();
@@ -467,6 +469,7 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
     if (result.desc == null){
       print('algo salio mal bro, intentelo de nuevo.');
       colores[index] = Colors.red;
+      values[index] = true;
     }else{
       var desc = result.desc;
       var imagePath = result.imagePath;
@@ -482,6 +485,7 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
         ..showSnackBar(SnackBar(content: Text("Se añadio correctamente la evidencia!")));
       }else{
         colores[index] = Colors.red;
+        values[index] = true;
       }
     }
 
