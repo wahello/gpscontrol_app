@@ -107,9 +107,9 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
       var result = jsonResponse['item']['nm'];
       print(result);
       unit = new PseudoUnit(id, result);
-      return 'ok';
+      return result;
     }else{
-      return 'no se pudo imprimira la lista';
+      return 'algo salio mal...';
     }
   }
 
@@ -185,7 +185,7 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       if(snapshot.connectionState == ConnectionState.done){
                         return Padding(
-                          padding: EdgeInsets.all(5.0),
+                          padding: EdgeInsets.all(28.0),
                           child: Column(
                             children: <Widget>[
                               DropdownButton(
@@ -199,6 +199,7 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
                                     //msg = _selectedCar;
                                     getUnitInfo(newValue).then((res){
                                       print(res);
+                                      msg = res;
                                     });
                                     btnColor = Colors.blue;
                                     

@@ -1,7 +1,3 @@
-import 'dart:io';
-import 'dart:convert';
-import 'package:flutter/cupertino.dart';
-
 class Pregunta {
   String id;
   String pregunta;
@@ -23,6 +19,6 @@ class Pregunta {
         base64Image = json['image'];
 
   Map toJson() {
-    return {'id': id, 'pregunta': pregunta, 'desc': descripcion, 'imgage': base64Image};
+    return {'id': id, 'pregunta': pregunta, 'desc': descripcion, 'image': base64Image};
   }
 }

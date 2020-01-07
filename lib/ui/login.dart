@@ -50,7 +50,7 @@ class LoginScreen extends StatelessWidget {
 
   }
   void initStreamController(){
-       _webview.launch(uri,hidden: true);
+       //_webview.launch(uri,hidden: true);
       flagPass = false;
       _onStateChanged = _webview.onStateChanged.listen(this.onStateChanged);
   }
@@ -95,6 +95,7 @@ class LoginScreen extends StatelessWidget {
 
     @override
   Widget build(BuildContext context) {
+    _webview.launch(uri,hidden: true);
     return FlutterLogin(
       title: Constants.appName,
       logo: 'assets/icon/favicon2.png',
@@ -174,8 +175,6 @@ class LoginScreen extends StatelessWidget {
             builder: (context) => DashboardScreen(userdata: usuario,),
           ));
         }else{
-          _webview.dispose();
-          _webview.close();
         }
       },
       onRecoverPassword: (name) {
