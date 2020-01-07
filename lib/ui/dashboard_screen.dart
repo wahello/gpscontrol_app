@@ -198,8 +198,8 @@ class _DashboardScreenState extends State<DashboardScreen>
             child: Hero(
               tag: Constants.logoTag,
               child: Image.asset(
-                'assets/logo1.png',
-                filterQuality: FilterQuality.high,
+                'assets/logo2.png',
+                filterQuality: FilterQuality.high, width: 200.0,
               ),
             ),
           ),

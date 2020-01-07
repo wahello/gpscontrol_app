@@ -182,13 +182,17 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
 
   validationButtonColor(){
     if(colores.contains(Colors.grey)){
+      print('aun pailas brother, faltan preguntas por responder.');
+      buttonColor = Colors.grey;
+    }else{
       if(colores.contains(Colors.red)){
         print('aun pailas brother, faltan preguntas por responder.');
+        buttonColor = Colors.grey;
       }else{
       setState(() {
         buttonColor = Colors.blue;
-      });
-    }
+        });
+      }
     }
   }
 
@@ -228,19 +232,20 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
       "llantas": values[16],
       "baterias": values[17],
       "transmision": values[18],
-      "tapas": values[19],
-      "niveles": values[20],
-      "filtros": values[21],
-      "parabrisas": values[22],
-      "frenos": values[23],
-      "frenos_emergencia": values[24],
-      "aire": values[25],
-      "luces": values[26],
-      "silleteria" : values[27],
-      "silla_conductor": values[28],
-      "aseo": values[29],
-      "celular": values[30],
-      "ruteros": values[31],
+      "tension":values[19],
+      "tapas": values[20],
+      "niveles": values[21],
+      "filtros": values[22],
+      "parabrisas": values[23],
+      "frenos": values[24],
+      "frenos_emergencia": values[25],
+      "aire": values[26],
+      "luces": values[27],
+      "silleteria" : values[28],
+      "silla_conductor": values[29],
+      "aseo": values[30],
+      "celular": values[31],
+      "ruteros": values[32],
       "desc_documentos_conductor": preguntas[0].descripcion,
       "desc_documentos_vehiculo": preguntas[1].descripcion,
       "desc_calcomania": preguntas[2].descripcion,
@@ -260,19 +265,20 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
       "desc_llantas": preguntas[16].descripcion,
       "desc_baterias": preguntas[17].descripcion,
       "desc_transmision": preguntas[18].descripcion,
-      "desc_tapas": preguntas[19].descripcion,
-      "desc_niveles": preguntas[20].descripcion,
-      "desc_filtros": preguntas[21].descripcion,
-      "desc_parabrisas": preguntas[22].descripcion,
-      "desc_frenos": preguntas[23].descripcion,
-      "desc_frenos_emergencia": preguntas[24].descripcion,
-      "desc_aire": preguntas[25].descripcion,
-      "desc_luces": preguntas[26].descripcion,
-      "desc_silleteria" : preguntas[27].descripcion,
-      "desc_silla_conductor": preguntas[28].descripcion,
-      "desc_aseo": preguntas[29].descripcion,
-      "desc_celular": preguntas[30].descripcion,
-      "desc_ruteros": preguntas[31].descripcion,
+      "desc_tension": preguntas[19].descripcion,
+      "desc_tapas": preguntas[20].descripcion,
+      "desc_niveles": preguntas[21].descripcion,
+      "desc_filtros": preguntas[22].descripcion,
+      "desc_parabrisas": preguntas[23].descripcion,
+      "desc_frenos": preguntas[24].descripcion,
+      "desc_frenos_emergencia": preguntas[25].descripcion,
+      "desc_aire": preguntas[26].descripcion,
+      "desc_luces": preguntas[27].descripcion,
+      "desc_silleteria" : preguntas[28].descripcion,
+      "desc_silla_conductor": preguntas[29].descripcion,
+      "desc_aseo": preguntas[30].descripcion,
+      "desc_celular": preguntas[31].descripcion,
+      "desc_ruteros": preguntas[32].descripcion,
       "img_documentos_conductor": preguntas[0].base64Image,
       "img_documentos_vehiculo":preguntas[1].base64Image,
       "img_calcomania": preguntas[2].base64Image,
@@ -292,19 +298,20 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
       "img_llantas": preguntas[16].base64Image,
       "img_baterias": preguntas[17].base64Image,
       "img_transmision": preguntas[18].base64Image,
-      "img_tapas": preguntas[19].base64Image,
-      "img_niveles": preguntas[20].base64Image,
-      "img_filtros": preguntas[21].base64Image,
-      "img_parabrisas": preguntas[22].base64Image,
-      "img_frenos": preguntas[23].base64Image,
-      "img_frenos_emergencia": preguntas[24].base64Image,
-      "img_aire": preguntas[25].base64Image,
-      "img_luces": preguntas[26].base64Image,
-      "img_silleteria" : preguntas[27].base64Image,
-      "img_silla_conductor": preguntas[28].base64Image,
-      "img_aseo":  preguntas[29].base64Image,
-      "img_celular": preguntas[30].base64Image,
-      "img_ruteros": preguntas[31].base64Image,
+      "img_tension": preguntas[19].base64Image,
+      "img_tapas": preguntas[20].base64Image,
+      "img_niveles": preguntas[21].base64Image,
+      "img_filtros": preguntas[22].base64Image,
+      "img_parabrisas": preguntas[23].base64Image,
+      "img_frenos": preguntas[24].base64Image,
+      "img_frenos_emergencia": preguntas[25].base64Image,
+      "img_aire": preguntas[26].base64Image,
+      "img_luces": preguntas[27].base64Image,
+      "img_silleteria" : preguntas[28].base64Image,
+      "img_silla_conductor": preguntas[29].base64Image,
+      "img_aseo":  preguntas[30].base64Image,
+      "img_celular": preguntas[31].base64Image,
+      "img_ruteros": preguntas[32].base64Image,
       "vehiculo": vehiculo,
     };
 
@@ -374,6 +381,7 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
                                     values[index] = true;
                                   }else{
                                     colores[index] = Colors.orange;
+                                    values[index] = false;
                                   }
                                 }else{
                                   values[index]=true;

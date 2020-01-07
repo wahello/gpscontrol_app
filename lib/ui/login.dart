@@ -119,14 +119,14 @@ class LoginScreen extends StatelessWidget {
             accentColor: Colors.blueAccent,
             errorColor: Colors.deepOrange,
             titleStyle: TextStyle(
-              fontSize: 12.0,
+              fontSize: 22.0,
               color: Colors.white,
               fontFamily: 'Quicksand',
             ),
 
 
-            beforeHeroFontSize: 31,
-            afterHeroFontSize: 20,
+            beforeHeroFontSize: 28,
+            afterHeroFontSize: 12,
             bodyStyle: TextStyle(
               fontStyle: FontStyle.italic,
               decoration: TextDecoration.underline,
