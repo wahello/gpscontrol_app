@@ -111,7 +111,7 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
     if(response.statusCode == 200){
       var jsonResponse = convert.jsonDecode(response.body);
       var result = jsonResponse['item']['nm'];
-      unit = new PseudoUnit(idWia, user.id, result, user);
+      unit = new PseudoUnit(await getIdOdoo(idWia), user.id, result, user);
       print(result);
       print('paso por getUnitInfo ');
       return result;
