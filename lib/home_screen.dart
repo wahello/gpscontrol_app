@@ -1,6 +1,8 @@
 import 'package:GPS_CONTROL/app_theme.dart';
 import 'package:GPS_CONTROL/common/constants.dart';
 import 'package:GPS_CONTROL/models/pseudouser.dart';
+import 'package:GPS_CONTROL/ui/custom_route.dart';
+import 'package:GPS_CONTROL/ui/init_alistamiento.dart';
 import 'package:GPS_CONTROL/ui/login.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -18,9 +20,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   List<HomeList> homeList = HomeList.homeList;
   AnimationController animationController;
   bool multiple = false;
+  PseudoUser user;
 
   @override
   void initState() {
+    user = widget.user;
     animationController = AnimationController(
         duration: const Duration(milliseconds: 2000), vsync: this);
     super.initState();
@@ -92,13 +96,14 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                   animationController: animationController,
                                   listData: homeList[index],
                                   callBack: () {
-                                    Navigator.push<dynamic>(
-                                      context,
-                                      MaterialPageRoute<dynamic>(
-                                        builder: (BuildContext context) =>
-                                            homeList[index].navigateScreen,
-                                      ),
-                                    );
+                                    if(homeList[index].navigateScreen == '/init_alistamiento'){
+                                      print('se selecciono alistamiento');
+                                      Navigator.of(context).pushReplacement(FadePageRoute(
+                                              builder: (context) => InitAlistamiento(data: user,),
+                                            ));
+                                    }else{
+                                      print('se selecciono otro item, aun no esta configurado lo demas');
+                                    }
                                   },
                                 );
                               },

@@ -8,7 +8,7 @@ class HomeList {
     this.imagePath = '',
   });
 
-  Widget navigateScreen;
+  String navigateScreen;
   String imagePath;
   static PseudoUser user;
 
@@ -19,15 +19,15 @@ class HomeList {
   static List<HomeList> homeList = [
     HomeList(
       imagePath: 'assets/hotel/hotel_booking.png',
-      navigateScreen: InitAlistamiento(data: user,),
+      navigateScreen: '/init_alistamiento',
     ),
     HomeList(
       imagePath: 'assets/fitness_app/fitness_app.png',
-      navigateScreen: InitAlistamiento(),
+      navigateScreen: '/',
     ),
     HomeList(
       imagePath: 'assets/design_course/design_course.png',
-      navigateScreen: InitAlistamiento(),
+      navigateScreen: '/',
     ),
   ];
 }
