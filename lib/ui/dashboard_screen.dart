@@ -12,13 +12,9 @@ import '../common/transition_route_observer.dart';
 import '../widgets/fade_in.dart';
 import '../common/constants.dart';
 import '../widgets/round_button.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:GPS_CONTROL/models/post.dart';
 import 'custom_route.dart';
 import 'package:odoo_api/odoo_api.dart';
-import 'package:odoo_api/odoo_api_connector.dart';
-import 'package:odoo_api/odoo_user_response.dart';
 import 'package:GPS_CONTROL/models/pseudouser.dart';
 
 

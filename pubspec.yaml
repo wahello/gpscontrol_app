@@ -53,4 +53,8 @@ flutter:
   - assets/indicadores.png
   - assets/reportes.png
   - assets/soporte.png
+  - assets/images/
+  - assets/design_course/
+  - assets/fitness_app/
+  - assets/hotel/
 

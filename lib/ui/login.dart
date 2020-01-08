@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:GPS_CONTROL/navigation_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
@@ -172,7 +172,7 @@ class LoginScreen extends StatelessWidget {
           _webview.dispose();
           _webview.close();
           Navigator.of(context).pushReplacement(FadePageRoute(
-            builder: (context) => DashboardScreen(userdata: usuario,),
+            builder: (context) => NavigationHomeScreen(userData: usuario,),
           ));
         }else{
         }

@@ -15,6 +15,7 @@ import 'package:GPS_CONTROL/models/post.dart';
 import 'package:odoo_api/odoo_api.dart';
 import 'package:GPS_CONTROL/models/unit.dart';
 import 'package:odoo_api/odoo_api_connector.dart';
+import 'package:GPS_CONTROL/navigation_home_screen.dart';
 
 class InitAlistamiento extends StatefulWidget {
   InitAlistamiento({this.data});
@@ -181,7 +182,7 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
       appBar: AppBar(
         leading: new IconButton(
         icon: new Icon(Icons.arrow_back, color: Colors.white),
-        onPressed: () => Navigator.of(context).pushNamed('/dashboard')
+        onPressed: () => Navigator.of(context).pop()
       ),
         title: Text("Inicio Alistamiento"),
       ),
