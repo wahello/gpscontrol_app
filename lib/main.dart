@@ -2,7 +2,6 @@ import 'package:GPS_CONTROL/ui/SplashScreen.dart';
 import 'package:GPS_CONTROL/ui/init_alistamiento.dart';
 import 'package:GPS_CONTROL/ui/login.dart';
 import 'package:flutter/services.dart';
-import 'ui/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'common/transition_route_observer.dart';
 import 'ui/alistamientos.dart';
@@ -63,7 +62,6 @@ class MyApp extends StatelessWidget {
       navigatorObservers: [TransitionRouteObserver()],
       routes: {
         LoginScreen.routeName: (context) => LoginScreen(),
-        DashboardScreen.routeName: (context) => DashboardScreen(),
         AlistamientoScreen.routeName: (context) => AlistamientoScreen(),
         InitAlistamiento.routeName: (context) => InitAlistamiento(),
       },

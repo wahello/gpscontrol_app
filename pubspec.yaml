@@ -44,6 +44,8 @@ flutter:
 
   assets:
   - assets/icon/favicon2.png
+  - assets/login.jpg
+  - assets/tick.png
   - assets/logo2.png
   - assets/images/foody.png
   - assets/images/ecorp-lightgreen.png

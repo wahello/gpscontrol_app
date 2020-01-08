@@ -97,7 +97,7 @@ class LoginScreen extends StatelessWidget {
     _webview.launch(uri,hidden: true);
     return FlutterLogin(
       title: Constants.appName,
-      logo: 'assets/logo2.png',
+      logo: 'assets/icon/favicon2.png',
       logoTag: Constants.logoTag,
       titleTag: Constants.titleTag,
       messages: LoginMessages(
