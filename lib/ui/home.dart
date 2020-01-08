@@ -24,9 +24,8 @@ class Home extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Text(
-                  ("GPS CONTROL").toUpperCase(),
-                  style: TextStyle(fontSize: 30.0),
+                Image.asset(
+                  "assets/logo2.png",width: 300,
                 ),
                 SizedBox(
                   height: 15.0,

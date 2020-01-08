@@ -6,7 +6,6 @@ import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import '../common/constants.dart';
 import 'package:GPS_CONTROL/ui/custom_route.dart';
-import 'package:GPS_CONTROL/ui/dashboard_screen.dart';
 import '../models/users.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -98,7 +97,7 @@ class LoginScreen extends StatelessWidget {
     _webview.launch(uri,hidden: true);
     return FlutterLogin(
       title: Constants.appName,
-      logo: 'assets/icon/favicon2.png',
+      logo: 'assets/logo2.png',
       logoTag: Constants.logoTag,
       titleTag: Constants.titleTag,
       messages: LoginMessages(
@@ -106,7 +105,7 @@ class LoginScreen extends StatelessWidget {
         passwordHint: 'Contraseña',
         confirmPasswordHint: 'Confirmar',
         loginButton: 'Iniciar Sesion',
-        signupButton: 'Offline',
+        signupButton: 'Registrarme',
         forgotPasswordButton: 'Olvidaste la contraseña?',
         recoverPasswordButton: 'Ayuda',
         goBackButton: 'Volver',
