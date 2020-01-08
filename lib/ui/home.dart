@@ -12,7 +12,7 @@ class Home extends StatelessWidget {
         children: <Widget>[
           Expanded(
             child: Image.asset(
-              "assets/images/foody.jpg",
+              "assets/images/foody.png",
               fit: BoxFit.cover,
             ),
           ),
@@ -25,7 +25,7 @@ class Home extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  ("Foodsy").toUpperCase(),
+                  ("GPS CONTROL").toUpperCase(),
                   style: TextStyle(fontSize: 30.0),
                 ),
                 SizedBox(
@@ -36,8 +36,8 @@ class Home extends StatelessWidget {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => LoginScreen()));
                   },
-                  text: "Sign Up",
-                  color: Colors.green,
+                  text: "Iniciar Sesion",
+                  color: Colors.blue,
                   width: 250.0,
                 ),
                 SizedBox(
@@ -48,7 +48,7 @@ class Home extends StatelessWidget {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => LoginScreen()));
                   },
-                  text: "Log In",
+                  text: "Sin Conexion",
                   color: Colors.black,
                   width: 250.0,
                 ),

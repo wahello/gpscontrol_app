@@ -4,6 +4,7 @@ import 'package:GPS_CONTROL/utils/network/IntranetAPIUtils.dart';
 import 'package:GPS_CONTROL/ui/login.dart';
 import 'package:GPS_CONTROL/pages/display/SplashScreenDisplay.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:GPS_CONTROL/ui/home.dart';
 
 /// SplashScreen extended from StatefulWidget
 /// State
@@ -20,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     /// Run async task to change view after given time
     startTime() async {
-        var duration = new Duration(seconds: 4);
+        var duration = new Duration(seconds: 2);
         return new Timer(duration, checkUserLogged);
     }
 
@@ -54,7 +55,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
         // Not logged, need to redirect to SSO page
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (BuildContext context) => LoginScreen()
+            builder: (BuildContext context) => Home()
         ));
     }
 

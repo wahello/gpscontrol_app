@@ -1,3 +1,4 @@
+import 'package:GPS_CONTROL/ui/SplashScreen.dart';
 import 'package:GPS_CONTROL/ui/init_alistamiento.dart';
 import 'package:GPS_CONTROL/ui/login.dart';
 import 'package:flutter/services.dart';
@@ -5,7 +6,7 @@ import 'ui/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'common/transition_route_observer.dart';
 import 'ui/alistamientos.dart';
-import 'package:GPS_CONTROL/ui/home.dart';
+
 //import 'package:GPS_CONTROL/pages/login.dart';
 
 void main() {
@@ -58,7 +59,7 @@ class MyApp extends StatelessWidget {
           overline: TextStyle(fontFamily: 'NotoSans'),
         ),
       ),
-      home: Home(),
+      home: SplashScreen(),
       navigatorObservers: [TransitionRouteObserver()],
       routes: {
         LoginScreen.routeName: (context) => LoginScreen(),
