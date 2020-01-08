@@ -97,8 +97,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                   listData: homeList[index],
                                   callBack: () {
                                     if(homeList[index].navigateScreen == '/init_alistamiento'){
-                                      print('se selecciono alistamiento');
-                                      Navigator.of(context).pushReplacement(FadePageRoute(
+                                      print('se selecciono alistamiento user: '+user.name);
+                                      Navigator.of(context).push(FadePageRoute(
                                               builder: (context) => InitAlistamiento(data: user,),
                                             ));
                                     }else{

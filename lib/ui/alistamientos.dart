@@ -1,6 +1,7 @@
 import 'dart:wasm';
 
 import 'package:GPS_CONTROL/models/unit.dart';
+import 'package:GPS_CONTROL/navigation_home_screen.dart';
 import 'package:GPS_CONTROL/ui/dashboard_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -324,7 +325,7 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
         }else{
           print(res.getResult());
           Navigator.of(context).pushReplacement(FadePageRoute(
-                    builder: (context) => DashboardScreen(userdata: unit.user.baseUser,),
+                    builder: (context) => NavigationHomeScreen(userData: unit.user.baseUser,),
                     ));
           return 'ok';
         }
