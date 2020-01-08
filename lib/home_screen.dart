@@ -1,8 +1,6 @@
 import 'package:GPS_CONTROL/app_theme.dart';
 import 'package:GPS_CONTROL/common/constants.dart';
-import 'package:GPS_CONTROL/help_screen.dart';
 import 'package:GPS_CONTROL/models/pseudouser.dart';
-import 'package:GPS_CONTROL/ui/init_alistamiento.dart';
 import 'package:GPS_CONTROL/ui/login.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -20,11 +18,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   List<HomeList> homeList;
   AnimationController animationController;
   bool multiple = false;
-  PseudoUser user;
 
   @override
   void initState() {
-    user = widget.user;
     animationController = AnimationController(
         duration: const Duration(milliseconds: 2000), vsync: this);
     super.initState();
@@ -38,25 +34,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   }
 
   Future<bool> getData() async {
-    print('entramos a get data');
-    await Future<dynamic>.delayed(const Duration(milliseconds: 1300));
-    print('esperamos y creamos la lista..');
-    HomeList item1 = HomeList(
-      imagePath: 'assets/hotel/hotel_booking.png',
-      navigateScreen: InitAlistamiento(data: user,),
-    );
-    HomeList item2 = new HomeList(
-      imagePath: 'assets/fitness_app/fitness_app.png',
-      navigateScreen: HelpScreen(),
-    );
-    HomeList item3 = new HomeList(
-      imagePath: 'assets/design_course/design_course.png',
-      navigateScreen: HelpScreen(),
-    );
-    homeList.add(item1);
-    homeList.add(item2);
-    homeList.add(item3);
-    print('lista creada');
+    await Future<dynamic>.delayed(const Duration(milliseconds: 0));
     return true;
   }
 
