@@ -1,8 +1,6 @@
 import 'package:GPS_CONTROL/app_theme.dart';
 import 'package:GPS_CONTROL/common/constants.dart';
 import 'package:GPS_CONTROL/models/pseudouser.dart';
-import 'package:GPS_CONTROL/ui/custom_route.dart';
-import 'package:GPS_CONTROL/ui/init_alistamiento.dart';
 import 'package:GPS_CONTROL/ui/login.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -17,14 +15,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
-  List<HomeList> homeList;
+  List<HomeList> homeList = HomeList.homeList;
   AnimationController animationController;
   bool multiple = false;
-  PseudoUser user;
 
   @override
   void initState() {
-    user = widget.user;
     animationController = AnimationController(
         duration: const Duration(milliseconds: 2000), vsync: this);
     super.initState();
@@ -91,42 +87,20 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                   ),
                                 );
                                 animationController.forward();
-                                return FadeTransition(
-                                    opacity: animation,
-                                    child: Transform(
-                                      transform: Matrix4.translationValues(
-                                          0.0, 50 * (1.0 - animation.value), 0.0),
-                                      child: AspectRatio(
-                                        aspectRatio: 1.5,
-                                        child: ClipRRect(
-                                          borderRadius: const BorderRadius.all(Radius.circular(4.0)),
-                                          child: Stack(
-                                            alignment: AlignmentDirectional.center,
-                                            children: <Widget>[
-                                              Image.asset(
-                                                'assets/hotel/hotel_booking.png',
-                                                fit: BoxFit.cover,
-                                              ),
-                                              Material(
-                                                color: Colors.transparent,
-                                                child: InkWell(
-                                                  splashColor: Colors.grey.withOpacity(0.2),
-                                                  borderRadius:
-                                                      const BorderRadius.all(Radius.circular(4.0)),
-                                                  onTap: () {
-                                                    print(user.name);
-                                                    Navigator.of(context).pushReplacement(FadePageRoute(
-                                                        builder: (context) => InitAlistamiento(data: user,),
-                                                      ));
-                                                  },
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
+                                return HomeListView(
+                                  animation: animation,
+                                  animationController: animationController,
+                                  listData: homeList[index],
+                                  callBack: () {
+                                    Navigator.push<dynamic>(
+                                      context,
+                                      MaterialPageRoute<dynamic>(
+                                        builder: (BuildContext context) =>
+                                            homeList[index].navigateScreen,
                                       ),
-                                    ),
-                                  );
+                                    );
+                                  },
+                                );
                               },
                             ),
                             gridDelegate:
@@ -204,6 +178,63 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           ),
         ],
       ),
+    );
+  }
+}
+
+class HomeListView extends StatelessWidget {
+  const HomeListView(
+      {Key key,
+      this.listData,
+      this.callBack,
+      this.animationController,
+      this.animation})
+      : super(key: key);
+
+  final HomeList listData;
+  final VoidCallback callBack;
+  final AnimationController animationController;
+  final Animation<dynamic> animation;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: animationController,
+      builder: (BuildContext context, Widget child) {
+        return FadeTransition(
+          opacity: animation,
+          child: Transform(
+            transform: Matrix4.translationValues(
+                0.0, 50 * (1.0 - animation.value), 0.0),
+            child: AspectRatio(
+              aspectRatio: 1.5,
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+                child: Stack(
+                  alignment: AlignmentDirectional.center,
+                  children: <Widget>[
+                    Image.asset(
+                      listData.imagePath,
+                      fit: BoxFit.cover,
+                    ),
+                    Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        splashColor: Colors.grey.withOpacity(0.2),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(4.0)),
+                        onTap: () {
+                          callBack();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
