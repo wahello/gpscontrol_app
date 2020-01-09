@@ -84,10 +84,17 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
   var response = await http.get(url);
   if (response.statusCode == 200) {
     var jsonResponse = convert.jsonDecode(response.body);
+    print('esta es la informacion de usuario');
+    print(jsonResponse);
     itemCount = jsonResponse['eid'];
     var response2 = await http.get(url2+itemCount);
     if(response2.statusCode == 200){
+      await getUserinfo(jsonResponse['id']).then((res){
+        print(res);
+      });
+      
       var jsonResponse2 = convert.jsonDecode(response2.body);
+      print(jsonResponse2);
       for (var unit in jsonResponse2['items']){
         var recUnit = new PseudoUnit(unit['id'], user.id, unit['nm'], user);
         print('se encontro el vehiculo '+recUnit.name);
@@ -106,7 +113,7 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
 
   Future<String> getUnitInfo(id) async{
     var url = 'http://hst-api.wialon.com/wialon/ajax.html?svc=core/search_item&params={%22id%22:';
-    var ad = ',"flags":4611686018427387903}&sid=';
+    var ad = ',"flags":	4611686018427387903}&sid=';
     var idWia = id;
     var response = await http.get(url+'$idWia'+ad+itemCount);
     if(response.statusCode == 200){
@@ -116,6 +123,20 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
       print(result);
       print('paso por getUnitInfo ');
       return result;
+    }else{
+      return 'algo salio mal...';
+    }
+  }
+
+  Future<String> getUserinfo(id) async{
+    var url = 'http://hst-api.wialon.com/wialon/ajax.html?svc=account/get_account_data&params={%22itemId%22:[';
+    var complement = '],%22type"%22:1}&sid=';
+    var idWia = id;
+    var response = await http.get(url+'$idWia'+complement+itemCount);
+    if(response.statusCode == 200){
+      var jsonResponse = convert.jsonDecode(response.body);
+      print(jsonResponse);
+      return 'ok';
     }else{
       return 'algo salio mal...';
     }
