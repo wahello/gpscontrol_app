@@ -15,8 +15,8 @@ class LoginScreen extends StatelessWidget {
   User usuario;
   bool isLoggedIn;
   bool flagPass;
-  String uri="http://tracking.gpscontrolcolombia.com/login_simple.html";
-  Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 2250);
+  String uri;
+  Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 3550);
   final _webview = new FlutterWebviewPlugin();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   StreamSubscription<WebViewStateChanged> _onStateChanged;
@@ -49,7 +49,8 @@ class LoginScreen extends StatelessWidget {
 
   }
   void initStreamController(){
-       //_webview.launch(uri,hidden: true);
+      uri="http://tracking.gpscontrolcolombia.com/login_simple.html";
+      _webview.launch(uri,hidden: true);
       flagPass = false;
       _onStateChanged = _webview.onStateChanged.listen(this.onStateChanged);
   }
@@ -94,10 +95,9 @@ class LoginScreen extends StatelessWidget {
 
     @override
   Widget build(BuildContext context) {
-    _webview.launch(uri,hidden: true);
     return FlutterLogin(
       title: Constants.appName,
-      logo: 'assets/icon/favicon2.png',
+      logo: 'assets/logo3.png',
       logoTag: Constants.logoTag,
       titleTag: Constants.titleTag,
       messages: LoginMessages(
@@ -119,7 +119,7 @@ class LoginScreen extends StatelessWidget {
             errorColor: Colors.deepOrange,
             titleStyle: TextStyle(
               fontSize: 22.0,
-              color: Colors.white,
+              color: Colors.blue,
               fontFamily: 'Quicksand',
             ),
 
@@ -168,12 +168,12 @@ class LoginScreen extends StatelessWidget {
       },
       onSubmitAnimationCompleted: () {
         if (isLoggedIn == true && flagPass==true) {
-          _webview.dispose();
           _webview.close();
           Navigator.of(context).pushReplacement(FadePageRoute(
             builder: (context) => NavigationHomeScreen(userData: usuario,),
           ));
         }else{
+          _webview.close();
         }
       },
       onRecoverPassword: (name) {
