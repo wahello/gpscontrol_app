@@ -306,6 +306,8 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
   }
 
   _saveTodo(Alistamiento alis) async {
+      var status = await DatabaseHelper.instance.initializeDatabase();
+      print(status);
       DatabaseHelper.instance.insertTodo(alis);
   }
 

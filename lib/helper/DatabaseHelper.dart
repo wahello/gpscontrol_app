@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:GPS_CONTROL/models/alistamiento.dart';
@@ -13,10 +15,17 @@ class DatabaseHelper {
   static Database _database;
 
   Future<Database> get database async {
-    if (_database == null) {
-      return await initializeDatabase();
-    }
+    if (_database != null) {
+      print('database != null');
+      return _database;
+    }else{
+      print('database == null iniciando... ');
+      _database = await initializeDatabase();
     return _database;
+    }
+
+    
+    //
   }
 
   initializeDatabase() async {
