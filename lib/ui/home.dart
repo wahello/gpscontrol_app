@@ -48,7 +48,7 @@ class Home extends StatelessWidget {
                         MaterialPageRoute(builder: (context) => LoginScreen()));
                   },
                   text: "Sin Conexion",
-                  color: Colors.black,
+                  color: Colors.grey,
                   width: 250.0,
                 ),
                 SizedBox(

@@ -44,7 +44,7 @@ class LoginScreen extends StatelessWidget {
       prefs = await SharedPreferences.getInstance();
       usuario = new User('1', user, pass, toKen);
       await prefs.setString('user', user);
-      await prefs.setString('ssap', pass);
+      await prefs.setString('pass', pass);
       //await prefs.setString('token', toKen);
 
   }
@@ -82,7 +82,7 @@ class LoginScreen extends StatelessWidget {
         _saveData(user, pass);
         return null;
       }else {
-        return 'Hubo un error, verifica tu usuario o contraseña e inicia de nuevo.';
+        return 'Intenta de nuevo';
       }
     });
   }

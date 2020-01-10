@@ -120,7 +120,9 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
       var jsonResponse = convert.jsonDecode(response.body);
       var result = jsonResponse['item']['nm'];
       unit = new PseudoUnit(await getIdOdoo(idWia), user.id, result, user);
+      var res = await getExtrainfo(unit.id);
       print(result);
+      print(res);
       print('paso por getUnitInfo ');
       return result;
     }else{
@@ -131,6 +133,20 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
   Future<String> getUserinfo(id) async{
     var url = 'http://hst-api.wialon.com/wialon/ajax.html?svc=account/get_account_data&params={%22itemId%22:[';
     var complement = '],%22type"%22:1}&sid=';
+    var idWia = id;
+    var response = await http.get(url+'$idWia'+complement+itemCount);
+    if(response.statusCode == 200){
+      var jsonResponse = convert.jsonDecode(response.body);
+      print(jsonResponse);
+      return 'ok';
+    }else{
+      return 'algo salio mal...';
+    }
+  }
+
+  Future<String> getExtrainfo(id) async{
+    var url = 'https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_item&params={%22id%22:';
+    var complement = ',%22flags%22:4611686018427387903}&sid=';
     var idWia = id;
     var response = await http.get(url+'$idWia'+complement+itemCount);
     if(response.statusCode == 200){
