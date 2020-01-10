@@ -12,7 +12,7 @@ class _ReadTodoScreenState extends State<ReadTodoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Saved Todos'),
+        title: Text('Historial de alistamientos'),
       ),
       body: FutureBuilder<List<Alistamiento>>(
         future: DatabaseHelper.instance.retrieveTodos(),
@@ -37,6 +37,7 @@ class _ReadTodoScreenState extends State<ReadTodoScreen> {
               },
             );
           } else if (snapshot.hasError) {
+            print(snapshot.error);
             return Text("Oops!");
           }
           return Center(child: CircularProgressIndicator());

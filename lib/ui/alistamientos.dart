@@ -307,7 +307,6 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
 
   _saveTodo(Alistamiento alis) async {
       DatabaseHelper.instance.insertTodo(alis);
-      Navigator.pop(context, "Your todo has been saved.");
   }
 
   @override
@@ -345,21 +344,23 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
                             title: Text('$pregunta'),
                             subtitle: desc==null?Text(''):Text('$desc'),
                             onTap: () => {
-                              validationButtonColor(),
                               setState((){
                                 if(values[index] == true){
                                 values[index] = false;
                                 _takeInfoSheet(context,index);
                                   if(preguntas[index].descripcion == ''){
                                     colores[index] = Colors.red;
+                                    validationButtonColor();
                                     values[index] = true;
                                   }else{
                                     colores[index] = Colors.orange;
+                                    validationButtonColor();
                                     values[index] = false;
                                   }
                                 }else{
                                   values[index]=true;
                                   colores[index]=Colors.green;
+                                  validationButtonColor();
                                   preguntas[index].descripcion='';
                                   preguntas[index].base64Image='';
                                 }
@@ -389,6 +390,7 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
                             setState((){
                                 values[index]=true;
                                 colores[index]=Colors.green;
+                                validationButtonColor();
                                 preguntas[index].descripcion='';
                             })
                           },
