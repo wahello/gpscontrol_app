@@ -17,6 +17,7 @@ import 'package:odoo_api/odoo_api.dart';
 import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
+import '../helper/DatabaseHelper.dart';
 
 
 class AlistamientoScreen extends StatefulWidget {
@@ -59,44 +60,6 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
       print(_fabColor);
     });
   }
-
-  /*_init_alistamiento(List init_state){
-     nuevoAlistamiento.set_responsable('Usuario App prueba');
-     nuevoAlistamiento.documentos_conductor = init_state[0];
-     nuevoAlistamiento.documentos_vehiculo = init_state[1];
-     nuevoAlistamiento.calcomania = init_state[2];
-     nuevoAlistamiento.pito = init_state[3];
-     nuevoAlistamiento.disp_velocidad = init_state[4];
-     nuevoAlistamiento.estado_esc_p_conductor = init_state[5];
-     nuevoAlistamiento.estado_esc_p_pasajero = init_state[6];
-     nuevoAlistamiento.equipo_carretera = init_state[7];
-     nuevoAlistamiento.linterna = init_state[8];
-     nuevoAlistamiento.extintor = init_state[9];
-     nuevoAlistamiento.botiquin = init_state[10];
-     nuevoAlistamiento.repuesto = init_state[11];
-     nuevoAlistamiento.retrovisores = init_state[12];
-     nuevoAlistamiento.cinturones = init_state[13];
-     nuevoAlistamiento.motor = init_state[14];
-     nuevoAlistamiento.llantas = init_state[15];
-     nuevoAlistamiento.baterias = init_state[16];
-     nuevoAlistamiento.transmision = init_state[17];
-     nuevoAlistamiento.tapas = init_state[18];
-     nuevoAlistamiento.niveles = init_state[19];
-     nuevoAlistamiento.filtros= init_state[20];
-     nuevoAlistamiento.parabrisas = init_state[21];
-     nuevoAlistamiento.frenos= init_state[22];
-     nuevoAlistamiento.frenos_emergencia = init_state[23];
-     nuevoAlistamiento.aire = init_state[24];
-     nuevoAlistamiento.luces = init_state[25];
-     nuevoAlistamiento.silleteria = init_state[26];
-     nuevoAlistamiento.silla_conductor = init_state[27];
-     nuevoAlistamiento.aseo = init_state[28];
-     nuevoAlistamiento.celular = init_state[29];
-     nuevoAlistamiento.ruteros = init_state[30];
-
-
-   } */
-
 
   _getPreguntas() {
     //API.getUsers().then((response) {
@@ -314,14 +277,20 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
       "img_ruteros": preguntas[32].base64Image,
       "vehiculo": vehiculo,
     };
-
+    nuevoAlistamiento = new Alistamiento.fromJson(map);
+    nuevoAlistamiento.setFecha();
+    nuevoAlistamiento.setVehicleName(unit.name);
     if(auth.isSuccess){
       client.create('gpscontrol.alistamientos', map).then((res){
         if(res.hasError()){
           print('algo salio mal marica');
           print(res.getError());
+          nuevoAlistamiento.setState('creado');
+          _saveTodo(nuevoAlistamiento);
           return 'algo salio mal ...';
         }else{
+          nuevoAlistamiento.setState('Sincronizado');
+          _saveTodo(nuevoAlistamiento);
           print(res.getResult());
           Navigator.of(context).pushReplacement(FadePageRoute(
                     builder: (context) => NavigationHomeScreen(userData: unit.user.baseUser,),
@@ -334,6 +303,11 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
         return 'bad';
     }
 
+  }
+
+  _saveTodo(Alistamiento alis) async {
+      DatabaseHelper.instance.insertTodo(alis);
+      Navigator.pop(context, "Your todo has been saved.");
   }
 
   @override

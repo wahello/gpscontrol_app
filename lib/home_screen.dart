@@ -7,7 +7,7 @@ import 'package:GPS_CONTROL/ui/login.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'model/homelist.dart';
-
+import 'package:GPS_CONTROL/screens/ReadTodoScreen.dart';
 class MyHomePage extends StatefulWidget {
   PseudoUser user;
   MyHomePage({this.user});
@@ -101,7 +101,12 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                       Navigator.of(context).push(FadePageRoute(
                                               builder: (context) => InitAlistamiento(data: user,),
                                             ));
-                                    }else{
+                                    }else if(homeList[index].navigateScreen == '/history'){
+                                      Navigator.of(context).push(FadePageRoute(
+                                              builder: (context) => ReadTodoScreen(),
+                                            ));
+                                    }
+                                    else{
                                       print('se selecciono otro item, aun no esta configurado lo demas');
                                     }
                                   },
