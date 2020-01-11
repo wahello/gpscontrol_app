@@ -1,14 +1,14 @@
-import 'package:GPS_CONTROL/app_theme.dart';
-import 'package:GPS_CONTROL/common/constants.dart';
-import 'package:GPS_CONTROL/models/pseudouser.dart';
-import 'package:GPS_CONTROL/ui/custom_route.dart';
-import 'package:GPS_CONTROL/ui/init_alistamiento.dart';
-import 'package:GPS_CONTROL/ui/login.dart';
+import 'package:EnlistControl/app_theme.dart';
+import 'package:EnlistControl/common/constants.dart';
+import 'package:EnlistControl/models/pseudouser.dart';
+import 'package:EnlistControl/ui/custom_route.dart';
+import 'package:EnlistControl/ui/init_alistamiento.dart';
+import 'package:EnlistControl/ui/login.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'model/homelist.dart';
-import 'package:GPS_CONTROL/screens/ReadTodoScreen.dart';
+import 'package:EnlistControl/screens/ReadTodoScreen.dart';
 import 'package:connectivity/connectivity.dart';
 class MyHomePage extends StatefulWidget {
   PseudoUser user;

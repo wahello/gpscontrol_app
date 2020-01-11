@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
-import 'package:GPS_CONTROL/utils/network/NetworkUtils.dart';
+import 'package:EnlistControl/utils/network/NetworkUtils.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart' ;
 
 class IntranetAPIUtils {

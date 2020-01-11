@@ -1,4 +1,4 @@
-import 'package:GPS_CONTROL/models/users.dart';
+import 'package:EnlistControl/models/users.dart';
 class PseudoUser {
   int id;
   String id_wia;

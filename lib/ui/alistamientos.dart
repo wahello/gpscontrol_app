@@ -1,18 +1,18 @@
 import 'dart:wasm';
 
-import 'package:GPS_CONTROL/models/unit.dart';
-import 'package:GPS_CONTROL/navigation_home_screen.dart';
+import 'package:EnlistControl/models/unit.dart';
+import 'package:EnlistControl/navigation_home_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:GPS_CONTROL/models/preguntas.dart';
+import 'package:EnlistControl/models/preguntas.dart';
 import 'package:camera/camera.dart';
-import 'package:GPS_CONTROL/common/camara.dart';
-import 'package:GPS_CONTROL/models/alistamiento.dart';
+import 'package:EnlistControl/common/camara.dart';
+import 'package:EnlistControl/models/alistamiento.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'custom_route.dart';
-import 'package:GPS_CONTROL/common/utils.dart' ;
-import 'package:GPS_CONTROL/models/caption.dart';
+import 'package:EnlistControl/common/utils.dart' ;
+import 'package:EnlistControl/models/caption.dart';
 import 'package:odoo_api/odoo_api.dart';
 import 'dart:async';
 import 'dart:io';

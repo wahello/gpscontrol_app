@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'package:GPS_CONTROL/navigation_home_screen.dart';
+import 'package:EnlistControl/navigation_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import '../common/constants.dart';
-import 'package:GPS_CONTROL/ui/custom_route.dart';
+import 'package:EnlistControl/ui/custom_route.dart';
 import '../models/users.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,7 +16,7 @@ class LoginScreen extends StatelessWidget {
   bool isLoggedIn;
   bool flagPass;
   String uri;
-  Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 3550);
+  Duration get loginTime => Duration(seconds: 5);
   final _webview = new FlutterWebviewPlugin();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   StreamSubscription<WebViewStateChanged> _onStateChanged;
@@ -25,21 +25,6 @@ class LoginScreen extends StatelessWidget {
   String url;
   SharedPreferences prefs ;
 
-  _validationWeb(String user,String pass){
-    var setUser = 'document.getElementById("login").value="$user";';
-    var setPass = 'document.getElementById("passw").value="$pass";';
-    var submit = 'document.forms["auth-form"].submit();';
-    print('entramos a la validacion');
-    print("Usuario: "+user+" "+"Password: "+pass);
-    try{
-      _webview.evalJavascript(setUser);
-      _webview.evalJavascript(setPass);
-      _webview.evalJavascript(submit);
-    }catch(e){
-      print(e);
-    }
-
-  }
   _saveData(String user, String pass) async {
       prefs = await SharedPreferences.getInstance();
       usuario = new User('1', user, pass, toKen);
@@ -48,11 +33,23 @@ class LoginScreen extends StatelessWidget {
       //await prefs.setString('token', toKen);
 
   }
-  void initStreamController(){
+  void initStreamController(String user,String pass){
       uri="http://tracking.gpscontrolcolombia.com/login_simple.html";
       _webview.launch(uri,hidden: true);
       flagPass = false;
       _onStateChanged = _webview.onStateChanged.listen(this.onStateChanged);
+      var setUser = 'document.getElementById("login").value="$user";';
+      var setPass = 'document.getElementById("passw").value="$pass";';
+      var submit = 'document.forms["auth-form"].submit();';
+      print('entramos a la validacion');
+      print("Usuario: "+user+" "+"Password: "+pass);
+    try{
+      _webview.evalJavascript(setUser);
+      _webview.evalJavascript(setPass);
+      _webview.evalJavascript(submit);
+    }catch(e){
+      print(e);
+    }
   }
 
   onStateChanged(WebViewStateChanged state){
@@ -156,8 +153,7 @@ class LoginScreen extends StatelessWidget {
         print('Name: ${loginData.name}');
         print('Password: ${loginData.password}');
         userTemp = loginData.name;
-        initStreamController();
-        _validationWeb(loginData.name , loginData.password);
+        initStreamController(loginData.name , loginData.password);
         return _loginUser(loginData);
       },
       onSignup: (loginData) {

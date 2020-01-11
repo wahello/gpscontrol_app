@@ -1,4 +1,4 @@
-import 'package:GPS_CONTROL/models/alistamiento.dart';
+import 'package:EnlistControl/models/alistamiento.dart';
 import 'package:flutter/material.dart';
 import '../helper/DatabaseHelper.dart';
 

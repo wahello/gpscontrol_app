@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:GPS_CONTROL/common/CustomButton.dart';
-import 'package:GPS_CONTROL/ui/login.dart';
+import 'package:EnlistControl/common/CustomButton.dart';
+import 'package:EnlistControl/ui/login.dart';
 
 
 class Home extends StatelessWidget {

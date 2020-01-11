@@ -1,5 +1,5 @@
-import 'package:GPS_CONTROL/models/pseudouser.dart';
-import 'package:GPS_CONTROL/ui/init_alistamiento.dart';
+import 'package:EnlistControl/models/pseudouser.dart';
+import 'package:EnlistControl/ui/init_alistamiento.dart';
 import 'package:flutter/widgets.dart';
 
 class HomeList {

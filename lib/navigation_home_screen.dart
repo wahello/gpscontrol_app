@@ -1,13 +1,13 @@
-import 'package:GPS_CONTROL/app_theme.dart';
-import 'package:GPS_CONTROL/custom_drawer/drawer_user_controller.dart';
-import 'package:GPS_CONTROL/custom_drawer/home_drawer.dart';
-import 'package:GPS_CONTROL/feedback_screen.dart';
-import 'package:GPS_CONTROL/help_screen.dart';
-import 'package:GPS_CONTROL/home_screen.dart';
-import 'package:GPS_CONTROL/invite_friend_screen.dart';
+import 'package:EnlistControl/app_theme.dart';
+import 'package:EnlistControl/custom_drawer/drawer_user_controller.dart';
+import 'package:EnlistControl/custom_drawer/home_drawer.dart';
+import 'package:EnlistControl/feedback_screen.dart';
+import 'package:EnlistControl/help_screen.dart';
+import 'package:EnlistControl/home_screen.dart';
+import 'package:EnlistControl/invite_friend_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:GPS_CONTROL/models/users.dart';
-import 'package:GPS_CONTROL/models/pseudouser.dart';
+import 'package:EnlistControl/models/users.dart';
+import 'package:EnlistControl/models/pseudouser.dart';
 import 'package:odoo_api/odoo_api.dart';
 
 class NavigationHomeScreen extends StatefulWidget {

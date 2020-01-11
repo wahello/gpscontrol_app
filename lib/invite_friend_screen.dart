@@ -1,4 +1,4 @@
-import 'package:GPS_CONTROL/app_theme.dart';
+import 'package:EnlistControl/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class InviteFriend extends StatefulWidget {

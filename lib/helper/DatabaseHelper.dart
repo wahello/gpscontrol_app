@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:GPS_CONTROL/models/alistamiento.dart';
+import 'package:EnlistControl/models/alistamiento.dart';
 
 import '../model/Todo.dart';
 

@@ -2,18 +2,18 @@ import 'dart:async';
 import 'dart:core';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
-import 'package:GPS_CONTROL/models/alistamiento.dart';
-import 'package:GPS_CONTROL/models/pseudouser.dart';
-import 'package:GPS_CONTROL/ui/alistamientos.dart';
+import 'package:EnlistControl/models/alistamiento.dart';
+import 'package:EnlistControl/models/pseudouser.dart';
+import 'package:EnlistControl/ui/alistamientos.dart';
 import 'package:flutter/material.dart';
-import 'package:GPS_CONTROL/data/services/odoo_api.dart';
+import 'package:EnlistControl/data/services/odoo_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:GPS_CONTROL/data/services/globals.dart';
+import 'package:EnlistControl/data/services/globals.dart';
 import 'custom_route.dart';
-import 'package:GPS_CONTROL/models/post.dart';
+import 'package:EnlistControl/models/post.dart';
 import 'package:odoo_api/odoo_api.dart';
-import 'package:GPS_CONTROL/models/unit.dart';
-import 'package:GPS_CONTROL/models/atribute.dart';
+import 'package:EnlistControl/models/unit.dart';
+import 'package:EnlistControl/models/atribute.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 
 class InitAlistamiento extends StatefulWidget {

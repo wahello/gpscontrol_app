@@ -1,4 +1,4 @@
-import 'package:GPS_CONTROL/models/pseudouser.dart';
+import 'package:EnlistControl/models/pseudouser.dart';
 
 class PseudoUnit {
   int id;

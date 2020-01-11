@@ -1,13 +1,13 @@
 import 'dart:async';
-import 'package:GPS_CONTROL/navigation_home_screen.dart';
-import 'package:GPS_CONTROL/ui/custom_route.dart';
+import 'package:EnlistControl/navigation_home_screen.dart';
+import 'package:EnlistControl/ui/custom_route.dart';
 import 'package:flutter/material.dart';
-import 'package:GPS_CONTROL/utils/network/IntranetAPIUtils.dart';
+import 'package:EnlistControl/utils/network/IntranetAPIUtils.dart';
 import 'package:connectivity/connectivity.dart';
-import 'package:GPS_CONTROL/pages/display/SplashScreenDisplay.dart';
+import 'package:EnlistControl/pages/display/SplashScreenDisplay.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:GPS_CONTROL/ui/home.dart';
-import 'package:GPS_CONTROL/models/users.dart';
+import 'package:EnlistControl/ui/home.dart';
+import 'package:EnlistControl/models/users.dart';
 
 /// SplashScreen extended from StatefulWidget
 /// State

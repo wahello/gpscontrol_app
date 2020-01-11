@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:GPS_CONTROL/data/services/odoo_api.dart';
-import 'package:GPS_CONTROL/data/services/odoo_response.dart';
-import 'package:GPS_CONTROL/data/services/utils.dart';
+import 'package:EnlistControl/data/services/odoo_api.dart';
+import 'package:EnlistControl/data/services/odoo_response.dart';
+import 'package:EnlistControl/data/services/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:GPS_CONTROL/data/services/globals.dart';
+import 'package:EnlistControl/data/services/globals.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
