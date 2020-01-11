@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:core';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:GPS_CONTROL/models/alistamiento.dart';
@@ -7,15 +8,13 @@ import 'package:GPS_CONTROL/ui/alistamientos.dart';
 import 'package:flutter/material.dart';
 import 'package:GPS_CONTROL/data/services/odoo_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart';
 import 'package:GPS_CONTROL/data/services/globals.dart';
 import 'custom_route.dart';
-import 'package:GPS_CONTROL/models/users.dart';
 import 'package:GPS_CONTROL/models/post.dart';
 import 'package:odoo_api/odoo_api.dart';
 import 'package:GPS_CONTROL/models/unit.dart';
-import 'package:odoo_api/odoo_api_connector.dart';
-import 'package:GPS_CONTROL/navigation_home_screen.dart';
+import 'package:GPS_CONTROL/models/atribute.dart';
+import 'package:flutter/scheduler.dart' show timeDilation;
 
 class InitAlistamiento extends StatefulWidget {
   InitAlistamiento({this.data});
@@ -39,6 +38,10 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
   var itemCount;
   String auxJson = '';
   PseudoUnit unit;
+  List<Atribute> atributos;
+  List<Intervalo> intervalos;
+  bool flagAtributes;
+  Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 3550);
 
   @override
   void initState() {
@@ -77,6 +80,8 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
 
   Future<List<PseudoUnit>> getVehicles() async {
   user = widget.data;
+  atributos = [];
+  intervalos = [];
   var username = user.name;
   var url = 'http://hst-api.wialon.com/wialon/ajax.html?svc=token/login&params={%22token%22:%2253dac8bfe1c32941e9a7b7121196dfe262A6A9DF693E8274C23FD67398B9AFDED9E5FE4F%22,%22operateAs%22:%22$username%22}';
   var url2 = 'https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={%22spec%22:{%22itemsType%22:%22avl_unit%22,%22propName%22:%22trailers%22,%22propValueMask%22:%22%22,%22sortType%22:%22trailers%22,%22propType%22:%22propitemname%22},%22force%22:1,%22flags%22:1,%22from%22:0,%22to%22:0}&sid=';
@@ -115,14 +120,29 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
     var url = 'http://hst-api.wialon.com/wialon/ajax.html?svc=core/search_item&params={%22id%22:';
     var ad = ',"flags":	4611686018427387903}&sid=';
     var idWia = id;
+    flagAtributes = false;
+    print('id wialon is: ');
+    print(idWia);
     var response = await http.get(url+'$idWia'+ad+itemCount);
     if(response.statusCode == 200){
       var jsonResponse = convert.jsonDecode(response.body);
       var result = jsonResponse['item']['nm'];
       unit = new PseudoUnit(await getIdOdoo(idWia), user.id, result, user);
-      var res = await getExtrainfo(unit.id);
-      print(result);
-      print(res);
+      atributos = await getExtrainfo(idWia);
+      if(atributos != []){
+        //atributos con contenido
+        flagAtributes = true;
+      }else{
+        //atributos vacios
+        flagAtributes = false;
+        if(intervalos!=[]){
+          //intervalos con contenido pero sin atributos
+          flagAtributes = true;
+        }else{
+          //intervalos sin contenido pero sin atributos
+          flagAtributes = false;
+        }
+      }
       print('paso por getUnitInfo ');
       return result;
     }else{
@@ -136,26 +156,80 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
     var idWia = id;
     var response = await http.get(url+'$idWia'+complement+itemCount);
     if(response.statusCode == 200){
-      var jsonResponse = convert.jsonDecode(response.body);
-      print(jsonResponse);
       return 'ok';
     }else{
       return 'algo salio mal...';
     }
   }
 
-  Future<String> getExtrainfo(id) async{
+  Future<List<Atribute>> getExtrainfo(id) async{
     var url = 'https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_item&params={%22id%22:';
     var complement = ',%22flags%22:4611686018427387903}&sid=';
     var idWia = id;
     var response = await http.get(url+'$idWia'+complement+itemCount);
+    List<Atribute> lista = [];
+    List<Intervalo> intervals = [];
     if(response.statusCode == 200){
       var jsonResponse = convert.jsonDecode(response.body);
+      print('esta es la extra info ...');
       print(jsonResponse);
-      return 'ok';
+      if (jsonResponse['item'].containsKey('aflds')){
+        Map atributos = jsonResponse['item']['aflds'];
+        print('el objeto contiene la clave aflds');
+         for (var i in atributos.values){
+           print(i);
+           /*var name = jsonResponse['item']['aflds'][i]['n'];
+           var value = jsonResponse['item']['aflds'][i]['v'];
+           var atribute = new Atribute(name: name, value: value);
+           lista.add(atribute);*/
+         }
+      }else{
+        print('el objeto no tiene la clave aflds');
+      }
+      if (jsonResponse['item'].containsKey('pflds')){
+        Map atributos = jsonResponse['item']['pflds'];
+        print('el objeto contiene la clave pflds');
+         for (var i in atributos.values){
+           print(i);
+           /*var name = jsonResponse['item']['aflds'][i]['n'];
+           var value = jsonResponse['item']['aflds'][i]['v'];*/
+           var atribute = new Atribute(name: i['n'], value: i['v']);
+           lista.add(atribute);
+         }
+      }else{
+        print('el objeto no tiene la clave aflds');
+      }
+
+      if (jsonResponse['item'].containsKey('si')){
+        print('el objeto contiene la clave si');
+        Map atributos = jsonResponse['item']['si'];
+        print('el objeto contiene la clave pflds');
+         for (var i in atributos.values){
+           print(i);
+           /*var name = jsonResponse['item']['aflds'][i]['n'];
+           var value = jsonResponse['item']['aflds'][i]['v'];*/
+           var interval = new Intervalo(name: i['n'], desc: i['t'], iK: i['im'], iD: i['it'], iH: i['ie'], pm: i['pm'], pt: i['pt'], pe: i['pe'], c: i['c'] );
+           interval.calculateInterval();
+           intervals.add(interval);
+         }
+         
+      }else{
+        print('el objeto no tiene la clave si');
+      } 
+      intervalos = intervals;
+      return lista;
     }else{
-      return 'algo salio mal...';
+      lista = [];
+      return lista;
     }
+  }
+
+  
+
+  Future<String> checkAvalibleAttrs(){
+    return Future.delayed(loginTime).then((_) {
+      return null;
+    });
   }
 
   Future<String> buildInfoUnit() async{
@@ -223,15 +297,57 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
       ),
         title: Text("Inicio Alistamiento"),
       ),
-      body: ListView(
+      body: new Container(
+            child: new SingleChildScrollView(
+              child: new Column(
                 children: <Widget>[
                   FutureBuilder(
                     future: getVehicles(),
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       if(snapshot.connectionState == ConnectionState.done){
-                        return Padding(
-                          padding: EdgeInsets.all(28.0),
-                          child: Column(
+                          
+                                return flagAtributes==false? Padding(
+                                padding: EdgeInsets.all(28.0),
+                                child: Column(
+                                children: <Widget>[
+                                  DropdownButton(
+                                    hint: Text(msg), // Not necessary 
+                                    value: _selectedCar,
+                                    isExpanded: true,
+                                    isDense: true,
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        //_selectedCar = newValue.toString();
+                                        //msg = _selectedCar;
+                                        getUnitInfo(newValue).then((res){
+                                          print(res);
+                                          this.msg = res;
+                                        });
+                                        btnColor = Colors.blue;
+                                        print(auxJson);
+                                      });
+                                    },
+                                    items: listaVehiculos.map((unit) {
+                                      return DropdownMenuItem(
+                                        child: new Text(unit.name),
+                                        value: unit.id,
+                                      );
+                                  }).toList(),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.only(top: 20),
+                                    child: Column(
+                                      children: <Widget>[
+                                        Text('Selecciona un vehiculo para cargar la informacion')
+                                      ],
+                                    ),
+                                  ),
+          
+                                ],
+                              ),
+                            ):Padding(
+                            padding: EdgeInsets.all(28.0),
+                            child: Column(
                             children: <Widget>[
                               DropdownButton(
                                 hint: Text(msg), // Not necessary 
@@ -256,10 +372,66 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
                                     value: unit.id,
                                   );
                               }).toList(),
-                              )
+                              ),
+                              Container(
+                                padding: EdgeInsets.only(top: 20),
+                                child: Column(
+                                  children: <Widget>[
+                                    Text(intervalos.length!=0?'Intervalos de servicio: ':'No se encontraron intervalos de servicio.', style: new TextStyle(fontWeight: FontWeight.bold),),
+                                    ListView.builder(
+                                      scrollDirection: Axis.vertical,
+                                      shrinkWrap: true,
+                                      itemCount: intervalos.length,
+                                      itemBuilder: (BuildContext context, int index) {
+                                        return Card ( 
+                                          child: Padding ( 
+                                            padding: const EdgeInsets.all (16.0), 
+                                            child: RichText( 
+                                                text: new TextSpan(
+                                                  text: intervalos[index].name, 
+                                                  style: DefaultTextStyle.of(context).style,
+                                                  children: <TextSpan>[
+                                                    new TextSpan(text: ': ', style: DefaultTextStyle.of(context).style, ),
+                                                    new TextSpan(text: intervalos[index].value , style: DefaultTextStyle.of(context).style, ),
+                                                  ],
+                                                ), 
+                                              ), 
+                                          ), 
+                                        );
+                                      
+                                     },
+                                    ),
+                                    Text(atributos.length!=0?'Informacion de usuario: ':'No se econtro informacion de la unidad', style: new TextStyle(fontWeight: FontWeight.bold),),
+                                    ListView.builder(
+                                      scrollDirection: Axis.vertical,
+                                      shrinkWrap: true,
+                                      itemCount: atributos.length,
+                                      itemBuilder: (BuildContext context, int index) {
+                                        return Card ( 
+                                          child: Padding ( 
+                                            padding: const EdgeInsets.all (16.0), 
+                                            child: RichText( 
+                                                text: new TextSpan(
+                                                  text: atributos[index].name, 
+                                                  style: DefaultTextStyle.of(context).style,
+                                                  children: <TextSpan>[
+                                                    new TextSpan(text: ': ', style: DefaultTextStyle.of(context).style, ),
+                                                    new TextSpan(text: atributos[index].value , style: DefaultTextStyle.of(context).style, ),
+                                                  ],
+                                                ), 
+                                              ), 
+                                          ), 
+                                        );
+                                     },
+                                    ),
+                                  ],
+                                ),
+                              ),
+      
                             ],
                           ),
                         );
+                        
                       }else if(snapshot.hasError){
                            throw snapshot.error;
                       }else{
@@ -314,7 +486,10 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
                     child: Text(auxJson),
                   ),
                 ],
-              ),);
+              ),
+              ),
+      ),
+    );
 
   }
   /*

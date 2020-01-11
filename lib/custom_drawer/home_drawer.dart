@@ -1,5 +1,7 @@
 import 'package:GPS_CONTROL/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class HomeDrawer extends StatefulWidget {
   const HomeDrawer(
@@ -19,10 +21,19 @@ class HomeDrawer extends StatefulWidget {
 
 class _HomeDrawerState extends State<HomeDrawer> {
   List<DrawerList> drawerList;
+  String username;
+  SharedPreferences prefs;
+
   @override
-  void initState() {
+  void initState(){
+    initprefs();
     setdDrawerListArray();
     super.initState();
+  }
+
+  void initprefs() async{
+    prefs =  prefs = await SharedPreferences.getInstance();
+    username = prefs.getString("user");
   }
 
   void setdDrawerListArray() {
@@ -117,7 +128,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                   Padding(
                     padding: const EdgeInsets.only(top: 8, left: 4),
                     child: Text(
-                      'Bienvenido @User',
+                      username!=null?'Bienvenido $username':'Hola',
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: AppTheme.grey,

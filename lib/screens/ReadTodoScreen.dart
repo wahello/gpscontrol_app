@@ -23,7 +23,7 @@ class _ReadTodoScreenState extends State<ReadTodoScreen> {
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
                   title: Text(snapshot.data[index].vehiculo),
-                  leading: Text(index.toString()),
+                  leading: Text(''),
                   subtitle: Text(snapshot.data[index].state),
                   onTap: () => _navigateToDetail(context, snapshot.data[index]),
                   trailing: IconButton(

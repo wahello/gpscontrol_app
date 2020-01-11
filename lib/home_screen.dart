@@ -6,8 +6,10 @@ import 'package:GPS_CONTROL/ui/init_alistamiento.dart';
 import 'package:GPS_CONTROL/ui/login.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'model/homelist.dart';
 import 'package:GPS_CONTROL/screens/ReadTodoScreen.dart';
+import 'package:connectivity/connectivity.dart';
 class MyHomePage extends StatefulWidget {
   PseudoUser user;
   MyHomePage({this.user});
@@ -21,17 +23,44 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   AnimationController animationController;
   bool multiple = false;
   PseudoUser user;
+  SharedPreferences preferences;
 
   @override
   void initState() {
+    initPrefs();
     user = widget.user;
     animationController = AnimationController(
         duration: const Duration(milliseconds: 2000), vsync: this);
     super.initState();
   }
+
+  void initPrefs() async{
+    preferences = await SharedPreferences.getInstance();
+  }
+
+  void checkInternet() async{
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile) {
+      // I am connected to a mobile network.
+      Scaffold.of(context)
+            ..removeCurrentSnackBar()
+            ..showSnackBar(SnackBar(content: Text("Parece que estas conectado.. no hay problema.")));
+    } else if (connectivityResult == ConnectivityResult.wifi) {
+      // I am connected to a wifi network.
+      Scaffold.of(context)
+            ..removeCurrentSnackBar()
+            ..showSnackBar(SnackBar(content: Text("Parece que estas conectado.. no hay problema.")));
+    }else{
+      Scaffold.of(context)
+            ..removeCurrentSnackBar()
+            ..showSnackBar(SnackBar(content: Text("No tienes internet, la funcion offline aun esta en desarrollo.")));
+      _goToLogin(context);
+    }
+  }
   
   Future<bool> _goToLogin(BuildContext context) {
-    //preferences.clear();
+    preferences.setString("user", null);
+    preferences.setString("pass", null);
     return Navigator.pushAndRemoveUntil(context,
      MaterialPageRoute(builder: (BuildContext context) => LoginScreen()),
     ModalRoute.withName('/'));
