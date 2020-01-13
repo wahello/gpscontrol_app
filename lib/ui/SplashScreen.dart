@@ -61,6 +61,7 @@ class _SplashScreenState extends State<SplashScreen> {
           }
           
         }else {
+          Toast.show("Aun no hay preferencias guardadas.", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
           Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (BuildContext context) => Home()
         ));

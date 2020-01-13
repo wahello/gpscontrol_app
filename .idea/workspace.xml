@@ -5,15 +5,19 @@
   </component>
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/.metadata" />
-    <bookmark url="file://$PROJECT_DIR$/lib/ui/alistamientos.dart" line="134" />
-    <bookmark url="file://$PROJECT_DIR$/lib/ui/alistamientos.dart" line="249" mnemonic="7" />
+    <bookmark url="file://$PROJECT_DIR$/lib/ui/alistamientos.dart" line="97" />
+    <bookmark url="file://$PROJECT_DIR$/lib/ui/alistamientos.dart" line="212" mnemonic="7" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0a96b3fe-23a4-49cf-9f4a-4ed7b628d515" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/common/constants.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/common/constants.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/login.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ui/login.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/design_course/design_course.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/design_course/design_course.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/fitness_app/fitness_app.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/fitness_app/fitness_app.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/hotel/hotel_booking.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/hotel/hotel_booking.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ui/SplashScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ui/SplashScreen.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
@@ -29,21 +33,25 @@
   <component name="DefaultGradleProjectSettings">
     <option name="isMigrated" value="true" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="ZY3226CSKQ" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="420070ccccf2b2f1" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://C:/DART SDK/flutter/packages/flutter/lib/src/widgets/framework.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="123">
+            <state relative-caret-position="44523">
               <caret line="2644" column="28" selection-start-line="2644" selection-start-column="28" selection-end-line="2644" selection-end-column="28" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/build/app/outputs/apk/app.apk">
-          <provider selected="true" editor-type-id="apk-viewer" />
+        <entry file="file://$PROJECT_DIR$/lib/ui/SplashScreen.dart">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="39" column="61" selection-start-line="39" selection-start-column="61" selection-end-line="39" selection-end-column="61" />
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -58,7 +66,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/main.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1020">
+            <state relative-caret-position="918">
               <caret line="60" column="22" selection-start-line="60" selection-start-column="22" selection-end-line="60" selection-end-column="22" />
             </state>
           </provider>
@@ -67,8 +75,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/ui/alistamientos.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4199">
-              <caret line="250" column="21" selection-start-line="250" selection-start-column="21" selection-end-line="250" selection-end-column="21" />
+            <state relative-caret-position="3298">
+              <caret line="213" column="21" selection-start-line="213" selection-start-column="21" selection-end-line="213" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -179,7 +187,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="y" value="23" />
     <option name="width" value="1386" />
     <option name="height" value="788" />
@@ -199,59 +207,21 @@
             <path>
               <item name="gpscontrol_app" type="b2602c69:ProjectViewProjectNode" />
               <item name="gpscontrol_app" type="462c0819:PsiDirectoryNode" />
-              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="assets" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="gpscontrol_app" type="b2602c69:ProjectViewProjectNode" />
               <item name="gpscontrol_app" type="462c0819:PsiDirectoryNode" />
-              <item name="build" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="gpscontrol_app" type="b2602c69:ProjectViewProjectNode" />
-              <item name="gpscontrol_app" type="462c0819:PsiDirectoryNode" />
-              <item name="build" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="outputs" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="gpscontrol_app" type="b2602c69:ProjectViewProjectNode" />
-              <item name="gpscontrol_app" type="462c0819:PsiDirectoryNode" />
-              <item name="build" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="outputs" type="462c0819:PsiDirectoryNode" />
-              <item name="apk" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="gpscontrol_app" type="b2602c69:ProjectViewProjectNode" />
-              <item name="gpscontrol_app" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="gpscontrol_app" type="b2602c69:ProjectViewProjectNode" />
-              <item name="gpscontrol_app" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="common" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="gpscontrol_app" type="b2602c69:ProjectViewProjectNode" />
-              <item name="gpscontrol_app" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="gpscontrol_app" type="b2602c69:ProjectViewProjectNode" />
-              <item name="gpscontrol_app" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="ui" type="462c0819:PsiDirectoryNode" />
+              <item name="assets" type="462c0819:PsiDirectoryNode" />
+              <item name="images" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
       <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -315,10 +285,9 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25037822" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25037822" />
       <window_info id="Captures" order="1" side_tool="true" />
       <window_info id="Structure" order="2" sideWeight="0.502439" side_tool="true" weight="0.32980332" />
       <window_info id="Image Layers" order="3" />
@@ -328,7 +297,7 @@
       <window_info id="Capture Tool" order="7" />
       <window_info id="Favorites" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Dart Analysis" order="0" weight="0.32569557" />
-      <window_info anchor="bottom" x="22" y="264" width="1322" height="199" id="Run" order="1" sideWeight="0.4969743" weight="0.36497545" />
+      <window_info active="true" anchor="bottom" x="22" y="264" width="1322" height="199" id="Run" order="1" sideWeight="0.4969743" visible="true" weight="0.36497545" />
       <window_info anchor="bottom" id="TODO" order="2" weight="0.3289689" />
       <window_info anchor="bottom" id="Android Profiler" order="3" show_stripe_button="false" />
       <window_info anchor="bottom" id="Logcat" order="4" weight="0.3289689" />
@@ -353,16 +322,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="btural commit" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/AppData/Roaming/Pub/Cache/hosted/pub.dartlang.org/flutter_slidable-0.5.4/lib/src/widgets/slidable.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="606">
-          <caret line="690" column="9" selection-start-line="688" selection-start-column="6" selection-end-line="690" selection-end-column="9" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/ui/custom_route.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="442">
@@ -438,16 +397,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/ui/dashboard_screen.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1071">
-          <caret line="74" column="32" selection-start-line="74" selection-start-column="32" selection-end-line="74" selection-end-column="32" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/ui/dashboard_screen.dart" />
     <entry file="file://$PROJECT_DIR$/lib/common/globals.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -556,9 +506,10 @@
     <entry file="file://$PROJECT_DIR$/lib/common/SpUtils.dart" />
     <entry file="file://$PROJECT_DIR$/lib/pages/home.dart" />
     <entry file="file://$PROJECT_DIR$/lib/ui/login_screen.dart" />
+    <entry file="file://$PROJECT_DIR$/build/app/outputs/apk/app.apk" />
     <entry file="file://C:/DART SDK/flutter/packages/flutter/lib/src/widgets/framework.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="123">
+        <state relative-caret-position="44523">
           <caret line="2644" column="28" selection-start-line="2644" selection-start-column="28" selection-end-line="2644" selection-end-column="28" />
         </state>
       </provider>
@@ -572,20 +523,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/main.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1020">
+        <state relative-caret-position="918">
           <caret line="60" column="22" selection-start-line="60" selection-start-column="22" selection-end-line="60" selection-end-column="22" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/ui/alistamientos.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4199">
-          <caret line="250" column="21" selection-start-line="250" selection-start-column="21" selection-end-line="250" selection-end-column="21" />
+        <state relative-caret-position="3298">
+          <caret line="213" column="21" selection-start-line="213" selection-start-column="21" selection-end-line="213" selection-end-column="21" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build/app/outputs/apk/app.apk">
-      <provider selected="true" editor-type-id="apk-viewer" />
+    <entry file="file://$PROJECT_DIR$/lib/ui/SplashScreen.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="39" column="61" selection-start-line="39" selection-start-column="61" selection-end-line="39" selection-end-column="61" />
+        </state>
+      </provider>
     </entry>
   </component>
 </project>
