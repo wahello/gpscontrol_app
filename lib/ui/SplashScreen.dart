@@ -8,7 +8,7 @@ import 'package:EnlistControl/pages/display/SplashScreenDisplay.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:EnlistControl/ui/home.dart';
 import 'package:EnlistControl/models/users.dart';
-
+import 'package:toast/toast.dart';
 /// SplashScreen extended from StatefulWidget
 /// State
 class SplashScreen extends StatefulWidget {
@@ -41,9 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
           //verificamos si esta conectado a internet
           if (connectivityResult == ConnectivityResult.mobile) {
             // I am connected to a mobile network.
-             Scaffold.of(context)
-            ..removeCurrentSnackBar()
-            ..showSnackBar(SnackBar(content: Text("Conectado a datos moviles!")));
+            Toast.show("Se detecto: Datos moviles.", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
               
             usuario = new User(prefs.getString("id"), prefs.getString("user"), prefs.getString("pass"), 'token');
             return Navigator.of(context).pushReplacement(FadePageRoute(
@@ -51,9 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ));
           } else if (connectivityResult == ConnectivityResult.wifi) {
             // I am connected to a wifi network.
-             Scaffold.of(context)
-        ..removeCurrentSnackBar()
-        ..showSnackBar(SnackBar(content: Text("Conectado a wifi!")));
+             Toast.show("Se detecto: WIFI.", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
           
             usuario = new User(prefs.getString("id"), prefs.getString("user"), prefs.getString("pass"), 'token');
             return Navigator.of(context).pushReplacement(FadePageRoute(
@@ -61,9 +57,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ));
           }else{
             // not connected
-             Scaffold.of(context)
-        ..removeCurrentSnackBar()
-        ..showSnackBar(SnackBar(content: Text("No estas conectado a internet!")));
+            Toast.show("No estas conectado a internet.", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
           }
           
         }else {

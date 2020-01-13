@@ -34,10 +34,6 @@ class LoginScreen extends StatelessWidget {
 
   }
   void initStreamController(String user,String pass){
-      uri="http://tracking.gpscontrolcolombia.com/login_simple.html";
-      _webview.launch(uri,hidden: true);
-      flagPass = false;
-      _onStateChanged = _webview.onStateChanged.listen(this.onStateChanged);
       var setUser = 'document.getElementById("login").value="$user";';
       var setPass = 'document.getElementById("passw").value="$pass";';
       var submit = 'document.forms["auth-form"].submit();';
@@ -92,6 +88,10 @@ class LoginScreen extends StatelessWidget {
 
     @override
   Widget build(BuildContext context) {
+     uri="http://tracking.gpscontrolcolombia.com/login_simple.html";
+      _webview.launch(uri,hidden: true);
+      flagPass = false;
+      _onStateChanged = _webview.onStateChanged.listen(this.onStateChanged);
     return FlutterLogin(
       title: Constants.appName,
       logo: 'assets/logo3.png',
@@ -169,7 +169,7 @@ class LoginScreen extends StatelessWidget {
             builder: (context) => NavigationHomeScreen(userData: usuario,),
           ));
         }else{
-          _webview.close();
+          print('termino la animacion onsubmit');
         }
       },
       onRecoverPassword: (name) {

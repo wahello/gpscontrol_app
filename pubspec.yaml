@@ -46,20 +46,9 @@ flutter:
 
   assets:
   - assets/icon/favicon2.png
-  - assets/login.jpg
-  - assets/tick.png
   - assets/logo2.png
   - assets/logo3.png
   - assets/images/foody.png
-  - assets/images/ecorp-lightgreen.png
-  - assets/conectar.png
-  - assets/ajustes.png
-  - assets/conectar.png
-  - assets/diagnostico.png
-  - assets/indicadores.png
-  - assets/reportes.png
-  - assets/soporte.png
-  - assets/images/
   - assets/design_course/
   - assets/fitness_app/
   - assets/hotel/
