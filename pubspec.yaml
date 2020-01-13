@@ -25,7 +25,7 @@ dependencies:
   get_it: ^1.0.3
   color: any
   flat_icons_flutter: ^1.0.2
-  camera:
+  camera: ^0.5.7+3
   path:
   url_launcher: ^4.0.3
   webview_flutter: ^0.3.18+1
