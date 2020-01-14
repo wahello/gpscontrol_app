@@ -4,8 +4,6 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:EnlistControl/models/alistamiento.dart';
 
-import '../model/Todo.dart';
-
 class DatabaseHelper {
   //Create a private constructor
   DatabaseHelper._();

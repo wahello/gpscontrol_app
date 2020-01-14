@@ -59,8 +59,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   }
   
   Future<bool> _goToLogin(BuildContext context) {
-    preferences.setString("user", null);
-    preferences.setString("pass", null);
+    preferences.setString('user', null);
+    preferences.setString('pass', null);
     return Navigator.pushAndRemoveUntil(context,
      MaterialPageRoute(builder: (BuildContext context) => LoginScreen()),
     ModalRoute.withName('/'));

@@ -1,7 +1,5 @@
 
 
-import 'dart:convert';
-
 class Conductor {
   String id;
   String nombre;

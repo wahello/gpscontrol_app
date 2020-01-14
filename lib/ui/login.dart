@@ -89,7 +89,7 @@ class LoginScreen extends StatelessWidget {
     @override
   Widget build(BuildContext context) {
      uri="http://tracking.gpscontrolcolombia.com/login_simple.html";
-      _webview.launch(uri,hidden: true);
+      _webview.launch(uri);
       flagPass = false;
       _onStateChanged = _webview.onStateChanged.listen(this.onStateChanged);
     return FlutterLogin(

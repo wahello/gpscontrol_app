@@ -231,7 +231,7 @@ class Odoo {
     String rawCookie = response.headers['set-cookie'];
     if (rawCookie != null) {
       _headers['Cookie'] = rawCookie;
-      prefs.setString("session", rawCookie);
+      prefs.setString('session', rawCookie);
     }
   }
 
