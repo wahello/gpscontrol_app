@@ -1,4 +1,3 @@
-
 class Todo {
   final int id;
   final String content;

@@ -9,7 +9,7 @@ class User {
     this.token = token;
     this.passwd = pass;
   }
-  setToken(String token){
+  setToken(String token) {
     this.token = token;
   }
 

@@ -8,13 +8,16 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
 
-
 // Una pantalla que permite a los usuarios tomar una fotografía utilizando una cámara determinada.
 class TakePictureScreen extends StatefulWidget {
   final CameraDescription camera;
   final Caption caption;
 
-  TakePictureScreen({this.caption,Key key,@required this.camera,}) : super(key: key);
+  TakePictureScreen({
+    this.caption,
+    Key key,
+    @required this.camera,
+  }) : super(key: key);
 
   @override
   TakePictureScreenState createState() => TakePictureScreenState();
@@ -80,7 +83,6 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             // Construye la ruta donde la imagen debe ser guardada usando
             // el paquete path.
             final path = join(
-
               //
               (await getTemporaryDirectory()).path,
               '${DateTime.now()}.png',
@@ -94,17 +96,19 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             caption = widget.caption;
             caption.setImage(path);
             var result = await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) =>DisplayPictureScreen(caption: caption)));
-            if (result.toString()!=''){
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        DisplayPictureScreen(caption: caption)));
+            if (result.toString() != '') {
               caption.setDesc(result);
               Navigator.pop(context, caption);
-            }else{
+            } else {
               Navigator.pop(context, 'algo salio mal..');
             }
 
             // After the Selection Screen returns a result, hide any previous snackbars
-          // and show the new result.
+            // and show the new result.
 
           } catch (e) {
             // Si se produce un error, regístralo en la consola.
@@ -120,17 +124,21 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 class DisplayPictureScreen extends StatelessWidget {
   Caption caption;
   String desc;
-  DisplayPictureScreen({this.caption,Key key,}) : super(key: key);
+  DisplayPictureScreen({
+    this.caption,
+    Key key,
+  }) : super(key: key);
 
   final myController = TextEditingController();
 
-  String _get_base64image(String imageFilePath){
+  String _get_base64image(String imageFilePath) {
     File imageFile = File(imageFilePath);
     List<int> imageBytes = imageFile.readAsBytesSync();
     String base64Image = base64Encode(imageBytes);
 
     return base64Image;
   }
+
   @override
   void dispose() {
     // Limpia el controlador cuando el Widget se descarte
@@ -176,7 +184,6 @@ class DisplayPictureScreen extends StatelessWidget {
             ),
           ),
           Padding(padding: EdgeInsets.only(top: 8.0, bottom: 35.0)),
-
         ],
       ),
     );
@@ -195,15 +202,14 @@ class DisplayPictureScreen extends StatelessWidget {
                   fillColor: Colors.white,
                   border: new OutlineInputBorder(
                     borderRadius: new BorderRadius.circular(25.0),
-                    borderSide: new BorderSide(
-                    ),
+                    borderSide: new BorderSide(),
                   ),
                   //fillColor: Colors.green
                 ),
                 validator: (val) {
-                  if(val.length <= 1) {
+                  if (val.length <= 1) {
                     return "La descripcion no puede estar vacia.";
-                  }else{
+                  } else {
                     return null;
                   }
                 },
@@ -225,7 +231,7 @@ class DisplayPictureScreen extends StatelessWidget {
               ),
               color: Colors.blue,
               onPressed: () {
-                desc= myController.text;
+                desc = myController.text;
                 Navigator.pop(context, desc);
                 //_saveURL(_urlCtrler.text);
               },
@@ -234,7 +240,6 @@ class DisplayPictureScreen extends StatelessWidget {
         ],
       ),
     );
-
 
     return Scaffold(
       body: NestedScrollView(
@@ -254,5 +259,4 @@ class DisplayPictureScreen extends StatelessWidget {
       ),
     );
   }
-
 }

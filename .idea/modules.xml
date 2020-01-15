@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/gpscontrol_app.iml" filepath="$PROJECT_DIR$/gpscontrol_app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/android/gpscontrol_app_android.iml" filepath="$PROJECT_DIR$/android/gpscontrol_app_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/enlistcontrol.iml" filepath="$PROJECT_DIR$/enlistcontrol.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/enlistcontrol_android.iml" filepath="$PROJECT_DIR$/android/enlistcontrol_android.iml" />
     </modules>
   </component>
 </project>

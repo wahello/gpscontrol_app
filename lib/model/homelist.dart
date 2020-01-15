@@ -1,4 +1,6 @@
 import 'package:EnlistControl/models/pseudouser.dart';
+import 'package:EnlistControl/ui/init_alistamiento.dart';
+import 'package:flutter/widgets.dart';
 
 class HomeList {
   HomeList({
@@ -10,7 +12,7 @@ class HomeList {
   String imagePath;
   static PseudoUser user;
 
-  setPseudoUser(PseudoUser user){
+  setPseudoUser(PseudoUser user) {
     user = user;
   }
 

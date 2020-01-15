@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'model/homelist.dart';
 import 'package:EnlistControl/screens/ReadTodoScreen.dart';
 import 'package:connectivity/connectivity.dart';
+
 class MyHomePage extends StatefulWidget {
   PseudoUser user;
   MyHomePage({this.user});
@@ -34,36 +35,41 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     super.initState();
   }
 
-  void initPrefs() async{
+  void initPrefs() async {
     preferences = await SharedPreferences.getInstance();
   }
 
-  void checkInternet() async{
+  void checkInternet() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile) {
       // I am connected to a mobile network.
       Scaffold.of(context)
-            ..removeCurrentSnackBar()
-            ..showSnackBar(SnackBar(content: Text("Parece que estas conectado.. no hay problema.")));
+        ..removeCurrentSnackBar()
+        ..showSnackBar(SnackBar(
+            content: Text("Parece que estas conectado.. no hay problema.")));
     } else if (connectivityResult == ConnectivityResult.wifi) {
       // I am connected to a wifi network.
       Scaffold.of(context)
-            ..removeCurrentSnackBar()
-            ..showSnackBar(SnackBar(content: Text("Parece que estas conectado.. no hay problema.")));
-    }else{
+        ..removeCurrentSnackBar()
+        ..showSnackBar(SnackBar(
+            content: Text("Parece que estas conectado.. no hay problema.")));
+    } else {
       Scaffold.of(context)
-            ..removeCurrentSnackBar()
-            ..showSnackBar(SnackBar(content: Text("No tienes internet, la funcion offline aun esta en desarrollo.")));
+        ..removeCurrentSnackBar()
+        ..showSnackBar(SnackBar(
+            content: Text(
+                "No tienes internet, la funcion offline aun esta en desarrollo.")));
       _goToLogin(context);
     }
   }
-  
+
   Future<bool> _goToLogin(BuildContext context) {
-    preferences.setString('user', null);
-    preferences.setString('pass', null);
-    return Navigator.pushAndRemoveUntil(context,
-     MaterialPageRoute(builder: (BuildContext context) => LoginScreen()),
-    ModalRoute.withName('/'));
+    preferences.setString("user", null);
+    preferences.setString("pass", null);
+    return Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (BuildContext context) => LoginScreen()),
+        ModalRoute.withName('/'));
   }
 
   Future<bool> getData() async {
@@ -125,18 +131,24 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                   animationController: animationController,
                                   listData: homeList[index],
                                   callBack: () {
-                                    if(homeList[index].navigateScreen == '/init_alistamiento'){
-                                      print('se selecciono alistamiento user: '+user.name);
+                                    if (homeList[index].navigateScreen ==
+                                        '/init_alistamiento') {
+                                      print(
+                                          'se selecciono alistamiento user: ' +
+                                              user.name);
                                       Navigator.of(context).push(FadePageRoute(
-                                              builder: (context) => InitAlistamiento(data: user,),
-                                            ));
-                                    }else if(homeList[index].navigateScreen == '/history'){
+                                        builder: (context) => InitAlistamiento(
+                                          data: user,
+                                        ),
+                                      ));
+                                    } else if (homeList[index].navigateScreen ==
+                                        '/history') {
                                       Navigator.of(context).push(FadePageRoute(
-                                              builder: (context) => ReadTodoScreen(),
-                                            ));
-                                    }
-                                    else{
-                                      print('se selecciono otro item, aun no esta configurado lo demas');
+                                        builder: (context) => ReadTodoScreen(),
+                                      ));
+                                    } else {
+                                      print(
+                                          'se selecciono otro item, aun no esta configurado lo demas');
                                     }
                                   },
                                 );
@@ -178,16 +190,16 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           ),
           Expanded(
             child: Center(
-              child:  Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 2.0),
-                  child: Hero(
-                    tag: Constants.logoTag,
-                    child: Image.asset(
-                      'assets/logo2.png',
-                      filterQuality: FilterQuality.high,
-                    ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2.0),
+                child: Hero(
+                  tag: Constants.logoTag,
+                  child: Image.asset(
+                    'assets/logo2.png',
+                    filterQuality: FilterQuality.high,
                   ),
                 ),
+              ),
             ),
           ),
           Padding(

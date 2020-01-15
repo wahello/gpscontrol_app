@@ -21,7 +21,7 @@ class PseudoUnit {
     return {'id': id, 'idUser': idUser, 'name': name};
   }
 
-  setId(int id){
+  setId(int id) {
     this.id = id;
   }
 }

@@ -9,7 +9,6 @@ class Pregunta {
     this.pregunta = pregunta;
     this.descripcion = descripcion;
     this.base64Image = image;
-
   }
 
   Pregunta.fromJson(Map json)
@@ -19,6 +18,11 @@ class Pregunta {
         base64Image = json['image'];
 
   Map toJson() {
-    return {'id': id, 'pregunta': pregunta, 'desc': descripcion, 'image': base64Image};
+    return {
+      'id': id,
+      'pregunta': pregunta,
+      'desc': descripcion,
+      'image': base64Image
+    };
   }
 }

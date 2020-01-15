@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 class Vehiculo {
   String id;
   String movil;
@@ -7,22 +8,14 @@ class Vehiculo {
   String modelo;
   String year;
 
-  Vehiculo(String id,
-  String movil,
-  String placa,
-  String marca,
-  String modelo,
-  String year
-      )
-  {
+  Vehiculo(String id, String movil, String placa, String marca, String modelo,
+      String year) {
     this.id = id;
     this.movil = movil;
     this.placa = placa;
     this.marca = marca;
     this.modelo = modelo;
     this.year = year;
-
-
   }
 
   Vehiculo.fromJson(Map json)
@@ -35,12 +28,12 @@ class Vehiculo {
 
   Map toJson() {
     return {
-      'id':id,
-      'movil':movil,
-      'placa':placa,
+      'id': id,
+      'movil': movil,
+      'placa': placa,
       'marca': marca,
-      'modelo':modelo,
-      'year':year,
+      'modelo': modelo,
+      'year': year,
     };
   }
 }

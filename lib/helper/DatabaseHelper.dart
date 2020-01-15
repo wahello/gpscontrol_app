@@ -4,6 +4,8 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:EnlistControl/models/alistamiento.dart';
 
+import '../model/Todo.dart';
+
 class DatabaseHelper {
   //Create a private constructor
   DatabaseHelper._();
@@ -16,13 +18,12 @@ class DatabaseHelper {
     if (_database != null) {
       print('database != null');
       return _database;
-    }else{
+    } else {
       print('database == null iniciando... ');
       _database = await initializeDatabase();
-    return _database;
+      return _database;
     }
 
-    
     //
   }
 
@@ -45,7 +46,8 @@ class DatabaseHelper {
   Future<List<Alistamiento>> retrieveTodos() async {
     final db = await database;
     print(db);
-    final List<Map<String, dynamic>> maps = await db.query(Alistamiento.TABLENAME);
+    final List<Map<String, dynamic>> maps =
+        await db.query(Alistamiento.TABLENAME);
     print(maps);
     return List.generate(maps.length, (i) {
       return Alistamiento(

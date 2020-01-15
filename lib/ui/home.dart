@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:EnlistControl/common/CustomButton.dart';
 import 'package:EnlistControl/ui/login.dart';
 
-
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -25,7 +24,8 @@ class Home extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Image.asset(
-                  "assets/logo2.png",width: 300,
+                  "assets/logo2.png",
+                  width: 300,
                 ),
                 SizedBox(
                   height: 15.0,

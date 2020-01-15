@@ -82,7 +82,7 @@ class _SettingsState extends State<Settings> {
     if (url.length > 0 && url != " ") {
       _odoo = Odoo(url: url);
       _odoo.getDatabases().then((http.Response res) {
-        prefs.setString('odooUrl', url);
+        prefs.setString("odooUrl", url);
         _showLogoutMessage("Setting Saved! Please Login!");
       }).catchError((error) {
         _showMessage("Can't connect to the server! Please enter valid URL");

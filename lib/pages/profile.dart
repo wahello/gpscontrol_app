@@ -92,8 +92,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 state_id =
                     result['state_id'][1] is! bool ? result['state_id'][1] : "";
                 zip = result['zip'] is! bool ? result['zip'] : "";
-                title = result['title'][1] is! bool ? result['title'][1] : "N/A";
-                website = result['website'] is! bool ? result['website'] : "N/A";
+                title =
+                    result['title'][1] is! bool ? result['title'][1] : "N/A";
+                website =
+                    result['website'] is! bool ? result['website'] : "N/A";
                 jobposition =
                     result['function'] is! bool ? result['function'] : "N/A";
               });

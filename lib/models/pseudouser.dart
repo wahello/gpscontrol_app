@@ -1,9 +1,10 @@
 import 'package:EnlistControl/models/users.dart';
+
 class PseudoUser {
   int id;
   String id_wia;
   String name;
-  User baseUser;  
+  User baseUser;
   PseudoUser(int id, String id_wia, String name, User baseUser) {
     this.id = id;
     this.id_wia = id_wia;
@@ -17,12 +18,13 @@ class PseudoUser {
         name = json['name'],
         baseUser = baseUser;
 
-  setJson(Map json){
+  setJson(Map json) {
     this.id = json['id'];
     this.id_wia = json['id_wia'];
     this.name = json['name'];
   }
+
   Map toJson() {
-    return {'id': id, 'id_wia': id_wia ,'name': name};
+    return {'id': id, 'id_wia': id_wia, 'name': name};
   }
 }

@@ -2,7 +2,7 @@ import 'package:EnlistControl/models/alistamiento.dart';
 import 'package:flutter/material.dart';
 import '../helper/DatabaseHelper.dart';
 
-class  ReadTodoScreen extends StatefulWidget {
+class ReadTodoScreen extends StatefulWidget {
   @override
   _ReadTodoScreenState createState() => _ReadTodoScreenState();
 }
@@ -46,7 +46,6 @@ class _ReadTodoScreenState extends State<ReadTodoScreen> {
     );
   }
 }
-
 
 _navigateToDetail(BuildContext context, Alistamiento todo) async {
   print('ok');

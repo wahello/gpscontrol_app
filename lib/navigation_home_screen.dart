@@ -29,42 +29,50 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
   void initState() {
     initPseudoUser();
     drawerIndex = DrawerIndex.HOME;
-    screenView = MyHomePage(user: user,);
+    screenView = MyHomePage(
+      user: user,
+    );
     super.initState();
   }
 
-  void initPseudoUser(){
+  void initPseudoUser() {
     baseUser = widget.userData;
     user = new PseudoUser(0, '', '', baseUser);
   }
 
-   //get data wialon of server
+  //get data wialon of server
   Future<String> conexionPrincipal() async {
     baseUser = widget.userData;
     username = baseUser.name;
     var result;
     var client = OdooClient("http://66.228.39.68:8069");
-    var auth = await client.authenticate('appbot', 'iopunjab1234!',"smart_contro");
+    var auth =
+        await client.authenticate('appbot', 'iopunjab1234!', "smart_contro");
     if (auth.isSuccess) {
       print("Bienvenido ${auth.getUser().name}");
-      print('the sesion id is: '+auth.getSessionId());
+      print('the sesion id is: ' + auth.getSessionId());
       var name_user = auth.getUser().name;
-      print('hola .. se conecto a odoo con el usuario '+name_user);
-      print('se buscara a '+username);
-      client.searchRead('gpscontrol.wialon_pseudouser', [['name','=','$username']], ['id','id_wia','name']).then((res){
-        if(res.hasError()){
-        print('algo salio mal marica');
-      }else{
-        result = res.getResult();
-        for(var rec in result['records']){
-          user.setJson(rec);
-          print('se guardo '+user.name);
+      print('hola .. se conecto a odoo con el usuario ' + name_user);
+      print('se buscara a ' + username);
+      client.searchRead('gpscontrol.wialon_pseudouser', [
+        ['name', '=', '$username']
+      ], [
+        'id',
+        'id_wia',
+        'name'
+      ]).then((res) {
+        if (res.hasError()) {
+          print('algo salio mal marica');
+        } else {
+          result = res.getResult();
+          for (var rec in result['records']) {
+            user.setJson(rec);
+            print('se guardo ' + user.name);
+          }
+          //preferences.setInt('id_user', pseudoUser.id);
         }
-        //preferences.setInt('id_user', pseudoUser.id);
-      }
-
       });
-      
+
       //_save(auth.getSessionId(),name_user,loginData.name,loginData.password);
       //isLoggedIn = true;
       return 'ok';
@@ -73,7 +81,6 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
       //isLoggedIn = false;
       return 'bad';
     }
-    
   }
 
   @override
@@ -86,13 +93,14 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
         child: FutureBuilder(
           future: conexionPrincipal(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if(snapshot.connectionState == ConnectionState.done){
+            if (snapshot.connectionState == ConnectionState.done) {
               return Scaffold(
                 backgroundColor: AppTheme.nearlyWhite,
                 body: DrawerUserController(
                   screenIndex: drawerIndex,
                   drawerWidth: MediaQuery.of(context).size.width * 0.75,
-                  animationController: (AnimationController animationController) {
+                  animationController:
+                      (AnimationController animationController) {
                     sliderAnimationController = animationController;
                   },
                   onDrawerCall: (DrawerIndex drawerIndexdata) {
@@ -101,13 +109,11 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
                   screenView: screenView,
                 ),
               );
-            }else if(snapshot.hasError){
-                        throw snapshot.error;
-            }
-            else{
+            } else if (snapshot.hasError) {
+              throw snapshot.error;
+            } else {
               return Center(child: CircularProgressIndicator());
             }
-            
           },
         ),
       ),
@@ -119,7 +125,9 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
       drawerIndex = drawerIndexdata;
       if (drawerIndex == DrawerIndex.HOME) {
         setState(() {
-          screenView = MyHomePage(user: user,);
+          screenView = MyHomePage(
+            user: user,
+          );
         });
       } else if (drawerIndex == DrawerIndex.Help) {
         setState(() {
