@@ -6,9 +6,9 @@ import 'package:EnlistControl/utils/network/IntranetAPIUtils.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:EnlistControl/pages/display/SplashScreenDisplay.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:EnlistControl/ui/home.dart';
 import 'package:EnlistControl/models/users.dart';
 import 'package:toast/toast.dart';
+import 'package:EnlistControl/ui/login.dart';
 
 /// SplashScreen extended from StatefulWidget
 /// State
@@ -80,7 +80,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Toast.show("Bienvenido!.", context,
           duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (BuildContext context) => Home()));
+          MaterialPageRoute(builder: (BuildContext context) => new LoginScreen()));
     }
   }
 

@@ -1,18 +1,30 @@
+import 'package:EnlistControl/models/unit.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
+
 class User {
   String id;
+  String sid;
   String name;
+  int idU;
+  String nameU;
   String passwd;
   String token;
+  PseudoUnit unidad;
   User(String id, String name, String pass, String token) {
     this.id = id;
     this.name = name;
     this.token = token;
     this.passwd = pass;
   }
-  setToken(String token) {
-    this.token = token;
+
+  setSID(String sid){
+    this.sid = sid;
+  }
+
+  setInfoU(int id, String name){
+    this.idU = id;
+    this.nameU = name;
   }
 
   User.fromJson(Map json)
@@ -25,20 +37,7 @@ class User {
     return {'id': id, 'name': name, 'token': token, 'password': passwd};
   }
 
-  getDataOfToken() async {
-    if(this.token==null){
-      return "No tienes token asignado";
-    }else{
-      var accesToken = this.token;
-      var url = "http://hst-api.wialon.com/wialon/ajax.html?svc=token/login&params={%22token%22:%22$accesToken%22}";
-      await http.get(url).then((res){
-        if(res.statusCode == 200){
-          var jsonResponse = convert.jsonDecode(res.body);
-          this.name = jsonResponse["user"]["nm"];
-          this.id = jsonResponse["user"]["id"].toString();
-        }
-      });
-      return "Okas";
-    }
+  setUnit(PseudoUnit unit){
+    this.unidad = unit;
   }
 }

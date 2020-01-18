@@ -32,7 +32,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
   }
 
   void initprefs() async {
-    prefs = prefs = await SharedPreferences.getInstance();
+    prefs = await SharedPreferences.getInstance();
     username = prefs.getString("user");
   }
 
@@ -165,10 +165,10 @@ class _HomeDrawerState extends State<HomeDrawer> {
                 ),
                 onTap: () {
                   prefs.setString("user", null);
-                  prefs.setString("pass", null);
+                  prefs.setString("token", null);
                   Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(builder: (BuildContext context) => WebviewLogin("http://tracking.gpscontrolcolombia.com/login.html")),
+                      MaterialPageRoute(builder: (BuildContext context) => LoginScreen()),
                       ModalRoute.withName('/'));
                 },
               ),

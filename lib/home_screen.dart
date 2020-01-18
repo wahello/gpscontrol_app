@@ -1,5 +1,6 @@
 import 'package:EnlistControl/app_theme.dart';
 import 'package:EnlistControl/common/constants.dart';
+import 'package:EnlistControl/helper/DatabaseHelper.dart';
 import 'package:EnlistControl/models/pseudouser.dart';
 import 'package:EnlistControl/ui/custom_route.dart';
 import 'package:EnlistControl/ui/init_alistamiento.dart';
@@ -66,9 +67,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   Future<bool> _goToLogin(BuildContext context) {
     preferences.setString("user", null);
     preferences.setString("pass", null);
+    DatabaseHelper.instance.clearDb();
     return Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (BuildContext context) => WebviewLogin("http://tracking.gpscontrolcolombia.com/login.html")),
+        MaterialPageRoute(builder: (BuildContext context) => LoginScreen()),
         ModalRoute.withName('/'));
   }
 

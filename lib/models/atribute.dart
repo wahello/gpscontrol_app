@@ -1,4 +1,5 @@
 class Atribute {
+  static const String TABLENAME = "atributos";
   String name;
   String value;
   Atribute({this.name, this.value});
@@ -7,12 +8,13 @@ class Atribute {
       : name = json['n'],
         value = json['v'];
 
-  Map toJson() {
-    return {'name': name, 'value': value};
+  Map<String, dynamic> toJson(vehiculoId) {
+    return {'name': name, 'value': value , 'vehiculoId': vehiculoId};
   }
 }
 
 class Intervalo {
+  static const String TABLENAME = "serviceintervals";
   String name;
   String desc;
   int iK;
@@ -38,8 +40,8 @@ class Intervalo {
       : name = json['n'],
         value = json['v'];
 
-  Map toJson() {
-    return {'name': name, 'value': value};
+  Map<String, dynamic> toJson(vehiculoId) {
+    return {'name': name, 'iK': iK,'iT': iD,'iH': iH,'pm': pm,'pt': pt,'pe': pe,'value': value , 'vehiculoId': vehiculoId};
   }
 
   calculateInterval() {
