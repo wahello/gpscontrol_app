@@ -46,7 +46,9 @@ class LoginScreen extends StatelessWidget {
       print(jsonResponse);
       if(jsonResponse.containsKey("drv")){
         print('Contiene la clave drv');
-        usuario = new User(jsonResponse["drv"]["rid"].toString(),jsonResponse["drv"]["nm"],pass,user);
+        var id = jsonResponse["drv"]["rid"];
+        var uname = jsonResponse["drv"]["nm"];
+        usuario = new User(id.toString(),uname ,pass ,user );
         print(jsonResponse["un"]["id"]);
         print(jsonResponse["un"]["nm"]);
         usuario.setInfoU(jsonResponse["un"]["id"], jsonResponse["un"]["nm"]);
@@ -66,9 +68,7 @@ class LoginScreen extends StatelessWidget {
     return Future.delayed(loginTime).then((_) {
       print("Entramos a _loginUser method");
       if (isLoggedIn == true && flagPass==true){
-        var user = logindata.name;
-        var pass = logindata.password;
-        _saveData(user, pass);
+        //_saveData(user, pass);
         return null;
       }else {
         return 'Error, verifica tus credenciales';

@@ -33,13 +33,12 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
   Alistamiento nuevoAlistamiento;
   Map value;
   SharedPreferences preferences;
-  var listaVehiculos = new List<PseudoUnit>();
   String msg = 'Seleccione Vehiculo';
   Color btnColor = Colors.blueGrey;
   var itemCount;
   String auxJson = '';
   PseudoUser user;
-  List<Vehiculo> vehiculos;
+  Vehiculo vehiculo;
   PseudoUnit unit;
   String sid;
   List<Intervalo> intervalos;
@@ -52,15 +51,26 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
 
   @override
   void initState() {
-    user = widget.data;
-    sid = user.baseUser.sid;
-    vehiculos = user.vehiculos;
-    _selectedCar = "";
+    normalinit();
     super.initState();
     //user = widget.data;
     //_init_alistamiento(false, user.name, '');
 
     //_checkFirstTime();
+  }
+
+  normalinit(){
+    user = widget.data;
+    sid = user.baseUser.sid;
+    vehiculo = user.vehiculo;
+    intervalos = user.intervalos;
+    atributos = user.atributos;
+    var recId = int.parse(vehiculo.id);
+    _selectedCar = "";
+    unit = new PseudoUnit(recId, vehiculo.name);
+    unit.setUser(user);
+    unit.setIdUser(user.id);
+    print('se inicializo correctamente la data');
   }
 
   Future<int> getIdOdoo(idWia) async {
@@ -92,20 +102,6 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
       });*/
     } else {
       return 99999;
-    }
-  }
-
-  Future<List<Vehiculo>> getVehicles() async {
-    if (vehiculos!=null) {
-      vehiculos.forEach((unidad){
-        var res = unidad.getData(sid);
-        print(res); 
-      });
-      return vehiculos;
-    } else {
-      vehiculos= [];
-      print('No se encontraron vehiculos.');
-      return vehiculos;
     }
   }
 
@@ -167,30 +163,13 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
   // }
   //}
   
-  Future<String> getUnitInfo (index) async {
-    intervalos = [];
-    atributos = [];
-    String unitName ="";
-    if (vehiculos.length>0){
-      vehiculos.forEach((vehiculo){
-        if(vehiculo.id == index){
-          //vehiculo.getData(sid);
-          Future.delayed(loginTime);
-        }
-        return unitName;
-      });
-    }else{
-      flagAtributes = false;
-      unitName = "Algo salio mal con este vehiculo, selecciona otro";
-      
-    }
-   return unitName;
-  }
 
   Future<String> voidMethod(){
     var log;
     return Future.delayed(loginTime).then((val){
       log = "ok";
+      flagAtributes = true;
+      btnColor = Colors.blue;
       return log;
     });
   }
@@ -211,42 +190,14 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
           child: new Column(
             children: <Widget>[
               FutureBuilder(
-                future: DatabaseHelper.instance.retrieveVehiculos(),
+                future: voidMethod(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
-                    vehiculos = snapshot.data;
                     return Padding(
                             padding: EdgeInsets.all(28.0),
                             child: Column(
                               children: <Widget>[
-                                DropdownButton(
-                                  hint: Text(msg), // Not necessary
-                                  value: _selectedCar,
-                                  isExpanded: true,
-                                  isDense: true,
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      //_selectedCar = newValue.toString();
-                                      //msg = _selectedCar;
-                                      _selectedCar = newValue;
-                                      flagAtributes = false;
-                                      getUnitInfo(newValue).then((res) {
-                                        print(res);
-                                        msg = res;
-                                        flagAtributes = true;
-                                      });
-                                      print("new value: "+newValue);
-                                      btnColor = Colors.blue;
-                                      print("auxjson "+auxJson);
-                                    });
-                                  },
-                                  items: vehiculos.map((unit) {
-                                    return DropdownMenuItem(
-                                      child: new Text(unit.name),
-                                      value: unit.id,
-                                    );
-                                  }).toList(),
-                                ),
+                                Text("Vehiculo: ${vehiculo.name}", style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
                                 flagAtributes == false? Container(
                                     padding: EdgeInsets.only(top: 20),
                                     child: Column(
@@ -262,12 +213,12 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
                                       children: <Widget>[
                                         Text(intervalos.length>0?'Intervalos de servicio: ':'No se encontraron intervalos de servicio.', style: new TextStyle(fontWeight: FontWeight.bold),),
                                         FutureBuilder(
-                                          future: _selectedCar==""?DatabaseHelper.instance.retrieveAttrs(0):DatabaseHelper.instance.retrieveAttrs(int.parse(_selectedCar)),
+                                          future: DatabaseHelper.instance.retrieveSI(int.parse(vehiculo.id)),
                                           builder: (BuildContext context, AsyncSnapshot snapshot) {
                                             return ListView.builder(
                                               scrollDirection: Axis.vertical,
                                               shrinkWrap: true,
-                                              itemCount: intervalos.length>0?intervalos.length:0,
+                                              itemCount: intervalos.length,
                                               itemBuilder: (BuildContext context, int index) {
                                                 return Card ( 
                                                   child: Padding ( 
@@ -278,7 +229,7 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
                                                           style: DefaultTextStyle.of(context).style,
                                                           children: <TextSpan>[
                                                             new TextSpan(text: ': ', style: DefaultTextStyle.of(context).style, ),
-                                                            new TextSpan(text: intervalos[index].value , style: DefaultTextStyle.of(context).style, ),
+                                                            new TextSpan(text: intervalos[index].calculateInterval() , style: DefaultTextStyle.of(context).style, ),
                                                           ],
                                                         ),
                                                       ),
@@ -290,12 +241,12 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
                                         ),
                                         Text(atributos.length>0?'Informacion de usuario: ':'No se econtro informacion de la unidad', style: new TextStyle(fontWeight: FontWeight.bold),),
                                         FutureBuilder(
-                                          future:  _selectedCar==""?DatabaseHelper.instance.retrieveAttrs(0):DatabaseHelper.instance.retrieveAttrs(int.parse(_selectedCar)),
+                                          future: DatabaseHelper.instance.retrieveAttrs(int.parse(vehiculo.id)),
                                           builder: (BuildContext context, AsyncSnapshot snapshot) {
                                             return ListView.builder(
                                               scrollDirection: Axis.vertical,
                                               shrinkWrap: true,
-                                              itemCount: atributos.length>0?atributos.length:0,
+                                              itemCount: atributos.length,
                                               itemBuilder: (BuildContext context, int index) {
                                                   return Card (
                                                     child: Padding (
@@ -360,16 +311,17 @@ class _InitAlistamientoState extends State<InitAlistamiento> {
                       color: Colors.white,
                     ),
                   ),
-                  color: btnColor,
+                  color: Colors.blue,
                   onPressed: () {
                     //getVehicles();
                     /*print(nuevoAlistamiento.vehiculo);*/
-                    print(unit.id);
-                    Navigator.of(context).pushReplacement(FadePageRoute(
-                      builder: (context) => new AlistamientoScreen(
-                        data: unit,
-                      ),
-                    ));
+                    if(btnColor == Colors.blue){
+                      Navigator.of(context).pushReplacement(FadePageRoute(
+                        builder: (context) => new AlistamientoScreen(
+                          data: unit,
+                        ),
+                      ));
+                    }
                     //_saveURL(_urlCtrler.text);
                   },
                 ),

@@ -117,8 +117,9 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
   }
 
   initState() {
-    super.initState();
     unit = widget.data;
+    super.initState();
+
     _getPreguntas();
   }
 
@@ -171,11 +172,11 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
   Future<void> guardarAlistamiento() async {
     preferences = await SharedPreferences.getInstance();
     var client = OdooClient("http://66.228.39.68:8069");
-    var auth =
-        await client.authenticate('appbot', 'iopunjab1234!', "smart_contro");
-    var prefs = unit.idUser;
+    var auth = await client.authenticate('appbot', 'iopunjab1234!', "smart_contro");
+    var prefs = unit.user.idWia;
+    print('este es el id $prefs');
     var vehiculo = unit.id;
-    print(vehiculo);
+    print('el id del vehiculo..'+vehiculo.toString());
     Map<String, dynamic> map = {
       "partner_id": prefs,
       "documentos_conductor": values[0],

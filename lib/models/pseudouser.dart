@@ -1,11 +1,16 @@
+import 'package:EnlistControl/models/atribute.dart';
 import 'package:EnlistControl/models/users.dart';
 import 'package:EnlistControl/models/vehiculos.dart';
 
 class PseudoUser {
+  int id;
   String idWia;
   String name;
   User baseUser;
-  List<Vehiculo> vehiculos;
+  Vehiculo vehiculo;
+  String imgUri;
+  List<Intervalo> intervalos;
+  List<Atribute> atributos;
   PseudoUser(User baseUser) {
     this.idWia = baseUser.id;
     this.name = baseUser.name;
@@ -20,14 +25,28 @@ class PseudoUser {
   setJson(Map json) {
     this.idWia = json['idWia'];
     this.name = json['name'];
+    this.id = json['id'];
   }
 
   Map toJson() {
     return {'idWia': idWia, 'name': name};
   }
 
-  setVehiculos(vehiculos){
-    this.vehiculos = vehiculos;
+  setVehiculo(vehiculo){
+    this.vehiculo = vehiculo;
+  }
+  setIntervals(List<Intervalo> intervals){
+    this.intervalos = intervals;
+  }
+  setAttrib(List<Atribute> atrribs){
+    this.atributos = atrribs;
+  }
+
+  setImg(String img){
+    this.imgUri = img;
+  }
+  setID(int id){
+    this.id = id;
   }
 
 }

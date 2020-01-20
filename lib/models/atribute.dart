@@ -41,7 +41,7 @@ class Intervalo {
         value = json['v'];
 
   Map<String, dynamic> toJson(vehiculoId) {
-    return {'name': name, 'iK': iK,'iT': iD,'iH': iH,'pm': pm,'pt': pt,'pe': pe,'value': value , 'vehiculoId': vehiculoId};
+    return {'name': this.name, 'iK': this.iK,'iT': this.iD,'iH': this.iH,'pm': this.pm,'pt': this.pt,'pe': this.pe,'value': this.value , 'vehiculoId': vehiculoId};
   }
 
   calculateInterval() {
@@ -71,5 +71,6 @@ class Intervalo {
       var inter = this.iK;
       this.value = 'Cada $inter . Ultimo cambio $km ';
     }
+    return this.value;
   }
 }
