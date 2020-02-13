@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/.idea/enlistcontrol.iml" filepath="$PROJECT_DIR$/.idea/enlistcontrol.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/enlistcontrol.iml" filepath="$PROJECT_DIR$/enlistcontrol.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/enlistcontrol_android.iml" filepath="$PROJECT_DIR$/android/enlistcontrol_android.iml" />
+>>>>>>> master
     </modules>
   </component>
 </project>

@@ -17,7 +17,11 @@ import 'package:odoo_api/odoo_api.dart';
 import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
+<<<<<<< HEAD
 import 'package:toast/toast.dart';
+=======
+import '../helper/DatabaseHelper.dart';
+>>>>>>> master
 
 class AlistamientoScreen extends StatefulWidget {
   AlistamientoScreen({this.data});
@@ -49,7 +53,11 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
 
   void handleSlideIsOpenChanged(bool isOpen) {
     setState(() {
+<<<<<<< HEAD
       var _fabColor = isOpen ? Color(0xff00ff32) : Colors.blue;
+=======
+      var _fabColor = isOpen ? Colors.green : Colors.blue;
+>>>>>>> master
       print('entramos al is open chang ' + '$isOpen');
       if (isOpen == true) {
         print('Abrio!');
@@ -142,20 +150,32 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
       onSlideIsOpenChanged: handleSlideIsOpenChanged,
     );
     for (var index = 0; index < list_preguntas.length; index++) {
+<<<<<<< HEAD
       var pregunta = new Pregunta(index, list_preguntas[index], list_instructions[index], null, null);
       preguntas.add(pregunta);
       //slidableController.add(controlador);
       values.add(null);
       colores.add(Colors.white);
+=======
+      var pregunta = new Pregunta(index, list_preguntas[index], '', '');
+      preguntas.add(pregunta);
+      //slidableController.add(controlador);
+      values.add(false);
+      colores.add(Colors.grey);
+>>>>>>> master
       images.add('');
     }
     //_init_alistamiento(values);
   }
 
   initState() {
+<<<<<<< HEAD
     saving = false;
     unit = widget.data;
     buttonColor = Colors.grey;
+=======
+    unit = widget.data;
+>>>>>>> master
     super.initState();
 
     _getPreguntas();
@@ -184,12 +204,27 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
   }
 
   validationButtonColor() {
+<<<<<<< HEAD
     if(colores.contains(Colors.white)){
       buttonColor = Colors.grey;
     }else if(colores.contains(Colors.grey)){
       buttonColor = Colors.grey;
     }else {
       buttonColor = Color(0xff00ff32);
+=======
+    if (colores.contains(Colors.grey)) {
+      print('aun pailas brother, faltan preguntas por responder.');
+      buttonColor = Colors.grey;
+    } else {
+      if (colores.contains(Colors.red)) {
+        print('aun pailas brother, faltan preguntas por responder.');
+        buttonColor = Colors.grey;
+      } else {
+        setState(() {
+          buttonColor = Colors.blue;
+        });
+      }
+>>>>>>> master
     }
   }
 
@@ -202,11 +237,18 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
   }
 
   Future<void> guardarAlistamiento() async {
+<<<<<<< HEAD
     saving = true;
     preferences = await SharedPreferences.getInstance();
     var client = OdooClient("http://66.228.39.68:8069");
     var auth = await client.authenticate('appbot', 'iopunjab1234!', 'smart_contro');
     var prefs = unit.idUser;
+=======
+    preferences = await SharedPreferences.getInstance();
+    var client = OdooClient("http://66.228.39.68:8069");
+    var auth = await client.authenticate('appbot', 'iopunjab1234!', "smart_contro");
+    var prefs = unit.user.idWia;
+>>>>>>> master
     print('este es el id $prefs');
     var vehiculo = unit.id;
     print('el id del vehiculo..'+vehiculo.toString());
@@ -322,6 +364,7 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
           print(res.getError());
           print(res.getErrorMessage());
           nuevoAlistamiento.setState('creado');
+<<<<<<< HEAD
           //_saveTodo(nuevoAlistamiento);
           Toast.show("algo salio mal y no se sincronizo. Se guardo en la base de datos local.", context,
             duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
@@ -330,6 +373,10 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
                           data: unit.user.baseUser,
                         ),
                       ));
+=======
+          _saveTodo(nuevoAlistamiento);
+          return 'algo salio mal ...';
+>>>>>>> master
         } else {
           nuevoAlistamiento.setState('Sincronizado');
           //_saveTodo(nuevoAlistamiento);
@@ -337,6 +384,7 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
           Toast.show("Se sincronizo correctamente", context,
             duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
           Navigator.of(context).pushReplacement(FadePageRoute(
+<<<<<<< HEAD
                         builder: (context) => InitAlistamiento(
                           data: unit.user.baseUser,
                         ),
@@ -390,12 +438,31 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
         );
       },
     );
+=======
+            builder: (context) => NavigationHomeScreen(
+              userData: unit.user.baseUser,
+            ),
+          ));
+          return 'ok';
+        }
+      });
+    } else {
+      return 'bad';
+    }
+  }
+
+  _saveTodo(Alistamiento alis) async {
+    var status = await DatabaseHelper.instance.initializeDatabase();
+    print(status);
+    DatabaseHelper.instance.insertTodo(alis);
+>>>>>>> master
   }
 
 
   @override
   build(context) {
     return Scaffold(
+<<<<<<< HEAD
       // No appBar property provided, only the body.
       body: CustomScrollView(
               slivers: <Widget>[
@@ -4269,6 +4336,130 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
           ),
       );
     
+=======
+      appBar: AppBar(
+        title: Text("Alistamientos"),
+      ),
+      body: new Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          new Expanded(
+            child: ListView.builder(
+              itemCount: preguntas.length,
+              itemBuilder: (context, index) {
+                var pregunta = preguntas[index].pregunta;
+                var id = preguntas[index].id;
+                var desc = preguntas[index].descripcion;
+                var color = colores[index];
+                var value = values[index];
+                return Slidable(
+                  key: Key(id),
+                  actionPane: new SlidableDrawerActionPane(),
+                  actionExtentRatio: 0.25,
+                  closeOnScroll: false,
+                  child: Card(
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        radius: 40.0,
+                        backgroundColor: color,
+                        child: Icon(utils.getIconForName(id.toString())),
+                        foregroundColor: Colors.white,
+                      ),
+                      title: Text('$pregunta'),
+                      subtitle: desc == null ? Text('') : Text('$desc'),
+                      onTap: () => {
+                        setState(() {
+                          if (values[index] == true) {
+                            values[index] = false;
+                            _takeInfoSheet(context, index);
+                            if (preguntas[index].descripcion == '') {
+                              colores[index] = Colors.red;
+                              validationButtonColor();
+                              values[index] = true;
+                            } else {
+                              colores[index] = Colors.orange;
+                              validationButtonColor();
+                              values[index] = false;
+                            }
+                          } else {
+                            values[index] = true;
+                            colores[index] = Colors.green;
+                            validationButtonColor();
+                            preguntas[index].descripcion = '';
+                            preguntas[index].base64Image = '';
+                          }
+                        })
+                      },
+                    ),
+                  ),
+                  actions: <Widget>[
+                    /*new IconSlideAction(
+                        caption: 'OK',
+                        color: Colors.green,
+                        icon: Icons.assignment_turned_in,
+                        closeOnTap: false,
+                        onTap: () => {
+
+                        },
+                      ),*/
+                    new SlideAction(
+                      key: Key(id),
+                      color: Colors.red,
+                      child: IconSlideAction(
+                        caption: 'OK',
+                        color: Colors.green,
+                        icon: Icons.assignment_turned_in,
+                        closeOnTap: true,
+                        onTap: () => {
+                          setState(() {
+                            values[index] = true;
+                            colores[index] = Colors.green;
+                            validationButtonColor();
+                            preguntas[index].descripcion = '';
+                          })
+                        },
+                      ),
+                    ),
+                  ],
+                  secondaryActions: <Widget>[
+                    new IconSlideAction(
+                      caption: 'Tomar Foto',
+                      color: Colors.red,
+                      icon: Icons.add_a_photo,
+                      onTap: () => {
+                        _takeInfoSheet(context, index),
+                      },
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+          new Padding(
+            padding: EdgeInsets.all(15.0),
+            child: MaterialButton(
+              child: Text(
+                "Finalizar Alistamiento",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              color: buttonColor == Colors.grey ? Colors.grey : Colors.blue,
+              onPressed: () {
+                if (buttonColor == Colors.blue) {
+                  guardarAlistamiento();
+                  /* */
+                } else {
+                  print('aun no puedes guardar el alistamiento xD');
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+>>>>>>> master
   }
 
   void _takeInfoSheet(context, index) async {
@@ -4288,26 +4479,46 @@ class _AlistamientoScreenState extends State<AlistamientoScreen> {
 
     // After the Selection Screen returns a result, hide any previous snackbars
     // and show the new result.
+<<<<<<< HEAD
     if (result == null) {
+=======
+    if (result.desc == null) {
+>>>>>>> master
       print('algo salio mal bro, intentelo de nuevo.');
       colores[index] = Colors.grey;
       values[index] = true;
+<<<<<<< HEAD
       validationButtonColor();
     } else {
       var desc = result.desc;
       var imagePath = result.imagePath;
       if (imagePath != null && desc != null){
+=======
+    } else {
+      var desc = result.desc;
+      var imagePath = result.imagePath;
+      if (imagePath != null) {
+>>>>>>> master
         values[index] = false;
         preguntas[index].descripcion = desc;
         colores[index] = Color(0xffff0032);
         images[index] = imagePath;
         validationButtonColor();
         preguntas[index].base64Image = getBase64image(imagePath);
+<<<<<<< HEAD
          Toast.show("Se guardo la evidencia!", context,
             duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
       } else {
         colores[index] = Colors.grey;
         validationButtonColor();
+=======
+        Scaffold.of(context)
+          ..removeCurrentSnackBar()
+          ..showSnackBar(
+              SnackBar(content: Text("Se añadio correctamente la evidencia!")));
+      } else {
+        colores[index] = Colors.red;
+>>>>>>> master
         values[index] = true;
       }
     }

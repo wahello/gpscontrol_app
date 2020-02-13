@@ -19,7 +19,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+<<<<<<< HEAD
   flutter_login: 1.0.14
+=======
+  flutter_login: ^1.0.10
+>>>>>>> master
   cupertino_icons: ^0.1.2
   font_awesome_flutter: ^8.5.0
   intl: ^0.16.0
@@ -46,7 +50,10 @@ dependencies:
   connectivity: ^0.4.6
   webview_flutter: ^0.3.19+4
   url_launcher: 5.4.1
+<<<<<<< HEAD
   date_format: 1.0.8
+=======
+>>>>>>> master
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -71,8 +78,11 @@ flutter:
   assets:
     - assets/icon/favicon1.png
     - assets/icon/favicon2.png
+<<<<<<< HEAD
     - assets/icon/footer_logo.png
     - assets/icon/logo.png
+=======
+>>>>>>> master
     - assets/logo2.png
     - assets/logo3.png
     - assets/images/foody.png
@@ -80,10 +90,13 @@ flutter:
     - assets/fitness_app/
     - assets/hotel/
     - assets/images/
+<<<<<<< HEAD
     - assets/images/loading.gif
     - assets/icon/splash.png
     - assets/images/supportIcon.png
 
+=======
+>>>>>>> master
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
 
@@ -112,6 +125,7 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+<<<<<<< HEAD
   fonts:
     - family:  EnlistAppIcon
       fonts:
@@ -123,3 +137,5 @@ flutter:
       - asset: assets/fonts/RobotoCondensed-BoldItalic.ttf
       - asset: assets/fonts/RobotoCondensed-Light.ttf
       - asset: assets/fonts/RobotoCondensed-LightItalic.ttf
+=======
+>>>>>>> master

@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
       home: SplashScreen(),
       navigatorObservers: [TransitionRouteObserver()],
       routes: {
-        LoginScreen.routeName: (context) => LoginScreen(),
+        //LoginScreen.routeName: (context) => LoginScreen(),
         AlistamientoScreen.routeName: (context) => AlistamientoScreen(),
         InitAlistamiento.routeName: (context) => InitAlistamiento(),
       },

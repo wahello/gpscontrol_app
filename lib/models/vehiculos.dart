@@ -7,7 +7,10 @@ import 'package:EnlistControl/models/atribute.dart';
 class Vehiculo {
   static const String TABLENAME = "vehiculos";
   String id;
+<<<<<<< HEAD
   int oID;
+=======
+>>>>>>> master
   String name;
   List<Atribute> atributos;
   List<Intervalo> intervalos;
@@ -91,10 +94,13 @@ class Vehiculo {
     }
   }
 
+<<<<<<< HEAD
   setOid(int id){
     this.oID = id;
   }
 
+=======
+>>>>>>> master
   _saveAttrib(Atribute attr, int id) async {
     var status = await DatabaseHelper.instance.initializeDatabase();
     print(status);
