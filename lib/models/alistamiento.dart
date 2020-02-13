@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:date_format/date_format.dart';
 
 class Alistamiento {
   static const String TABLENAME = "alistamientos";
@@ -104,15 +104,11 @@ class Alistamiento {
   String img_aseo;
   String img_celular;
   String img_ruteros;
-  
 
-  Alistamiento(
-      {
-    this.state, 
+  Alistamiento({
+    this.state,
     this.vehiculo,
   });
-
-
 
   Alistamiento.fromJson(Map json)
       : vehiculo = json['vehiculo'].toString(),
@@ -212,132 +208,49 @@ class Alistamiento {
         img_aseo = json['img_aseo'],
         img_celular = json['img_celular'],
         img_ruteros = json['img_ruteros'];
-        
 
-  String setResponsable(String responsable){
+  Alistamiento.basicJson(Map json)
+      : vehiculo = json['vehiculo'][1],
+        fecha = DateTime.parse(json['fecha']),
+       folio = json['folio'],
+       responsable = json['partner_id'][1],
+       state = json['state'];
+             
+  Alistamiento.dbJson(Map json)
+      : vehiculo = json['vehiculo'],
+        fecha = new DateTime.fromMillisecondsSinceEpoch(json['fecha']),
+       folio = json['folio'],
+       responsable = json['conductor'],
+       state = json['estado'];
+
+  String setResponsable(String responsable) {
     this.responsable = responsable;
     return responsable;
   }
-  String setVehicleName(String vehiculo){
+
+  String setVehicleName(String vehiculo) {
     this.vehiculo = vehiculo;
     return vehiculo;
   }
 
-  String setState(String state){
+  String setState(String state) {
     this.state = state;
     return state;
   }
-  String setFolio(String folio){
+
+  String setFolio(String folio) {
     this.folio = folio;
     return folio;
-  }
-
-  setFecha(){
-    this.fecha = DateTime.now(); 
   }
 
 
   Map<String, dynamic> toJson() {
     return {
-      "state": state,
-      "vehiculo":vehiculo,
-      "fecha":fecha.millisecondsSinceEpoch,
-      "documentos_conductor":documentos_conductor==true?1:0,
-      "documentos_vehiculo":documentos_vehiculo==true?1:0,
-      "calcomania":calcomania==true?1:0,
-      "pito":pito==true?1:0,
-      "disp_velocidad":disp_velocidad==true?1:0,
-      "estado_esc_p_conductor":estado_esc_p_conductor==true?1:0,
-      "estado_esc_p_pasajero":estado_esc_p_pasajero==true?1:0,
-      "equipo_carretera":equipo_carretera==true?1:0,
-      "linterna":linterna==true?1:0,
-      "extintor":extintor==true?1:0,
-      "botiquin":botiquin==true?1:0,
-      "repuesto":repuesto==true?1:0,
-      "retrovisores":retrovisores==true?1:0,
-      "cinturones":cinturones==true?1:0,
-      "motor":motor==true?1:0,
-      "llantas":llantas==true?1:0,
-      "baterias":baterias==true?1:0,
-      "transmision":transmision==true?1:0,
-      "tapas":tapas==true?1:0,
-      "niveles":niveles==true?1:0,
-      "filtros":filtros==true?1:0,
-      "parabrisas":parabrisas==true?1:0,
-      "frenos":frenos==true?1:0,
-      "frenos_emergencia":frenos_emergencia==true?1:0,
-      "aire":aire==true?1:0,
-      "luces":luces==true?1:0,
-      "silleteria":silleteria==true?1:0,
-      "silla_conductor":silla_conductor==true?1:0,
-      "aseo":aseo==true?1:0,
-      "celular":celular==true?1:0,
-      "ruteros":ruteros==true?1:0,
-      "desc_documentos_conductor": desc_documentos_conductor,
-      "desc_documentos_vehiculo": desc_documentos_vehiculo,
-      "desc_calcomania": desc_calcomania,
-      "desc_pito": desc_pito,
-      "desc_disp_velocidad": desc_disp_velocidad,
-      "desc_estado_esc_p_conductor": desc_estado_esc_p_conductor,
-      "desc_estado_esc_p_pasajero": desc_estado_esc_p_pasajero,
-      "desc_equipo_carretera": desc_equipo_carretera,
-      "desc_linterna": desc_linterna,
-      "desc_extintor": desc_extintor,
-      "desc_botiquin": desc_botiquin,
-      "desc_repuesto": desc_repuesto,
-      "desc_retrovisores": desc_retrovisores,
-      "desc_cinturones": desc_cinturones,
-      "desc_motor": desc_motor,
-      "desc_llantas": desc_llantas,
-      "desc_baterias": desc_baterias,
-      "desc_transmision": desc_transmision,
-      "desc_tension": desc_tension,
-      "desc_tapas": desc_tapas,
-      "desc_niveles": desc_niveles,
-      "desc_filtros": desc_filtros,
-      "desc_parabrisas": desc_parabrisas,
-      "desc_frenos": desc_frenos,
-      "desc_frenos_emergencia": desc_frenos_emergencia,
-      "desc_aire": desc_aire,
-      "desc_luces": desc_luces,
-      "desc_silleteria": desc_silleteria,
-      "desc_silla_conductor": desc_silla_conductor,
-      "desc_aseo": desc_aseo,
-      "desc_celular": desc_celular,
-      "desc_ruteros": desc_ruteros,
-      "img_documentos_conductor": img_documentos_conductor,
-      "img_documentos_vehiculo": img_documentos_vehiculo,
-      "img_calcomania": img_calcomania,
-      "img_pito": img_pito,
-      "img_disp_velocidad": img_disp_velocidad,
-      "img_estado_esc_p_conductor": img_estado_esc_p_conductor,
-      "img_estado_esc_p_pasajero": img_estado_esc_p_pasajero,
-      "img_equipo_carretera": img_equipo_carretera,
-      "img_linterna": img_linterna,
-      "img_extintor": img_extintor,
-      "img_botiquin": img_botiquin,
-      "img_repuesto": img_repuesto,
-      "img_retrovisores": img_retrovisores,
-      "img_cinturones": img_cinturones,
-      "img_motor": img_motor,
-      "img_llantas": img_llantas,
-      "img_baterias": img_baterias,
-      "img_transmision": img_transmision,
-      "img_tension": img_tension,
-      "img_tapas": img_tapas,
-      "img_niveles": img_niveles,
-      "img_filtros": img_filtros,
-      "img_parabrisas": img_parabrisas,
-      "img_frenos": img_frenos,
-      "img_frenos_emergencia": img_frenos_emergencia,
-      "img_aire": img_aire,
-      "img_luces": img_luces,
-      "img_silleteria": img_silleteria,
-      "img_silla_conductor": img_silla_conductor,
-      "img_aseo": img_aseo,
-      "img_celular": img_celular,
-      "img_ruteros": img_ruteros,
-      
+      "folio": folio,
+      "vehiculo": vehiculo,
+      "conductor": responsable,
+      "estado": state,
+      "fecha": fecha.millisecondsSinceEpoch,
     };
   }
 }

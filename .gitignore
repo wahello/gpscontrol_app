@@ -8,7 +8,6 @@
 .buildlog/
 .history
 .svn/
-android/key.properties
 
 # IntelliJ related
 *.iml
@@ -25,6 +24,7 @@ android/key.properties
 **/doc/api/
 .dart_tool/
 .flutter-plugins
+.flutter-plugins-dependencies
 .packages
 .pub-cache/
 .pub/

@@ -6,9 +6,17 @@ class Post {
   final String username;
   final int userId;
   final String token;
-  Post({this.eid, this.giSid, this.au, this.tm, this.username, this.userId, this.token });
+  Post(
+      {this.eid,
+      this.giSid,
+      this.au,
+      this.tm,
+      this.username,
+      this.userId,
+      this.token});
 
-  factory Post.fromJson(Map<String, dynamic> json,Map<String, dynamic> ujson,String token) {
+  factory Post.fromJson(
+      Map<String, dynamic> json, Map<String, dynamic> ujson, String token) {
     return Post(
       eid: json['eid'],
       giSid: json['gis_sid'],

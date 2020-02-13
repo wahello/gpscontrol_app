@@ -1,0 +1,5 @@
+{
+    "require": {
+        "consilience/laravel-odoo-api-client": "^0.11.0"
+    }
+}

@@ -1,13 +1,18 @@
 import 'dart:async';
-import 'package:EnlistControl/navigation_home_screen.dart';
+import 'package:EnlistControl/models/unit.dart';
+import 'package:EnlistControl/ui/init_alistamiento.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:toast/toast.dart';
 import '../common/constants.dart';
 import 'package:EnlistControl/ui/custom_route.dart';
 import '../models/users.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
 
 
 class LoginScreen extends StatelessWidget {
@@ -16,66 +21,87 @@ class LoginScreen extends StatelessWidget {
   bool isLoggedIn;
   bool flagPass;
   String uri;
-  Duration get loginTime => Duration(seconds: 5);
+  Duration get loginTime => Duration(seconds: 2);
   final _webview = new FlutterWebviewPlugin();
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
-  StreamSubscription<WebViewStateChanged> _onStateChanged;
   String toKen;
   String userTemp;
   String url;
   SharedPreferences prefs ;
+  bool internet;
 
-  _saveData(String user, String pass) async {
+  _saveData(String user, String pass, String img) async {
       prefs = await SharedPreferences.getInstance();
-      usuario = new User('1', user, pass, toKen);
-      await prefs.setString('user', user);
-      await prefs.setString('pass', pass);
+      prefs.setString("user", user);
+      prefs.setString("pass", pass);
+      prefs.setString("idU", usuario.idU.toString());
+      prefs.setString("nameU", usuario.nameU);
+      prefs.setString("tel", usuario.token);
+      prefs.setString("sid", usuario.sid);
+      prefs.setString("Uid", usuario.id.toString());
+      prefs.setString("img", img);
+
       //await prefs.setString('token', toKen);
 
   }
-  void initStreamController(String user,String pass){
-      var setUser = 'document.getElementById("login").value="$user";';
-      var setPass = 'document.getElementById("passw").value="$pass";';
-      var submit = 'document.forms["auth-form"].submit();';
-      print('entramos a la validacion');
-      print("Usuario: "+user+" "+"Password: "+pass);
-    try{
-      _webview.evalJavascript(setUser);
-      _webview.evalJavascript(setPass);
-      _webview.evalJavascript(submit);
-    }catch(e){
-      print(e);
-    }
-  }
 
-  onStateChanged(WebViewStateChanged state){
-        print("onStateChanged: ${state.type} ${state.url}");
-        // Check if link is correct
-        if (state.type == WebViewState.finishLoad && state.url.contains("simple.html?access_token")) {
-            url = state.url;
-            //filtro
-            print('La url con la que se accedio fue:'+url);
-            var token = url.replaceAll('http://tracking.gpscontrolcolombia.com/login_simple.html?access_token=', '');
-            print('el token es: '+token);
-            isLoggedIn = true;
-            flagPass = true;
-            toKen = token;
-            //usuario.setToken(token);
-            // Check if view is mounted and displayed
-        } else{
-          flagPass = false;
-        }
-    }
+  checkConexxion()async{
+    Connectivity().checkConnectivity().then((connectivityResult){
+        //verificamos si esta conectado a internet
+      if (connectivityResult == ConnectivityResult.none) {
+        // I am not connected to a mobile network.
+        internet = false;
+      }else {
+        // I'm connected!
+        internet = true;        
+      }
+    });
+     
+  }
+  
+  validationKeyMobile(String user, String pass){
+    isLoggedIn = false;
+    flagPass = false;
+    var rec = user;
+    rec = rec.replaceAll("+", "");
+    print(rec);
+    var url = "http://hst-api.wialon.com/wialon/ajax.html?svc=resource/driver_operate&params={%22phoneNumber%22:%22%2B$rec%22,%22password%22:%22$pass%22,%22callMode%22:%22status%22,%22app%22:%22enlist%22}";
+    http.get(url).then((res){
+      var jsonResponse = convert.jsonDecode(res.body);
+      print(jsonResponse);
+      if(jsonResponse.containsKey("drv")){
+        print('Contiene la clave drv');
+        var internalId = jsonResponse["drv"]["id"];
+        var id = jsonResponse["drv"]["rid"];
+        var imgRes = "http://hst-api.wialon.com/avl_driver_image/$id/$internalId/200/1.png";
+        var uname = jsonResponse["drv"]["nm"];
+        usuario = new User(id,uname ,pass ,user );
+        print(jsonResponse["un"]["id"]);
+        print(jsonResponse["un"]["nm"]);
+        usuario.setInfoU(jsonResponse["un"]["id"], jsonResponse["un"]["nm"]);
+        print("username is: ${usuario.name} ${usuario.nameU}");
+        _saveData(usuario.name, usuario.passwd, imgRes);
+        print("ok .. inicio sesion");
+        isLoggedIn = true;
+        flagPass = true;
+      }else{
+        isLoggedIn = false;
+        flagPass = false;
+      }
+   });
+  }
+  
   Future<String> _loginUser(LoginData logindata) {
     return Future.delayed(loginTime).then((_) {
       print("Entramos a _loginUser method");
-      if (isLoggedIn == true && flagPass==true){
-        var user = logindata.name;
-        var pass = logindata.password;
-        _saveData(user, pass);
+      if (internet == true){
+        if (isLoggedIn == true && flagPass==true){
+        //_saveData(user, pass);
         return null;
       }else {
-        return 'Intenta de nuevo';
+        return 'Error, intente de nuevo.';
+      }
+      }else{
+        return 'Comprueba tu conexion a internet e intentalo de nuevo.';
       }
     });
   }
@@ -88,13 +114,10 @@ class LoginScreen extends StatelessWidget {
 
     @override
   Widget build(BuildContext context) {
-     uri="http://tracking.gpscontrolcolombia.com/login_simple.html";
-      _webview.launch(uri);
-      flagPass = false;
-      _onStateChanged = _webview.onStateChanged.listen(this.onStateChanged);
+    final roundBorderRadius = BorderRadius.circular(100);
     return FlutterLogin(
       title: Constants.appName,
-      logo: 'assets/logo3.png',
+      logo: 'assets/icon/favicon1.png',
       logoTag: Constants.logoTag,
       titleTag: Constants.titleTag,
       messages: LoginMessages(
@@ -103,7 +126,7 @@ class LoginScreen extends StatelessWidget {
         confirmPasswordHint: 'Confirmar',
         loginButton: 'Iniciar Sesion',
         signupButton: 'Registrarme',
-        forgotPasswordButton: 'Olvidaste la contraseña?',
+        forgotPasswordButton: 'Olvidó su contraseña?',
         recoverPasswordButton: 'Ayuda',
         goBackButton: 'Volver',
         confirmPasswordError: 'No coincide!',
@@ -111,16 +134,16 @@ class LoginScreen extends StatelessWidget {
         recoverPasswordSuccess: 'Contraseña rescatada con éxito!!',
       ),
       theme:  LoginTheme(
-            primaryColor: Colors.blue,
-            accentColor: Colors.blueAccent,
-            errorColor: Colors.deepOrange,
+            primaryColor: Colors.black,
+            accentColor: Colors.black,
+            errorColor: Color(0xffff0032),
             titleStyle: TextStyle(
               fontSize: 22.0,
               color: Colors.blue,
               fontFamily: 'Quicksand',
             ),
-
-
+            pageColorLight: Color(0xff000000),
+            pageColorDark: Color(0xff282828),
             beforeHeroFontSize: 28,
             afterHeroFontSize: 12,
             bodyStyle: TextStyle(
@@ -129,12 +152,36 @@ class LoginScreen extends StatelessWidget {
 
             ),
             cardTheme: CardTheme(
-              color: Colors.white,
-              elevation: 30,
+              color: Color(0xff282828),
+              elevation: 5,
               margin: EdgeInsets.only(top: 30),
               shape: ContinuousRectangleBorder(
                   borderRadius: BorderRadius.circular(100.0)),
             ),
+            buttonTheme: LoginButtonTheme(
+              backgroundColor: Color(0xff00ff32),
+              highlightColor: Colors.white,
+            ),
+            buttonStyle: TextStyle(
+                  fontSize: 12,
+                  color: Colors.black,
+                ),
+            inputTheme: InputDecorationTheme(
+              labelStyle: TextStyle(
+                  fontSize: 12,
+                  color: Colors.black,
+                ),
+              fillColor: Color(0xffffffff),
+              filled: true,
+              enabledBorder:OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.transparent , width: 1.5),
+                borderRadius: roundBorderRadius,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white , width: 2.9),
+                borderRadius: roundBorderRadius,
+              ),
+            )
           ),
       emailValidator: (value) {
         //if (!value.contains('@') || !value.endsWith('.com')) {
@@ -149,11 +196,12 @@ class LoginScreen extends StatelessWidget {
         return null;
       },
       onLogin: (loginData) {
+        checkConexxion();
+        validationKeyMobile(loginData.name, loginData.password);
         print('Login info');
         print('Name: ${loginData.name}');
         print('Password: ${loginData.password}');
         userTemp = loginData.name;
-        initStreamController(loginData.name , loginData.password);
         return _loginUser(loginData);
       },
       onSignup: (loginData) {
@@ -166,10 +214,10 @@ class LoginScreen extends StatelessWidget {
         if (isLoggedIn == true && flagPass==true) {
           _webview.close();
           Navigator.of(context).pushReplacement(FadePageRoute(
-            builder: (context) => NavigationHomeScreen(userData: usuario,),
+            builder: (context) => InitAlistamiento(data: usuario,),
           ));
         }else{
-          print('termino la animacion onsubmit');
+          _webview.close();
         }
       },
       onRecoverPassword: (name) {

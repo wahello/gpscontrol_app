@@ -1,16 +1,30 @@
+import 'package:EnlistControl/models/unit.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
+
 class User {
-  String id;
+  int id;
+  String sid;
   String name;
+  int idU;
+  String nameU;
   String passwd;
   String token;
-  User(String id, String name, String pass, String token) {
+  PseudoUnit unidad;
+  User(int id, String name, String pass, String token) {
     this.id = id;
     this.name = name;
     this.token = token;
     this.passwd = pass;
   }
-  setToken(String token){
-    this.token = token;
+
+  setSID(String sid){
+    this.sid = sid;
+  }
+
+  setInfoU(int id, String name){
+    this.idU = id;
+    this.nameU = name;
   }
 
   User.fromJson(Map json)
@@ -21,5 +35,9 @@ class User {
 
   Map toJson() {
     return {'id': id, 'name': name, 'token': token, 'password': passwd};
+  }
+
+  setUnit(PseudoUnit unit){
+    this.unidad = unit;
   }
 }
