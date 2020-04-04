@@ -8,12 +8,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
-<<<<<<< HEAD
 import 'package:EnlistControl/common/utils.dart';
 import 'package:flutter_login/src/widgets/gradient_box.dart';
 import 'package:EnlistControl/common/utils.dart';
-=======
->>>>>>> master
 
 // Una pantalla que permite a los usuarios tomar una fotografía utilizando una cámara determinada.
 class TakePictureScreen extends StatefulWidget {
@@ -183,7 +180,6 @@ class DisplayPictureScreen extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
-<<<<<<< HEAD
             SingleChildScrollView(
               child: Stack(
                   alignment: Alignment.center,
@@ -322,83 +318,5 @@ class DisplayPictureScreen extends StatelessWidget {
           ],
         ),
       );
-=======
-          ),
-          Padding(padding: EdgeInsets.only(top: 8.0, bottom: 35.0)),
-        ],
-      ),
-    );
-
-    final lower = Container(
-      child: ListView(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(5.0),
-            child: Center(
-              child: TextFormField(
-                controller: myController,
-                autovalidate: true,
-                decoration: new InputDecoration(
-                  labelText: "Descripcion",
-                  fillColor: Colors.white,
-                  border: new OutlineInputBorder(
-                    borderRadius: new BorderRadius.circular(25.0),
-                    borderSide: new BorderSide(),
-                  ),
-                  //fillColor: Colors.green
-                ),
-                validator: (val) {
-                  if (val.length <= 1) {
-                    return "La descripcion no puede estar vacia.";
-                  } else {
-                    return null;
-                  }
-                },
-                keyboardType: TextInputType.emailAddress,
-                style: new TextStyle(
-                  fontFamily: "Poppins",
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(15.0),
-            child: MaterialButton(
-              child: Text(
-                "Guardar",
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              color: Colors.blue,
-              onPressed: () {
-                desc = myController.text;
-                Navigator.pop(context, desc);
-                //_saveURL(_urlCtrler.text);
-              },
-            ),
-          )
-        ],
-      ),
-    );
-
-    return Scaffold(
-      body: NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            SliverAppBar(
-              expandedHeight: 260.0,
-              floating: false,
-              pinned: false,
-              flexibleSpace: FlexibleSpaceBar(
-                background: upper_header,
-              ),
-            ),
-          ];
-        },
-        body: lower,
-      ),
-    );
->>>>>>> master
   }
 }

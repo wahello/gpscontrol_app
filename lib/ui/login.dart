@@ -1,11 +1,7 @@
 import 'dart:async';
 import 'package:EnlistControl/models/unit.dart';
-<<<<<<< HEAD
 import 'package:EnlistControl/ui/init_alistamiento.dart';
 import 'package:connectivity/connectivity.dart';
-=======
-import 'package:EnlistControl/navigation_home_screen.dart';
->>>>>>> master
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
@@ -37,7 +33,6 @@ class LoginScreen extends StatelessWidget {
       prefs = await SharedPreferences.getInstance();
       prefs.setString("user", user);
       prefs.setString("pass", pass);
-<<<<<<< HEAD
       prefs.setString("idU", usuario.idU.toString());
       prefs.setString("nameU", usuario.nameU);
       prefs.setString("tel", usuario.token);
@@ -62,11 +57,6 @@ class LoginScreen extends StatelessWidget {
     });
      
   }
-=======
-      //await prefs.setString('token', toKen);
-
-  }
->>>>>>> master
   
   validationKeyMobile(String user, String pass){
     isLoggedIn = false;
@@ -80,26 +70,16 @@ class LoginScreen extends StatelessWidget {
       print(jsonResponse);
       if(jsonResponse.containsKey("drv")){
         print('Contiene la clave drv');
-<<<<<<< HEAD
         var internalId = jsonResponse["drv"]["id"];
         var id = jsonResponse["drv"]["rid"];
         var imgRes = "http://hst-api.wialon.com/avl_driver_image/$id/$internalId/200/1.png";
         var uname = jsonResponse["drv"]["nm"];
         usuario = new User(id,uname ,pass ,user );
-=======
-        var id = jsonResponse["drv"]["rid"];
-        var uname = jsonResponse["drv"]["nm"];
-        usuario = new User(id.toString(),uname ,pass ,user );
->>>>>>> master
         print(jsonResponse["un"]["id"]);
         print(jsonResponse["un"]["nm"]);
         usuario.setInfoU(jsonResponse["un"]["id"], jsonResponse["un"]["nm"]);
         print("username is: ${usuario.name} ${usuario.nameU}");
-<<<<<<< HEAD
         _saveData(usuario.name, usuario.passwd, imgRes);
-=======
-        _saveData(usuario.name, usuario.passwd);
->>>>>>> master
         print("ok .. inicio sesion");
         isLoggedIn = true;
         flagPass = true;
@@ -113,7 +93,6 @@ class LoginScreen extends StatelessWidget {
   Future<String> _loginUser(LoginData logindata) {
     return Future.delayed(loginTime).then((_) {
       print("Entramos a _loginUser method");
-<<<<<<< HEAD
       if (internet == true){
         if (isLoggedIn == true && flagPass==true){
         //_saveData(user, pass);
@@ -123,13 +102,6 @@ class LoginScreen extends StatelessWidget {
       }
       }else{
         return 'Comprueba tu conexion a internet e intentalo de nuevo.';
-=======
-      if (isLoggedIn == true && flagPass==true){
-        //_saveData(user, pass);
-        return null;
-      }else {
-        return 'Error, verifica tus credenciales';
->>>>>>> master
       }
     });
   }
@@ -142,16 +114,10 @@ class LoginScreen extends StatelessWidget {
 
     @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
     final roundBorderRadius = BorderRadius.circular(100);
     return FlutterLogin(
       title: Constants.appName,
       logo: 'assets/icon/favicon1.png',
-=======
-    return FlutterLogin(
-      title: Constants.appName,
-      logo: 'assets/icon/favicon2.png',
->>>>>>> master
       logoTag: Constants.logoTag,
       titleTag: Constants.titleTag,
       messages: LoginMessages(
@@ -230,10 +196,7 @@ class LoginScreen extends StatelessWidget {
         return null;
       },
       onLogin: (loginData) {
-<<<<<<< HEAD
         checkConexxion();
-=======
->>>>>>> master
         validationKeyMobile(loginData.name, loginData.password);
         print('Login info');
         print('Name: ${loginData.name}');

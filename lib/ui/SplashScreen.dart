@@ -19,10 +19,6 @@ class SplashScreen extends StatefulWidget {
 /// _SplashScreenState extended from State<SplashScreen>
 /// Display content
 class _SplashScreenState extends State<SplashScreen> {
-<<<<<<< HEAD
-=======
-  final IntranetAPIUtils _api = new IntranetAPIUtils();
->>>>>>> master
   User usuario;
 
   /// Run async task to change view after given time
@@ -41,7 +37,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (prefs.getString("user") != null) {
       print("se encontro user " + prefs.getString("user"));
-<<<<<<< HEAD
       var user = prefs.getString("user");
       var pass = prefs.getString("pass");
       var idU = prefs.getString("idU");
@@ -53,26 +48,16 @@ class _SplashScreenState extends State<SplashScreen> {
             pass, token);
         usuario.setSID(sid);
         usuario.setInfoU(int.parse(idU), nameU);
-=======
->>>>>>> master
       //verificamos si esta conectado a internet
       if (connectivityResult == ConnectivityResult.mobile) {
         // I am connected to a mobile network.
         Toast.show("Se detecto: Datos moviles.", context,
             duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
 
-<<<<<<< HEAD
         
         return Navigator.of(context).pushReplacement(FadePageRoute(
           builder: (context) => InitAlistamiento(
             data: usuario,
-=======
-       usuario = new User("0", prefs.getString("user"),
-            "", prefs.getString("token"));
-        return Navigator.of(context).pushReplacement(FadePageRoute(
-          builder: (context) => NavigationHomeScreen(
-            userData: usuario,
->>>>>>> master
           ),
         ));
       } else if (connectivityResult == ConnectivityResult.wifi) {
@@ -80,45 +65,23 @@ class _SplashScreenState extends State<SplashScreen> {
         Toast.show("Se detecto: WIFI.", context,
             duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
 
-<<<<<<< HEAD
         return Navigator.of(context).pushReplacement(FadePageRoute(
           builder: (context) => InitAlistamiento(
             data: usuario,
-=======
-        usuario = new User("1", prefs.getString("user"),
-            "", prefs.getString("token"));
-        return Navigator.of(context).pushReplacement(FadePageRoute(
-          builder: (context) => NavigationHomeScreen(
-            userData: usuario,
->>>>>>> master
           ),
         ));
       } else {
         // not connected
-<<<<<<< HEAD
         Toast.show("No estas conectado a internet.", context,
             duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
         return Navigator.of(context).pushReplacement(FadePageRoute(
           builder: (context) => InitAlistamiento(
             data: usuario,
-=======
-        usuario = new User("offline", prefs.getString("user"),
-            "", prefs.getString("token"));
-        Toast.show("No estas conectado a internet.", context,
-            duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
-        return Navigator.of(context).pushReplacement(FadePageRoute(
-          builder: (context) => NavigationHomeScreen(
-            userData: usuario,
->>>>>>> master
           ),
         ));
       }
     } else {
-<<<<<<< HEAD
       Toast.show("Bienvenido.", context,
-=======
-      Toast.show("Bienvenido!.", context,
->>>>>>> master
           duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (BuildContext context) => new LoginScreen()));

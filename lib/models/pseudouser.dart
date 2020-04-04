@@ -12,11 +12,7 @@ class PseudoUser {
   List<Intervalo> intervalos;
   List<Atribute> atributos;
   PseudoUser(User baseUser) {
-<<<<<<< HEAD
     this.idWia = baseUser.id.toString();
-=======
-    this.idWia = baseUser.id;
->>>>>>> master
     this.name = baseUser.name;
     this.baseUser = baseUser;
   }
@@ -38,17 +34,10 @@ class PseudoUser {
 
   setVehiculo(vehiculo){
     this.vehiculo = vehiculo;
-<<<<<<< HEAD
   }
   setIntervals(List<Intervalo> intervals){
     this.intervalos = intervals;
   }
-=======
-  }
-  setIntervals(List<Intervalo> intervals){
-    this.intervalos = intervals;
-  }
->>>>>>> master
   setAttrib(List<Atribute> atrribs){
     this.atributos = atrribs;
   }
@@ -59,11 +48,8 @@ class PseudoUser {
   setID(int id){
     this.id = id;
   }
-<<<<<<< HEAD
   setBaseUser(User user){
     this.baseUser = user;
   }
-=======
->>>>>>> master
 
 }

@@ -3,11 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
 class User {
-<<<<<<< HEAD
   int id;
-=======
-  String id;
->>>>>>> master
   String sid;
   String name;
   int idU;
@@ -15,11 +11,7 @@ class User {
   String passwd;
   String token;
   PseudoUnit unidad;
-<<<<<<< HEAD
   User(int id, String name, String pass, String token) {
-=======
-  User(String id, String name, String pass, String token) {
->>>>>>> master
     this.id = id;
     this.name = name;
     this.token = token;
